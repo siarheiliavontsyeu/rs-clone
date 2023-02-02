@@ -26,6 +26,12 @@ const schemas = {
       userId: Joi.string().required(),
       movieId: Joi.string().required()
     }),
+  watchLater: Joi.object()
+    .options({ abortEarly: false, allowUnknown: true })
+    .keys({
+      userId: Joi.string().required(),
+      movieId: Joi.string().required()
+    })
 };
 
 module.exports = schemas;

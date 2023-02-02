@@ -1,33 +1,33 @@
 const mongoose = require('mongoose');
-const { WatchHistory } = require('./watch-history.model');
+const { WatchLater } = require('./watch-later.model');
 const { NOT_FOUND_ERROR } = require('../../errors/appErrors');
-const ENTITY_NAME = 'watch-history';
+const ENTITY_NAME = 'watch-later';
 
-const getAll = async () => WatchHistory.find({});
+const getAll = async () => WatchLater.find({});
 
 const get = async userId => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     throw new NOT_FOUND_ERROR(ENTITY_NAME, { userId });
   }
-  const history = await WatchHistory.find({ userId });
-  if (!history) {
+  const later = await WatchLater.find({ userId });
+  if (!later) {
     throw new NOT_FOUND_ERROR(ENTITY_NAME, { userId });
   }
-  return history;
+  return later;
 };
 
 const create = async history =>
-  WatchHistory.create({ ...history, watchedAt: Date.now() });
+  WatchLater.create({ ...history, watchedAt: Date.now() });
 
 const remove = async id => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new NOT_FOUND_ERROR(ENTITY_NAME, { id });
   }
-  const history = await WatchHistory.deleteOne({ _id: id });
-  if (!history) {
+  const later = await WatchLater.deleteOne({ _id: id });
+  if (!later) {
     throw new NOT_FOUND_ERROR(ENTITY_NAME, { id });
   }
-  return history;
+  return later;
 };
 
 module.exports = { getAll, get, create, remove };
