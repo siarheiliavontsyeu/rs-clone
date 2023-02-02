@@ -1,0 +1,70 @@
+{
+  "name": "your-cinema-backend",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "type": "commonjs",
+  "description": "REST service for YourCinema",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "nodemon src/server.js",
+    "lint": "eslint ./ --ignore-path .gitignore --fix",
+    "test:auth": "cross-env DEBUG=rs:* TEST_MODE=auth jest --noStackTrace"
+  },
+  "license": "ISC",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": [
+      "./test/setup.js"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": [
+      "npm run lint",
+      "git add"
+    ]
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "cross-env": "6.0.3",
+    "dotenv": "8.2.0",
+    "express": "4.17.1",
+    "express-async-errors": "^3.1.1",
+    "http-errors": "^1.8.0",
+    "http-status-codes": "^2.1.4",
+    "joi": "^17.3.0",
+    "joi-objectid": "^3.0.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.10.9",
+    "morgan": "^1.10.0",
+    "swagger-ui-express": "4.1.2",
+    "uuid": "3.3.3",
+    "winston": "^3.3.3",
+    "yamljs": "0.3.0"
+  },
+  "devDependencies": {
+    "eslint": "6.7.2",
+    "eslint-config-prettier": "6.7.0",
+    "eslint-plugin-node": "10.0.0",
+    "eslint-plugin-prettier": "3.1.1",
+    "husky": "3.1.0",
+    "lint-staged": "9.5.0",
+    "nodemon": "2.0.2",
+    "prettier": "1.19.1",
+    "chai": "4.2.0",
+    "debug": "4.1.1",
+    "dirty-chai": "2.0.1",
+    "jest": "24.9.0",
+    "supertest": "4.0.2"
+  }
+}
