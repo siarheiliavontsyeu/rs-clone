@@ -1,84 +1,51 @@
-<script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="Пример props" />
-
+  <v-app :theme="theme">
+    <v-app-bar>
+      <v-app-bar-nav-icon></v-app-bar-nav-icon>
+      <v-spacer></v-spacer>
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
+        <v-btn>
+          <RouterLink to="/">Home</RouterLink>
+        </v-btn>
+        <v-btn>
+          <RouterLink to="/about">About</RouterLink>
+        </v-btn>
       </nav>
-    </div>
-  </header>
-  <RouterView />
+      <v-btn :prepend-icon="theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'" @click="onClick">Toggle
+        Theme</v-btn>
+    </v-app-bar>
+
+    <v-main>
+      <router-view></router-view>
+    </v-main>
+    <v-bottom-navigation>
+      <v-btn value="recent">
+        <v-icon>mdi-history</v-icon>
+
+        Recent
+      </v-btn>
+
+      <v-btn value="favorites">
+        <v-icon>mdi-heart</v-icon>
+
+        Favorites
+      </v-btn>
+
+      <v-btn value="nearby">
+        <v-icon>mdi-map-marker</v-icon>
+
+        Nearby
+      </v-btn>
+    </v-bottom-navigation>
+  </v-app>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
-  max-height: 100vh;
+<script lang="ts" setup>
+import { ref } from 'vue'
+
+const theme = ref('light');
+
+function onClick() {
+  theme.value = theme.value === 'light' ? 'dark' : 'light'
 }
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-  margin-top: 2rem;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  nav {
-    text-align: left;
-    margin-left: -1rem;
-    font-size: 1rem;
-
-    padding: 1rem 0;
-    margin-top: 1rem;
-  }
-}
-</style>
+</script>
