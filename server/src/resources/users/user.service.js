@@ -18,7 +18,6 @@ const update = async user => {
 };
 const remove = async id => {
   const allWatchHistory = await watchHistoryRepo.get(id);
-  console.log(allWatchHistory);
   const taskForUpdate = [];
   for (const task of allWatchHistory) {
     console.log(task);

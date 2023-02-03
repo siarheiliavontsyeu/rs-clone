@@ -23,7 +23,7 @@ db.on('error', () => logger.error('MongoDB connection fail:')).once(
   async () => {
     logger.info('Successfully connect to MongoDB');
     // await create(MOCK_USER);
-    logger.info('Successfully create mock admin user');
+    // logger.info('Successfully create mock admin user');
     app.listen(PORT, () =>
       logger.info(`App is running on http://localhost:${PORT}`)
     );
