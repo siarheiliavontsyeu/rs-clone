@@ -1,5 +1,4 @@
 <template>
-    <div>Custom button</div>
+  <div>Custom button</div>
 </template>
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
