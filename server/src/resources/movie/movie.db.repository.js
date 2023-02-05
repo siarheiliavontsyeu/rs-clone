@@ -1,9 +1,6 @@
 const mongoose = require('mongoose');
 const { Movie } = require('./movie.model');
-const {
-  NOT_FOUND_ERROR,
-  DUPLICATE_USER_LOGIN
-} = require('../../errors/appErrors');
+const { NOT_FOUND_ERROR, DUPLICATE } = require('../../errors/appErrors');
 const ENTITY_NAME = 'movie';
 
 const getAll = async () => Movie.find({});
@@ -21,7 +18,7 @@ const create = async movie => {
     return await Movie.create({ ...movie });
   } catch (e) {
     const { kinopoiskId } = movie;
-    throw new DUPLICATE_USER_LOGIN(ENTITY_NAME, { kinopoiskId });
+    throw new DUPLICATE(ENTITY_NAME, { kinopoiskId });
   }
 };
 
@@ -36,4 +33,19 @@ const remove = async id => {
   return movie;
 };
 
-module.exports = { getAll, get, create, remove };
+const createReview = async ({ kinopoiskId, userId, ...body }) => {
+  try {
+    const movie = await Movie.findOneAndUpdate(
+      { kinopoiskId, 'reviews.userId': { $ne: userId } },
+      { $push: { reviews: { userId, ...body, at: Date.now() } } },
+      { new: true }
+    );
+    if (!movie) {
+      throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
+    }
+  } catch (error) {
+    throw new DUPLICATE(`${ENTITY_NAME} userID`, { kinopoiskId });
+  }
+};
+
+module.exports = { getAll, get, create, remove, createReview };

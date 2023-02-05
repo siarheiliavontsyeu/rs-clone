@@ -1,12 +1,6 @@
 const mongoose = require('mongoose');
+const { ReviewSchema } = require('./review/review.model');
 const Schema = mongoose.Schema;
-
-const Review = Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
-  rating: { type: Number, required: true },
-  text: { type: String, required: true },
-  at: { type: Date }
-});
 
 const Critique = Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
@@ -21,13 +15,12 @@ const Movie = Schema({
   nameOriginal: { type: String, required: true },
   posterUrlPreview: { type: String },
   ratingKinopoisk: { type: Number },
-  reviews: [Review],
+  reviews: [ReviewSchema],
   critiques: [Critique]
 });
 
 const toResponse = movie => {
   const {
-    id,
     kinopoiskId,
     imdbId,
     nameRu,
@@ -39,7 +32,6 @@ const toResponse = movie => {
   } = movie;
 
   return {
-    id,
     kinopoiskId,
     imdbId,
     nameRu,
