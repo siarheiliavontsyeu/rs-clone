@@ -44,8 +44,29 @@ const createReview = async ({ kinopoiskId, userId, ...body }) => {
       throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
     }
   } catch (error) {
-    throw new DUPLICATE(`${ENTITY_NAME} userID`, { kinopoiskId });
+    throw new DUPLICATE(`${ENTITY_NAME} review userID`, {
+      kinopoiskId,
+      userId
+    });
   }
 };
 
-module.exports = { getAll, get, create, remove, createReview };
+const createCritique = async ({ kinopoiskId, userId, ...body }) => {
+  try {
+    const movie = await Movie.findOneAndUpdate(
+      { kinopoiskId, 'critiques.userId': { $ne: userId } },
+      { $push: { critiques: { userId, ...body, at: Date.now() } } },
+      { new: true }
+    );
+    if (!movie) {
+      throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
+    }
+  } catch (error) {
+    throw new DUPLICATE(`${ENTITY_NAME} critique userID`, {
+      kinopoiskId,
+      userId
+    });
+  }
+};
+
+module.exports = { getAll, get, create, remove, createReview, createCritique };

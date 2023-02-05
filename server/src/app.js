@@ -15,7 +15,8 @@ const userRouter = require('./resources/users/user.router');
 const watchHistoryRouter = require('./resources/watch-history/watch-history.router');
 const watchLaterRouter = require('./resources/watch-later/watch-later.router');
 const movieRouter = require('./resources/movie/movie.router');
-const revieRouter = require('./resources/movie/review/review.router');
+const reviewRouter = require('./resources/movie/review/review.router');
+const critiqueRouter = require('./resources/movie/critique/critique.router');
 
 const app = express();
 app.disable('x-powered-by');
@@ -47,7 +48,8 @@ app.use('/users', userRouter);
 app.use('/watch-history', watchHistoryRouter);
 app.use('/watch-later', watchLaterRouter);
 app.use('/movie', movieRouter);
-movieRouter.use('/:kinopoiskId/review', revieRouter);
+movieRouter.use('/:kinopoiskId/review', reviewRouter);
+movieRouter.use('/:kinopoiskId/critique', critiqueRouter);
 
 app.use((req, res, next) => next(createError(NOT_FOUND)));
 
