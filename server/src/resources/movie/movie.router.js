@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { OK, NO_CONTENT } = require('http-status-codes');
 const { toResponse } = require('./movie.model');
 const movieService = require('./movie.service');
-const { movieId, movie } = require('../../utils/validation/schemas');
+const { kinopoiskId, movie } = require('../../utils/validation/schemas');
 const validator = require('../../utils/validation/validator');
 
 router
@@ -17,21 +17,21 @@ router
   });
 
 router
-  .route('/:movieId')
-  .get(validator(movieId, 'params'), async (req, res) => {
-    const resMovie = await movieService.get(req.params.movieId);
+  .route('/:kinopoiskId')
+  .get(validator(kinopoiskId, 'params'), async (req, res) => {
+    const resMovie = await movieService.get(req.params.kinopoiskId);
     console.log(resMovie);
     res.status(OK).json(toResponse(resMovie));
   })
   .put(
-    [validator(movieId, 'params'), validator(movie, 'body')],
+    [validator(kinopoiskId, 'params'), validator(movie, 'body')],
     async (req, res) => {
-      const { movieId: reqID } = req.params;
+      const { kinopoiskId: reqID } = req.params;
       const resMovie = await movieService.update({ ...req.body, id: reqID });
       res.status(OK).json(toResponse(resMovie));
     }
   )
-  .delete(validator(movieId, 'params'), async (req, res) => {
+  .delete(validator(kinopoiskId, 'params'), async (req, res) => {
     await movieService.remove(req.params.id);
     res.sendStatus(NO_CONTENT);
   });

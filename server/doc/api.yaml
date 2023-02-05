@@ -26,7 +26,7 @@ components:
           type: string
         userId:
           type: string
-        movieId:
+        kinopoiskId:
           type: string
         watchedAt:
           type: date
@@ -36,7 +36,7 @@ components:
           type: string
         userId:
           type: string
-        movieId:
+        kinopoiskId:
           type: string
     Review:
       properties:
@@ -44,7 +44,7 @@ components:
           type: string
         userId:
           type: string
-        movieId:
+        kinopoiskId:
           type: string
         rating:
           type: number
@@ -58,7 +58,7 @@ components:
           type: string
         userId:
           type: string
-        movieId:
+        kinopoiskId:
           type: string
         critique:
           type: string

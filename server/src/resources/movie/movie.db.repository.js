@@ -8,10 +8,10 @@ const ENTITY_NAME = 'movie';
 
 const getAll = async () => Movie.find({});
 
-const get = async movieId => {
-  const movie = await Movie.findOne({ movieId });
+const get = async kinopoiskId => {
+  const movie = await Movie.findOne({ kinopoiskId });
   if (!movie) {
-    throw new NOT_FOUND_ERROR(ENTITY_NAME, { movieId });
+    throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
   }
   return movie;
 };
@@ -20,8 +20,8 @@ const create = async movie => {
   try {
     return await Movie.create({ ...movie });
   } catch (e) {
-    const { movieId } = movie;
-    throw new DUPLICATE_USER_LOGIN(ENTITY_NAME, { movieId });
+    const { kinopoiskId } = movie;
+    throw new DUPLICATE_USER_LOGIN(ENTITY_NAME, { kinopoiskId });
   }
 };
 

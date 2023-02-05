@@ -17,12 +17,12 @@ const userSchema = Joi.object({
 
 const watchHistorySchema = Joi.object({
   userId: Joi.objectId().required(),
-  movieId: Joi.string().required()
+  kinopoiskId: Joi.string().required()
 });
 
 const watchLaterSchema = Joi.object({
   userId: Joi.objectId().required(),
-  movieId: Joi.string().required()
+  kinopoiskId: Joi.string().required()
 });
 
 const reviewSchema = Joi.object({
@@ -37,7 +37,12 @@ const critiqueSchema = Joi.object({
 });
 
 const movieSchema = Joi.object({
-  movieId: Joi.string().required(),
+  kinopoiskId: Joi.string().required(),
+  imdbId: Joi.string().required(),
+  nameRu: Joi.string().required(),
+  nameOriginal: Joi.string().required(),
+  posterUrlPreview: Joi.string(),
+  ratingKinopoisk: Joi.number(),
   reviews: Joi.array().items(reviewSchema),
   critiques: Joi.array().items(critiqueSchema)
 });
@@ -46,8 +51,8 @@ const schemas = {
   id: Joi.object({
     id: Joi.objectId().required()
   }),
-  movieId: Joi.object({
-    movieId: Joi.string().required()
+  kinopoiskId: Joi.object({
+    kinopoiskId: Joi.string().required()
   }),
   user: userSchema,
   watchHistory: watchHistorySchema,

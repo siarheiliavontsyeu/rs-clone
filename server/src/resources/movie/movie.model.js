@@ -15,15 +15,40 @@ const Critique = Schema({
 });
 
 const Movie = Schema({
-  movieId: { type: String, required: true, unique: true },
+  kinopoiskId: { type: String, required: true, unique: true },
+  imdbId: { type: String, required: true, unique: true },
+  nameRu: { type: String, required: true },
+  nameOriginal: { type: String, required: true },
+  posterUrlPreview: { type: String },
+  ratingKinopoisk: { type: Number },
   reviews: [Review],
   critiques: [Critique]
 });
 
 const toResponse = movie => {
-  const { id, movieId, reviews, critiques } = movie;
-  console.log(movie);
-  return { id, movieId, reviews, critiques };
+  const {
+    id,
+    kinopoiskId,
+    imdbId,
+    nameRu,
+    nameOriginal,
+    posterUrlPreview,
+    ratingKinopoisk,
+    reviews,
+    critiques
+  } = movie;
+
+  return {
+    id,
+    kinopoiskId,
+    imdbId,
+    nameRu,
+    nameOriginal,
+    posterUrlPreview,
+    ratingKinopoisk,
+    reviews,
+    critiques
+  };
 };
 
 module.exports = {
