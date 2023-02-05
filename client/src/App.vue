@@ -1,23 +1,15 @@
 <template>
   <v-app :theme="theme">
     <v-app-bar>
-      <h1 class="text-h2 pa-2">Online-cinema</h1>
+      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">Online-cinema</h1>
       <v-spacer></v-spacer>
-      <nav>
-        <v-btn>
-          <RouterLink to="/">Home</RouterLink>
-        </v-btn>
-        <v-btn>
-          <RouterLink to="/about">About</RouterLink>
-        </v-btn>
-      </nav>
-      <v-btn
-        :prepend-icon="
-          theme === 'light' ? 'mdi-weather-sunny' : 'mdi-weather-night'
-        "
-        @click="onClick"
-        >Toggle Theme</v-btn
-      >
+      <SearchField></SearchField>
+      <v-spacer></v-spacer>
+      <v-btn icon @click="onClick">
+        <v-icon>{{
+          theme === "light" ? "mdi-weather-sunny" : "mdi-weather-night"
+        }}</v-icon>
+      </v-btn>
     </v-app-bar>
 
     <v-main>
@@ -28,6 +20,7 @@
 
 <script lang="ts" setup>
 import { ref } from "vue";
+import SearchField from "./components/SearchField.vue";
 
 const theme = ref("light");
 
@@ -35,3 +28,9 @@ function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
 </script>
+
+<style>
+  .cup{
+    cursor: pointer;
+  }
+</style>
