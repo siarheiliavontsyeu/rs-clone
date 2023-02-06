@@ -18,12 +18,10 @@ components:
           type: string
         login:
           type: string
-        subscription: 
+        subscription:
           type: string
     WatchHistory:
       properties:
-        id:
-          type: string
         userId:
           type: string
         kinopoiskId:
@@ -32,38 +30,48 @@ components:
           type: date
     WatchLater:
       properties:
-        id:
-          type: string
         userId:
-          type: string
+          kinopoiskId: string
         kinopoiskId:
           type: string
-    Review:
+    Movie:
       properties:
-        id:
-          type: string
-        userId:
-          type: string
         kinopoiskId:
           type: string
-        rating:
+        imdbId:
+          type: string
+        nameRu:
+          type: string
+        nameOriginal:
+          type: string
+        posterUrlPreview:
+          type: string
+        ratingKinopoisk:
           type: number
-        review:
-          type: string
-        reviewAt:
-          type: date
-    Critique:
-      properties:
-        id:
-          type: string
-        userId:
-          type: string
-        kinopoiskId:
-          type: string
-        critique:
-          type: string
-        critiqueAt:
-          type: date
+        reviews:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+              rating:
+                type: number
+              text:
+                type: string
+              at:
+                type: date
+        critiques:
+          type: array
+          items:
+            type: object
+            properties:
+              userId:
+                type: string
+              text:
+                type: string
+              at:
+                type: date
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
@@ -99,8 +107,8 @@ paths:
                   type: string
                   description: Password
               required:
-                - user
                 - login
+                - password
       responses:
         200:
           description: Successful login.
@@ -152,7 +160,7 @@ paths:
                   description: The user's login
                 password:
                   type: string
-                  description: The user's password
+                  description: The user's password At least one uppercase letter, At least one digit, Minimum length of 6 characters, Maximum length of 12 characters:
               required:
                 - name
       responses:
@@ -166,6 +174,8 @@ paths:
           description: Bad request
         401:
           $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate
   /users/{userId}:
     parameters:
       - name: userId
@@ -239,3 +249,340 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
         404:
           description: User not found
+
+  /watch-history:
+    parameters:
+    get:
+      tags:
+        - WatchHistory
+      summary: Get all users watch History
+      description: Get all users watch History
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WatchHistory'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags:
+        - WatchHistory
+      summary: Add to user watch-history a movie
+      description: Add to user watch-history a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: string
+                kinopoiskId:
+                  type: string
+              required:
+                - userId
+                - kinopoiskId
+      responses:
+        201:
+          description: The user WatchHistory has been created.
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate
+  /watch-history/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - WatchHistory
+      summary: Get all user watch History by userId
+      description: Get all user watch History by userId
+        e.g. “/watch-history/63db9afb54aa5f695ee827f6”
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchHistory'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          description: User not found
+  /watch-later:
+    parameters:
+    get:
+      tags:
+        - WatchLater
+      summary: Get all users watchHistory
+      description: Get all users watch History
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WatchLater'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags:
+        - WatchLater
+      summary: Add to user watch-later a movie
+      description: Add to user watch-later a movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              properties:
+                userId:
+                  type: string
+                kinopoiskId:
+                  type: string
+              required:
+                - userId
+                - kinopoiskId
+      responses:
+        201:
+          description: The user WatchLater has been created.
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate
+  /watch-history/{userId}:
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - WatchLater
+      summary: Get all user WatchLater by userId
+      description: Get all user watch History by userId
+        e.g. “/watch-history/63db9afb54aa5f695ee827f6”
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WatchLater'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          description: User not found
+  /movie:
+    get:
+      tags:
+        - Movie
+      summary: Get all movies
+      description: Gets all movies
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Movie'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      tags:
+        - Movie
+      summary: Create Movie
+      description: Creates a new Movie
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                kinopoiskId:
+                  type: string
+                  description: The kinopoisk Id
+                imdbId:
+                  type: string
+                  description: The imdb Id
+                nameRu:
+                  type: string
+                  description: The movie russian name
+                nameOriginal:
+                  type: string
+                  description: The movie name
+                posterUrlPreview:
+                  type: string
+                  description: The movie poster Url Preview
+                ratingKinopoisk:
+                  type: number
+                  description: The movie prating on Kinopoisk
+                reviews:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      rating:
+                        type: number
+                      text:
+                        type: string
+                  description: The movie reviews
+                critiques:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      userId:
+                        type: string
+                      text:
+                        type: string
+                  description: The movie critiques
+              required:
+                - kinopoiskId
+                - imdbId 
+                - nameRu
+                - nameOriginal
+                - posterUrlPreview
+      responses:
+        200:
+          description: The Movie has been created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate
+  /movie/{kinopoiskId}:
+    parameters:
+      - name: kinopoiskId
+        in: path
+        required: true
+        schema:
+          type: string
+    get:
+      tags:
+        - Movie
+      summary: Get a movie by kinopoiskId
+      description: Gets a movie by kinopoiskId
+        e.g. “/users/123” 
+      responses:
+        200:
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        404:
+          description: Movie not found
+        409:
+          description: Duplicate
+  /movie/{kinopoiskId}/review:
+    parameters:
+      - name: kinopoiskId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Movie
+      summary: Create a Movie review
+      description: Creates a new Movie review
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                userId:
+                  type: string
+                  description: The userId
+                rating:
+                  type: number
+                  description: The rating
+                text:
+                  type: string
+                  description: The movie review text
+              required:
+                - userId
+                - rating 
+                - text
+      responses:
+        201:
+          description: The Movie review has been created.
+          content:
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate
+  /movie/{kinopoiskId}/critique:
+    parameters:
+      - name: kinopoiskId
+        in: path
+        required: true
+        schema:
+          type: string
+    post:
+      tags:
+        - Movie
+      summary: Create a Movie critique
+      description: Creates a new Movie critique
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              title: example
+              properties:
+                userId:
+                  type: string
+                  description: The userId
+                text:
+                  type: string
+                  description: The movie critique text
+              required:
+                - userId
+                - rating 
+                - text
+      responses:
+        201:
+          description: The Movie critique has been created.
+          content:
+        400:
+          description: Bad request
+        401:
+          $ref: '#/components/responses/UnauthorizedError'
+        409:
+          description: Duplicate

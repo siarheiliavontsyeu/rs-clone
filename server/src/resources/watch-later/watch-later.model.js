@@ -10,8 +10,8 @@ const WatchLater = new Schema(
 );
 
 const toResponse = watchHistory => {
-  const { id, userId, kinopoiskId } = watchHistory;
-  return { id, userId, kinopoiskId };
+  const { userId, kinopoiskId } = watchHistory;
+  return { userId, kinopoiskId };
 };
 
 module.exports = {

@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { OK, NO_CONTENT } = require('http-status-codes');
+const { OK, CREATED } = require('http-status-codes');
 const { toResponse } = require('./watch-history.model');
 const watchHistoryService = require('./watch-history.service');
 const { id, watchHistory } = require('../../utils/validation/schemas');
@@ -12,19 +12,13 @@ router
     res.status(OK).json(history.map(toResponse));
   })
   .post(validator(watchHistory, 'body'), async (req, res) => {
-    const resHistory = await watchHistoryService.create(req.body);
-    res.status(OK).json(toResponse(resHistory));
+    await watchHistoryService.create(req.body);
+    res.sendStatus(CREATED);
   });
 
-router
-  .route('/:id')
-  .get(validator(id, 'params'), async (req, res) => {
-    const resHistory = await watchHistoryService.get(req.params.id);
-    res.status(OK).json(resHistory.map(toResponse));
-  })
-  .delete(validator(id, 'params'), async (req, res) => {
-    await watchHistoryService.remove(req.params.id);
-    res.sendStatus(NO_CONTENT);
-  });
+router.route('/:id').get(validator(id, 'params'), async (req, res) => {
+  const resHistory = await watchHistoryService.get(req.params.id);
+  res.status(OK).json(resHistory.map(toResponse));
+});
 
 module.exports = router;

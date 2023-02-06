@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { OK, NO_CONTENT } = require('http-status-codes');
+const { OK } = require('http-status-codes');
 const { toResponse } = require('./watch-later.model');
 const watchLaterService = require('./watch-later.service');
 const { id, watchLater } = require('../../utils/validation/schemas');
@@ -16,15 +16,9 @@ router
     res.status(OK).json(toResponse(later));
   });
 
-router
-  .route('/:id')
-  .get(validator(id, 'params'), async (req, res) => {
-    const later = await watchLaterService.get(req.params.id);
-    res.status(OK).json(later.map(toResponse));
-  })
-  .delete(validator(id, 'params'), async (req, res) => {
-    await watchLaterService.remove(req.params.id);
-    res.sendStatus(NO_CONTENT);
-  });
+router.route('/:id').get(validator(id, 'params'), async (req, res) => {
+  const later = await watchLaterService.get(req.params.id);
+  res.status(OK).json(later.map(toResponse));
+});
 
 module.exports = router;

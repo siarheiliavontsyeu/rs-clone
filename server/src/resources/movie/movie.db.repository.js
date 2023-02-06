@@ -17,8 +17,11 @@ const create = async movie => {
   try {
     return await Movie.create({ ...movie });
   } catch (e) {
-    const { kinopoiskId } = movie;
-    throw new DUPLICATE(ENTITY_NAME, { kinopoiskId });
+    const { kinopoiskId, imdbId } = movie;
+    throw new DUPLICATE(`${ENTITY_NAME} kinopoiskId or imdbId`, {
+      kinopoiskId,
+      imdbId
+    });
   }
 };
 

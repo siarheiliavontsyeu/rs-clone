@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const { WatchHistory } = require('./watch-history.model');
-const { NOT_FOUND_ERROR } = require('../../errors/appErrors');
+const { NOT_FOUND_ERROR, DUPLICATE } = require('../../errors/appErrors');
 const ENTITY_NAME = 'watch-history';
 
 const getAll = async () => WatchHistory.find({});
@@ -16,8 +16,20 @@ const get = async userId => {
   return history;
 };
 
-const create = async history =>
-  WatchHistory.create({ ...history, watchedAt: Date.now() });
+const create = async history => {
+  const existingHistory = await WatchHistory.findOne({
+    kinopoiskId: history.kinopoiskId
+  });
+  if (existingHistory) {
+    throw new DUPLICATE(`${ENTITY_NAME} kinopoiskId`, {
+      kinopoiskId: history.kinopoiskId
+    });
+  }
+  return WatchHistory.create({
+    ...history,
+    watchedAt: Date.now()
+  });
+};
 
 const remove = async id => {
   if (!mongoose.Types.ObjectId.isValid(id)) {

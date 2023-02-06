@@ -1,7 +1,11 @@
 const watchHistory = require('./watch-history.db.repository');
+const usersRepo = require('../users/user.db.repository');
 
 const getAll = () => watchHistory.getAll();
-const get = id => watchHistory.get(id);
+const get = async id => {
+  await usersRepo.get(id);
+  return watchHistory.get(id);
+};
 const create = async history => {
   return watchHistory.create({ ...history });
 };
