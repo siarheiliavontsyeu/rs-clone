@@ -1,7 +1,9 @@
 <template>
   <v-app :theme="theme">
     <v-app-bar>
-      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">Online-cinema</h1>
+      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">
+        Online-cinema
+      </h1>
       <v-spacer></v-spacer>
       <SearchField></SearchField>
       <v-spacer></v-spacer>
@@ -30,7 +32,7 @@ function onClick() {
 </script>
 
 <style>
-  .cup{
-    cursor: pointer;
-  }
+.cup {
+  cursor: pointer;
+}
 </style>
