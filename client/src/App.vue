@@ -23,12 +23,16 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import SearchField from "./components/SearchField.vue";
+import { useMoviesStore } from "./stores/moviesStore";
+
+const movies = useMoviesStore();
 
 const theme = ref("light");
 
 function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
+// movies.getCountriesAndGenres();
 </script>
 
 <style>

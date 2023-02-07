@@ -1,8 +1,18 @@
 <template>
   <div>
-    Инфо о фильме
-    <p>Актер {{ $route.params.nameId }}</p>
+    Инфо о человеке
+    <p>Актер {{ personStore.person.nameRu }}</p>
   </div>
 </template>
-<script setup lang="ts"></script>
-<style></style>
+<script setup lang="ts">
+import { usePersonStore } from "@/stores/personStore";
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+const personStore = usePersonStore();
+const personId = route.params.nameId
+personStore.getStaffPerson(+personId);
+</script>
+<style>
+
+</style>

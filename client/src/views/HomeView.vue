@@ -1,23 +1,25 @@
 <template>
-  <main>Пустая страница</main>
+  <main>
+    <h1>Пустая страница</h1>
+    <div>
+      Коллекция 100 лучших фильмов
+      <ul>
+        <li v-for="movie in moviesStore.moviesFromCollection" :key="movie.filmId">
+          <RouterLink :to="{ name: 'movie', params: { movieId: movie.filmId } }">{{ movie.nameRu }}</RouterLink>
+        </li>
+      </ul>
+    </div>
+  </main>
 </template>
 
 <script setup lang="ts">
-import { useCounterStore } from "@/stores/counter";
-import { useSearchStore } from "@/stores/search";
+import { useMoviesStore } from "@/stores/moviesStore";
+import { useSearchStore } from "@/stores/searchStore";
+import { MoviesTopTypesEnum } from "@/types/movies.types";
 
-const counter = useCounterStore();
+const moviesStore = useMoviesStore();
 const search = useSearchStore();
-const movies = [
-  { id: 1, name: "Матрица" },
-  { id: 2, name: "Матрица 1" },
-  { id: 3, name: "Матрица 2" },
-  { id: 4, name: "Матрица 3" },
-];
-const names = [
-  { id: 1, name: "Киану Ривз" },
-  { id: 2, name: "Актер 1" },
-  { id: 3, name: "Актер 2" },
-  { id: 4, name: "Актер 3" },
-];
+
+moviesStore.getMovies(MoviesTopTypesEnum.top100, 3);
+moviesStore.getMovieFilters();
 </script>

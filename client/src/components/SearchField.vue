@@ -1,65 +1,74 @@
 <template>
   <v-responsive class="mx-auto" max-width="344">
-    <v-autocomplete
-      class="py-2"
-      v-model="select"
-      v-model:search="search"
-      :loading="loading"
-      :items="items"
-      item-title="name"
-      item-value="name"
-      density="compact"
-      color="blue-grey-lighten-2"
-      placeholder="Фильмы, сериалы, персоны"
-      clearable
-      autocomplete="off"
-      @update:model-value="onSearch"
-    >
+    <v-autocomplete class="py-2" v-model="select" v-model:search="search" :loading="loading" :items="items"
+      item-title="nameRu" item-value="nameRu" density="compact" color="blue-grey-lighten-2"
+      placeholder="Фильмы, сериалы, персоны" clearable autocomplete="off">
       <template v-slot:item="{ item, props }">
-        <v-list-item
-        @click="$router.push({name: 'movie', params: {movieId: item.raw.id}})"
-          v-bind="props"
-          :prepend-avatar="item?.raw?.avatar"
-          :title="item?.raw?.name"
-          :subtitle="item?.raw?.group"
-        >
+        <v-list-item @click="navigateTo(item)" v-bind="props" :prepend-avatar="item?.raw?.img"
+          :title="item?.raw?.nameRu" :subtitle="item?.raw?.nameEn">
         </v-list-item>
       </template>
     </v-autocomplete>
   </v-responsive>
 </template>
 <script setup lang="ts">
-import { useSearchStore } from "@/stores/search";
+import { usePersonStore } from "@/stores/personStore";
+import { useSearchStore } from "@/stores/searchStore";
 import { watch, ref } from "vue";
-type fa = { id: number; name: string };
-const store = useSearchStore();
+import { useRouter } from "vue-router";
+type listTypes = {
+  id: number;
+  nameRu: string;
+  nameEn: string;
+  img: string;
+  isMovie: boolean;
+};
+const searchStore = useSearchStore();
+const personStore = usePersonStore();
+const router = useRouter();
 let loading = false;
 let search = ref("");
 let select: string;
-let items: fa[] = [];
-const movies = [
-  { id: 1, name: "Матрица" },
-  { id: 2, name: "Мстители" },
-  { id: 3, name: "Жизнь пи" },
-  { id: 4, name: "Пацаны" },
-  { id: 5, name: "Какой-то фильм" },
-  { id: 6, name: "Тарзан" },
-  { id: 7, name: "Вода" },
-];
+let searchText = ref("");
+let items: listTypes[] = [];
 watch(search, (val) => {
-  val && val !== select && querySelections(val);
+  val && val !== select && querySelections();
 });
 
-function querySelections(v: string) {
+watch(searchText, (val) => {
   loading = true;
   setTimeout(() => {
-    items = movies.filter((e) => {
-      return (e || "").name.toLowerCase().indexOf((v || "").toLowerCase()) > -1;
+    searchStore.getDataBySearch(val).then(() => {
+      loading = false;
     });
-    loading = false;
-  }, 300);
+  }, 500);
+  const moviesList = searchStore.moviesList.map((movie) => ({
+    id: movie.filmId,
+    nameRu: movie.nameRu,
+    nameEn: movie.nameEn,
+    img: movie.posterUrl,
+    isMovie: true,
+  }));
+  const personsList = searchStore.personsList.map((person) => ({
+    id: person.kinopoiskId,
+    nameRu: person.nameRu,
+    nameEn: person.nameEn,
+    img: person.posterUrl,
+    isMovie: false,
+  }));
+  items = [...moviesList, ...personsList];
+});
+
+function querySelections() {
+  searchText.value = search.value;
 }
-function onSearch(){
-    console.log(select);
+
+function navigateTo(item: any) {
+  if (item.raw.isMovie) {
+    router.replace({ name: "movie", params: { movieId: item.raw.id } })
+  } else {
+    personStore.setPersonId(item.raw.id)
+    router.replace({ name: "name", params: { nameId: item.raw.id } })
+  }
 }
 </script>
