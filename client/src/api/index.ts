@@ -30,7 +30,8 @@ const staff = `${base}v1/staff`;
 const person = `${base}v1/persons`;
 
 // const apiKey = "a416cbec-8426-43cd-a937-a71a92590c5a";
-const apiKey = "8c127e8c-2803-48a5-873f-896a5bd57f56";
+// const apiKey = "8c127e8c-2803-48a5-873f-896a5bd57f56";
+const apiKey = "ea4d9c93-4b9c-46d5-890f-80a449dc95b4";
 
 // шаблон запрос с ключом
 const requestTemplate = async (
@@ -144,7 +145,7 @@ export const getPremiereMovies = async (
 //get запрос для сиквелов и приквелов фильма
 export const getMovieSequelsAndPrequels = async (
   id: number
-): Promise<IMovieSequelsAndPrequelsResponse> => {
+): Promise<IMovieSequelsAndPrequelsResponse[]> => {
   const resp = await requestTemplate(`${moviesV2}/${id}/sequels_and_prequels`);
   return resp.json();
 };
@@ -181,7 +182,7 @@ export const getMovieStaff = async (id: number): Promise<IStaffResponse[]> => {
 // get запрос о конкретном человеке
 export const getStaffPerson = async (
   id: number
-): Promise<IStaffPersonSearchResponse[]> => {
+): Promise<IStaffPersonSearchResponse> => {
   const resp = await requestTemplate(`${staff}/${id}`);
   return resp.json();
 };

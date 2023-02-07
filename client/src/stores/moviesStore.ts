@@ -1,31 +1,37 @@
 import { defineStore } from "pinia";
 import type {
+  IDigitalReleaseMovie,
   IFilterCountryResponse,
   IFilterGenreResponse,
   IMovieFromCollection,
   IMovieSearchByFilters,
+  IPremiereMovie,
   MoviesTopTypesEnum,
 } from "@/types/movies.types";
 import {
   getAllCountriesAndGenres,
   getMovieFilters,
   getMoviesByCollection,
-} from "@/api/movies";
+  getPremiereMovies,
+  getReleases,
+} from "@/api";
 
 export const useMoviesStore = defineStore("movies", {
   state: () => ({
-    movies: [] as IMovieFromCollection[],
+    moviesFromCollection: [] as IMovieFromCollection[],
     genres: [] as IFilterGenreResponse[],
     countries: [] as IFilterCountryResponse[],
     found: [] as IMovieSearchByFilters[],
+    premiereMovies: [] as IPremiereMovie[],
+    releaseSoonMovies: [] as IDigitalReleaseMovie[],
   }),
   actions: {
     async getMovies(type: MoviesTopTypesEnum, page: number) {
-      this.movies = await getMoviesByCollection(type, page).then(
+      this.moviesFromCollection = await getMoviesByCollection(type, page).then(
         (resp) => resp.films
       );
     },
-    async getcountriesAndGenres() {
+    async getCountriesAndGenres() {
       const { genres, countries } = await getAllCountriesAndGenres();
       this.genres = genres;
       this.countries = countries;
@@ -33,6 +39,14 @@ export const useMoviesStore = defineStore("movies", {
     async getMovieFilters() {
       const data = await getMovieFilters();
       this.found = data.items;
+    },
+    async getPremiereMovies(year: number, month: string) {
+      const data = await getPremiereMovies(year, month);
+      this.premiereMovies = data.items;
+    },
+    async getReleases(year: number, month: string) {
+      const data = await getReleases(year, month);
+      this.releaseSoonMovies = data.releases;
     },
   },
 });

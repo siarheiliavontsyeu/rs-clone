@@ -32,7 +32,7 @@ const theme = ref("light");
 function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
-// movies.getcountriesAndGenres();
+// movies.getCountriesAndGenres();
 </script>
 
 <style>

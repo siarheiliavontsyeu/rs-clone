@@ -1,4 +1,4 @@
-import { getMovieBySearch, getPersonBySearch } from "@/api/movies";
+import { getMovieBySearch, getPersonBySearch } from "@/api";
 import type { IMovieSearch, IPersonByName } from "@/types/movies.types";
 import { defineStore } from "pinia";
 
@@ -12,9 +12,6 @@ export const useSearchStore = defineStore("search", {
     loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
-    setSearchText(newSearchText: string) {
-      this.searchText = newSearchText;
-    },
     async getDataBySearch(keyword: string) {
       const movie = await getMovieBySearch(keyword);
       const person = await getPersonBySearch(keyword);

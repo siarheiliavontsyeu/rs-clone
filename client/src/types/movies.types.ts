@@ -388,10 +388,15 @@ export interface IPersonByName {
   posterUrl: string;
 }
 
+export interface IImage {
+  imageUrl: string;
+  previewUrl: string;
+}
+
 export interface IImageResponse {
   total: number;
   totalPages: number;
-  items: Array<{ imageUrl: string; previewUrl: string }>;
+  items: IImage[];
 }
 
 export interface IPremiereResponse {
@@ -435,13 +440,15 @@ export interface IDigitalReleaseMovie {
   releaseDate: string;
 }
 
+export interface IVideo {
+  url: string;
+  name: string;
+  site: VideoTypeEnum;
+}
+
 export interface IVideoResponse {
   total: number;
-  items: Array<{
-    url: string;
-    name: string;
-    site: VideoTypeEnum;
-  }>;
+  items: IVideo[];
 }
 export interface IApiError {
   message: string;
