@@ -1,15 +1,15 @@
 import { ref, computed } from "vue";
 import router from "@/router";
-import useBackend from "./useBackend";
-import type { AuthBodyModel, AuthResponseModel } from "@/types/auth.types";
-import { HttpMethod } from "@/types/fetch.types";
-
-const baseUrl = "http://178.172.172.131:4000/";
+import { useAuthStore } from "@/stores/authStore";
+import { storeToRefs } from "pinia";
 
 export function useLoginForm() {
+  const authStore = useAuthStore();
+  const { showError } = storeToRefs(authStore);
+  const { login } = authStore;
   const regLoginRef = ref<HTMLFormElement | null>(null);
   const loginValid = ref(false);
-  const login = ref("");
+  const loginFiled = ref("");
   const password = ref("");
   const loginRules = computed(() => [
     (v: string) => !!v || "Логин обязателен!",
@@ -23,17 +23,7 @@ export function useLoginForm() {
       const { valid }: { valid: boolean } = await regLoginRef.value.validate();
       if (valid) {
         console.log("ok");
-        // router.push({ name: "home" });
-        const { loading, response, headers, error } = await useBackend<
-          AuthResponseModel,
-          AuthBodyModel
-        >({
-          url: baseUrl + "login",
-          method: HttpMethod.POST,
-          additionalUrl: "",
-          body: { login: login.value, password: password.value },
-        });
-        console.log(loading, response, headers, error);
+        login(loginFiled.value, password.value);
       } else {
         console.log("not ok");
       }
@@ -42,10 +32,11 @@ export function useLoginForm() {
   return {
     regLoginRef,
     loginValid,
-    login,
+    loginFiled,
     password,
     loginRules,
     passwordRules,
     doLogin,
+    showError,
   };
 }
