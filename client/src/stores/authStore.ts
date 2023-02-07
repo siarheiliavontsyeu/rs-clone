@@ -60,9 +60,12 @@ export const useAuthStore = defineStore("auth", () => {
     }
     showLoading.value = loading.value;
   };
+
   const logout = () => {
     user.value = null;
+    token.value = null;
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     // router.push("/login");
   };
 
