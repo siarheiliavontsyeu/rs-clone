@@ -8,6 +8,7 @@ const morgan = require('morgan');
 const winston = require('./common/logging');
 const errorHandler = require('./errors/errorHandler');
 const checkToken = require('./common/check-token');
+const cors = require('cors');
 require('express-async-errors');
 
 const loginRouter = require('./resources/login/login.router');
@@ -18,7 +19,13 @@ const movieRouter = require('./resources/movie/movie.router');
 const reviewRouter = require('./resources/movie/review/review.router');
 const critiqueRouter = require('./resources/movie/critique/critique.router');
 
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+};
+
 const app = express();
+app.use(cors(corsOptions));
 app.disable('x-powered-by');
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
