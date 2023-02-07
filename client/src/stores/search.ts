@@ -1,16 +1,25 @@
-import { ref, computed } from "vue";
+import { getMovieBySearch, getPersonBySearch } from "@/api/movies";
+import type { IMovieSearch, IPersonByName } from "@/types/movies.types";
 import { defineStore } from "pinia";
 
-export const useSearchStore = defineStore("search", () => {
-  const searchText = ref('');
-  const loweredSearchText = computed(() =>
-    searchText.value.toLocaleLowerCase()
-  );
-  const setSearchText = (newSearchText: string) => {
-    searchText.value = newSearchText;
-    console.log(searchText.value);
-    
-  };
-
-  return { searchText, loweredSearchText, setSearchText };
+export const useSearchStore = defineStore("search", {
+  state: () => ({
+    searchText: "",
+    moviesList: [] as IMovieSearch[],
+    personsList: [] as IPersonByName[],
+  }),
+  getters: {
+    loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
+  },
+  actions: {
+    setSearchText(newSearchText: string) {
+      this.searchText = newSearchText;
+    },
+    async getDataBySearch(keyword: string) {
+      const movie = await getMovieBySearch(keyword);
+      const person = await getPersonBySearch(keyword);
+      this.moviesList = movie.films;
+      this.personsList = person.items;
+    },
+  },
 });

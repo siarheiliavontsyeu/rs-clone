@@ -1,7 +1,9 @@
 <template>
   <v-app :theme="theme">
     <v-app-bar>
-      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">Online-cinema</h1>
+      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">
+        Online-cinema
+      </h1>
       <v-spacer></v-spacer>
       <SearchField></SearchField>
       <v-spacer></v-spacer>
@@ -21,16 +23,20 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import SearchField from "./components/SearchField.vue";
+import { useMoviesStore } from "./stores/moviesStore";
+
+const movies = useMoviesStore();
 
 const theme = ref("light");
 
 function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
+// movies.getcountriesAndGenres();
 </script>
 
 <style>
-  .cup{
-    cursor: pointer;
-  }
+.cup {
+  cursor: pointer;
+}
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    Инфо о фильме
+    Инфо о человеке
     <p>Актер {{ $route.params.nameId }}</p>
   </div>
 </template>
