@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const { comparePasswords } = require('../../utils/hash-helpers');
 const { INCORRECT_LOGIN_OR_PASSWORD } = require('../../errors/appErrors');
 const usersRepo = require('../users/user.db.repository');
+const { toResponse } = require('../users/user.model');
 const ENTITY_NAME = 'login';
 
 const { JWT_SECRET_KEY } = require('../../common/config');
@@ -18,7 +19,10 @@ const connect = async user => {
   }
   const { id, login } = user_;
 
-  return jwt.sign({ id, login }, JWT_SECRET_KEY);
+  return {
+    user: toResponse(user_),
+    token: jwt.sign({ id, login }, JWT_SECRET_KEY)
+  };
 };
 
 module.exports = { connect };
