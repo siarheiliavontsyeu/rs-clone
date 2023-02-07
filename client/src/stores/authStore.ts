@@ -54,6 +54,7 @@ export const useAuthStore = defineStore("auth", () => {
       showError.value = false;
       if (response?.value) {
         token.value = response.value.token;
+        user.value = response.value.user;
       }
     } else {
       showError.value = true;
