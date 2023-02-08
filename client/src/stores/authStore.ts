@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, watch } from "vue";
-import type { UserModel } from "@/types/user.types";
+import type { UserModel, UserRegistrationModel } from "@/types/user.types";
 import useBackend from "@/use/useBackend";
 import type { AuthBodyModel, AuthResponseModel } from "@/types/auth.types";
 import { HttpMethod } from "@/types/fetch.types";
@@ -62,6 +62,34 @@ export const useAuthStore = defineStore("auth", () => {
     showLoading.value = loading.value;
   };
 
+  const registration = async (
+    name: string,
+    login: string,
+    password: string
+  ) => {
+    const { loading, response, error } = await useBackend<
+      UserModel,
+      UserRegistrationModel
+    >({
+      url: baseUrl + "registration",
+      method: HttpMethod.POST,
+      additionalUrl: "",
+      body: { login, name, password },
+    });
+    if (!error.value) {
+      showError.value = false;
+      if (response?.value) {
+        console.log(response?.value);
+        showLoading.value = loading.value;
+        return true;
+      }
+    } else {
+      showError.value = true;
+      showLoading.value = loading.value;
+      return false;
+    }
+  };
+
   const logout = () => {
     user.value = null;
     token.value = null;
@@ -70,5 +98,5 @@ export const useAuthStore = defineStore("auth", () => {
     router.push({ name: "login" });
   };
 
-  return { user, token, showError, login, logout };
+  return { user, token, showError, login, logout, registration };
 });

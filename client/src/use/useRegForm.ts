@@ -1,11 +1,16 @@
+import router from "@/router";
+import { useAuthStore } from "@/stores/authStore";
 import { ref, computed } from "vue";
 
 export function useRegForm() {
+  const authStore = useAuthStore();
+  const { registration } = authStore;
   const regFormRef = ref<HTMLFormElement | null>(null);
   const regValid = ref(false);
   const name = ref("");
   const login = ref("");
   const password = ref("");
+  const passwordRepeat = ref("");
   const nameRules = computed(() => [
     (v: string) => !!v || "Имя обязательно!",
     (v: string) => v.length >= 3 || "Имя должно быть не менее 3 символов!",
@@ -20,16 +25,28 @@ export function useRegForm() {
       /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,12}$/.test(v) ||
       "Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов",
   ]);
+  const passwordRepeatRules = computed(() => [
+    (v: string) => !!v || "Повтор пароля обязателен!",
+    (v: string) =>
+      v === password.value || "Повтор пароля и пароль должны совпадать!",
+    (v: string) =>
+      /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{6,12}$/.test(v) ||
+      "Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов",
+  ]);
 
-  const register = () => {
+  const register = async () => {
     if (regFormRef.value) {
-      regFormRef.value.validate().then(({ valid }: { valid: boolean }) => {
-        if (valid) {
-          console.log("ok");
-        } else {
-          console.log("not ok");
+      const { valid }: { valid: boolean } = await regFormRef.value.validate();
+      if (valid) {
+        const isReg = await registration(
+          name.value,
+          login.value,
+          password.value
+        );
+        if (isReg) {
+          router.push({ name: "login" });
         }
-      });
+      }
     }
   };
   return {
@@ -38,9 +55,11 @@ export function useRegForm() {
     name,
     login,
     password,
+    passwordRepeat,
     nameRules,
     loginRules,
     passwordRules,
+    passwordRepeatRules,
     register,
   };
 }

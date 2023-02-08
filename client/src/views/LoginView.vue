@@ -65,8 +65,16 @@
                 :rules="passwordRules"
                 :maxlength="12"
                 :counter="12"
-                @keyup.enter="register"
                 hint="Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов"
+              />
+              <v-text-field
+                label="Повтор пароля"
+                type="password"
+                v-model="passwordRepeat"
+                :rules="passwordRepeatRules"
+                :maxlength="12"
+                :counter="12"
+                @keyup.enter="register"
               />
               <v-btn color="primary" @click="register" class="ma-1">
                 <v-icon dark> mdi-account-key </v-icon>
@@ -95,6 +103,8 @@ const {
   nameRules,
   loginRules,
   passwordRules,
+  passwordRepeat,
+  passwordRepeatRules,
   register,
 } = useRegForm();
 const {

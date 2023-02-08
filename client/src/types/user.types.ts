@@ -4,3 +4,9 @@ export interface UserModel {
   login: string;
   subscription: string;
 }
+
+export interface UserRegistrationModel {
+  name: string;
+  login: string;
+  password: string;
+}
