@@ -1,1 +1,1 @@
-export const BASE_URL = "https://178.172.172.131:4000/";
+export const BASE_URL = "https://rs.globocenter.by:4000/";
