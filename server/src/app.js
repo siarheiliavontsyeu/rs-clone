@@ -12,6 +12,7 @@ const cors = require('cors');
 require('express-async-errors');
 
 const loginRouter = require('./resources/login/login.router');
+const registrationRouter = require('./resources/registration/registration.router');
 const userRouter = require('./resources/users/user.router');
 const watchHistoryRouter = require('./resources/watch-history/watch-history.router');
 const watchLaterRouter = require('./resources/watch-later/watch-later.router');
@@ -51,6 +52,7 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
+app.use('/registration', registrationRouter);
 app.use('/users', userRouter);
 app.use('/watch-history', watchHistoryRouter);
 app.use('/watch-later', watchLaterRouter);
