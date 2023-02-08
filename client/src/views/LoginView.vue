@@ -30,7 +30,10 @@
                 v-model="loginPassword"
                 :rules="loginPasswordRules"
               />
-              <v-btn color="primary" @click="doLogin" class="ma-1">Войти</v-btn>
+              <v-btn color="primary" @click="doLogin" class="ma-1">
+                <v-icon dark> mdi-login </v-icon
+                ><span class="ma-1">Войти</span></v-btn
+              >
             </v-form>
           </v-card-text>
         </v-card>
@@ -63,8 +66,9 @@
                 :counter="12"
                 hint="Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов"
               />
-              <v-btn color="primary" @click="register" class="ma-1"
-                >Зарегистрироваться</v-btn
+              <v-btn color="primary" @click="register" class="ma-1">
+                <v-icon dark> mdi-account-key </v-icon>
+                <span class="ma-1">Зарегистрироваться</span></v-btn
               >
             </v-form>
           </v-card-text>

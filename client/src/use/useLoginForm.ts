@@ -5,7 +5,7 @@ import { storeToRefs } from "pinia";
 
 export function useLoginForm() {
   const authStore = useAuthStore();
-  const { showError } = storeToRefs(authStore);
+  const { showError, token } = storeToRefs(authStore);
   const { login } = authStore;
   const regLoginRef = ref<HTMLFormElement | null>(null);
   const loginValid = ref(false);
@@ -22,10 +22,10 @@ export function useLoginForm() {
     if (regLoginRef.value) {
       const { valid }: { valid: boolean } = await regLoginRef.value.validate();
       if (valid) {
-        console.log("ok");
-        login(loginFiled.value, password.value);
-      } else {
-        console.log("not ok");
+        await login(loginFiled.value, password.value);
+        if (token.value) {
+          router.push({ name: "home" });
+        }
       }
     }
   };

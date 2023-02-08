@@ -26,16 +26,16 @@ export const useAuthStore = defineStore("auth", () => {
 
   watch(
     () => user,
-    (state) => {
-      localStorage.setItem("user", JSON.stringify(state.value));
+    (currentUser) => {
+      localStorage.setItem("user", JSON.stringify(currentUser.value));
     },
     { deep: true }
   );
 
   watch(
     () => token,
-    (state) => {
-      localStorage.setItem("token", JSON.stringify(state.value));
+    (currentToken) => {
+      localStorage.setItem("token", JSON.stringify(currentToken.value));
     },
     { deep: true }
   );
@@ -67,8 +67,12 @@ export const useAuthStore = defineStore("auth", () => {
     token.value = null;
     localStorage.removeItem("user");
     localStorage.removeItem("token");
-    // router.push("/login");
+    router.push({ name: "login" });
   };
 
-  return { user, token, login, logout, showError };
+  const toLoginPage = () => {
+    router.push({ name: "login" });
+  };
+
+  return { user, token, showError, login, logout, toLoginPage };
 });
