@@ -48,7 +48,9 @@ export const useAuthStore = defineStore("auth", () => {
   watch(
     () => user,
     (currentUser) => {
-      localStorage.setItem("user", JSON.stringify(currentUser.value));
+      if (currentUser.value) {
+        localStorage.setItem("user", JSON.stringify(currentUser.value));
+      }
     },
     { deep: true }
   );
@@ -56,7 +58,9 @@ export const useAuthStore = defineStore("auth", () => {
   watch(
     () => token,
     (currentToken) => {
-      localStorage.setItem("token", JSON.stringify(currentToken.value));
+      if (currentToken.value) {
+        localStorage.setItem("token", JSON.stringify(currentToken.value));
+      }
     },
     { deep: true }
   );
@@ -112,10 +116,10 @@ export const useAuthStore = defineStore("auth", () => {
   };
 
   const logout = () => {
-    user.value = null;
-    token.value = null;
     localStorage.removeItem("user");
     localStorage.removeItem("token");
+    token.value = null;
+    user.value = null;
     router.push({ name: "login" });
   };
 
