@@ -5,8 +5,7 @@ import useBackend from "@/use/useBackend";
 import type { AuthBodyModel, AuthResponseModel } from "@/types/auth.types";
 import { HttpMethod } from "@/types/fetch.types";
 import router from "@/router";
-
-const baseUrl = "http://178.172.172.131:4000/";
+import { BASE_URL } from "@/constants/backend";
 
 export const useAuthStore = defineStore("auth", () => {
   const user = ref<UserModel | null>(null);
@@ -70,7 +69,7 @@ export const useAuthStore = defineStore("auth", () => {
       AuthResponseModel,
       AuthBodyModel
     >({
-      url: baseUrl + "login",
+      url: BASE_URL + "login",
       method: HttpMethod.POST,
       additionalUrl: "",
       body: { login, password },
@@ -96,7 +95,7 @@ export const useAuthStore = defineStore("auth", () => {
       UserModel,
       UserRegistrationModel
     >({
-      url: baseUrl + "registration",
+      url: BASE_URL + "registration",
       method: HttpMethod.POST,
       additionalUrl: "",
       body: { login, name, password },
