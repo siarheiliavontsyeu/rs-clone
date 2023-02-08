@@ -3,10 +3,13 @@
   <v-container fluid class="container pa-0 ma-0">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
-        <v-alert v-if="showError" type="error" icon="mdi-alert">
+        <v-alert v-if="showError" type="error" icon="mdi-alert" dense>
           Ошибка аутентификации. Пожалуйста, попробуйте еще раз.
         </v-alert>
-
+        <v-alert v-if="showSuccess" type="success" icon="mdi-alert" dense>
+          Пользователь был зарегистрирован. Вы можете зайти используя
+          регистрационные данные
+        </v-alert>
         <v-card>
           <v-tabs v-model="tab">
             <v-tab> Вход </v-tab>
@@ -105,6 +108,7 @@ const {
   passwordRules,
   passwordRepeat,
   passwordRepeatRules,
+  showSuccess,
   register,
 } = useRegForm();
 const {

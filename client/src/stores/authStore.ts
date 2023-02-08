@@ -13,6 +13,7 @@ export const useAuthStore = defineStore("auth", () => {
   const token = ref<string | null>(null);
   const showError = ref(false);
   const showLoading = ref(false);
+  const showSuccess = ref(false);
 
   const userInLocalStorage = localStorage.getItem("user");
   if (userInLocalStorage) {
@@ -23,6 +24,26 @@ export const useAuthStore = defineStore("auth", () => {
   if (tokenInLocalStorage) {
     token.value = JSON.parse(tokenInLocalStorage);
   }
+
+  watch(
+    () => showError,
+    () => {
+      setTimeout(() => {
+        showError.value = false;
+      }, 3000);
+    },
+    { deep: true }
+  );
+
+  watch(
+    () => showSuccess,
+    () => {
+      setTimeout(() => {
+        showSuccess.value = false;
+      }, 3000);
+    },
+    { deep: true }
+  );
 
   watch(
     () => user,
@@ -79,8 +100,8 @@ export const useAuthStore = defineStore("auth", () => {
     if (!error.value) {
       showError.value = false;
       if (response?.value) {
-        console.log(response?.value);
         showLoading.value = loading.value;
+        showSuccess.value = true;
         return true;
       }
     } else {
@@ -98,5 +119,5 @@ export const useAuthStore = defineStore("auth", () => {
     router.push({ name: "login" });
   };
 
-  return { user, token, showError, login, logout, registration };
+  return { user, token, showError, showSuccess, login, logout, registration };
 });

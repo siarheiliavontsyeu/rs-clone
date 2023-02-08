@@ -1,10 +1,12 @@
 import router from "@/router";
 import { useAuthStore } from "@/stores/authStore";
+import { storeToRefs } from "pinia";
 import { ref, computed } from "vue";
 
 export function useRegForm() {
   const authStore = useAuthStore();
   const { registration } = authStore;
+  const { showSuccess } = storeToRefs(authStore);
   const regFormRef = ref<HTMLFormElement | null>(null);
   const regValid = ref(false);
   const name = ref("");
@@ -60,6 +62,7 @@ export function useRegForm() {
     loginRules,
     passwordRules,
     passwordRepeatRules,
+    showSuccess,
     register,
   };
 }
