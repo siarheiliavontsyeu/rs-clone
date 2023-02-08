@@ -29,8 +29,9 @@
                 type="password"
                 v-model="loginPassword"
                 :rules="loginPasswordRules"
+                @keyup.enter="doLogin"
               />
-              <v-btn color="primary" @click="doLogin" class="ma-1">
+              <v-btn color="primary" class="ma-1" @click="doLogin">
                 <v-icon dark> mdi-login </v-icon
                 ><span class="ma-1">Войти</span></v-btn
               >
@@ -64,6 +65,7 @@
                 :rules="passwordRules"
                 :maxlength="12"
                 :counter="12"
+                @keyup.enter="register"
                 hint="Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов"
               />
               <v-btn color="primary" @click="register" class="ma-1">

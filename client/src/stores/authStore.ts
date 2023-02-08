@@ -70,9 +70,5 @@ export const useAuthStore = defineStore("auth", () => {
     router.push({ name: "login" });
   };
 
-  const toLoginPage = () => {
-    router.push({ name: "login" });
-  };
-
-  return { user, token, showError, login, logout, toLoginPage };
+  return { user, token, showError, login, logout };
 });
