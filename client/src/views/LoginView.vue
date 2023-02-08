@@ -79,7 +79,7 @@
                 :counter="12"
                 @keyup.enter="register"
               />
-              <v-btn color="primary" @click="register" class="ma-1">
+              <v-btn color="primary" @click="registration" class="ma-1">
                 <v-icon dark> mdi-account-key </v-icon>
                 <span class="ma-1">Зарегистрироваться</span></v-btn
               >
@@ -96,6 +96,13 @@ import { useRegForm } from "@/use/useRegForm";
 import { useLoginForm } from "@/use/useLoginForm";
 
 const tab = ref(0);
+
+const registration = async () => {
+  const isReg = await register();
+  if (isReg) {
+    tab.value = 0;
+  }
+};
 
 const {
   regFormRef,

@@ -46,7 +46,11 @@ export function useRegForm() {
           password.value
         );
         if (isReg) {
-          router.push({ name: "login" });
+          name.value = "";
+          login.value = "";
+          password.value = "";
+          passwordRepeat.value = "";
+          return true;
         }
       }
     }
