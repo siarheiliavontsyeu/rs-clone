@@ -11,12 +11,14 @@ export default async function useBackend<T, K>({
   additionalUrl,
   body,
   method = HttpMethod.GET,
+  token = "",
 }: BackendProperties<K>): UsableBackend<T> {
   const loading = ref<boolean>(true);
   const options: RequestInit = {
     method,
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + token,
     },
   };
   if (body) {

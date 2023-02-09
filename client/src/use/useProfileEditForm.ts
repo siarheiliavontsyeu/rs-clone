@@ -2,23 +2,16 @@ import { useAuthStore } from "@/stores/authStore";
 import { storeToRefs } from "pinia";
 import { ref, computed } from "vue";
 
-export function useRegForm() {
+export function useProfileEditForm() {
   const authStore = useAuthStore();
-  const { registration } = authStore;
-  const { showSuccess } = storeToRefs(authStore);
-  const regFormRef = ref<HTMLFormElement | null>(null);
-  const regValid = ref(false);
+  const formRef = ref<HTMLFormElement | null>(null);
+  const formValid = ref(false);
   const name = ref("");
-  const login = ref("");
   const password = ref("");
   const passwordRepeat = ref("");
   const nameRules = computed(() => [
     (v: string) => !!v || "Имя обязательно!",
     (v: string) => v.length >= 3 || "Имя должно быть не менее 3 символов!",
-  ]);
-  const loginRules = computed(() => [
-    (v: string) => !!v || "Логин обязателен!",
-    (v: string) => v.length >= 3 || "Логин должен быть не менее 3 символов!",
   ]);
   const passwordRules = computed(() => [
     (v: string) => !!v || "Пароль обязателен!",
@@ -35,37 +28,23 @@ export function useRegForm() {
       "Латиница, должна быть хотя бы одна заглавная буква, хотя бы одна цифра, от 6 до 12 символов",
   ]);
 
-  const register = async () => {
-    if (regFormRef.value) {
-      const { valid }: { valid: boolean } = await regFormRef.value.validate();
+  const save = async () => {
+    if (formRef.value) {
+      const { valid }: { valid: boolean } = await formRef.value.validate();
       if (valid) {
-        const isReg = await registration(
-          name.value,
-          login.value,
-          password.value
-        );
-        if (isReg) {
-          name.value = "";
-          login.value = "";
-          password.value = "";
-          passwordRepeat.value = "";
-          return true;
-        }
+        //
       }
     }
   };
   return {
-    regFormRef,
-    regValid,
+    formRef,
+    formValid,
     name,
-    login,
     password,
     passwordRepeat,
     nameRules,
-    loginRules,
     passwordRules,
     passwordRepeatRules,
-    showSuccess,
-    register,
+    save,
   };
 }

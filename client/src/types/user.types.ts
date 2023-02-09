@@ -10,3 +10,16 @@ export interface UserRegistrationModel {
   login: string;
   password: string;
 }
+
+export interface WatchHistoryModel {
+  userId: string;
+  kinopoiskId: string;
+  watchedAt: string;
+}
+
+export type WatchHistoryPostModel = Omit<WatchHistoryModel, "watchedAt">;
+
+export interface WatchHistoryLaterModel {
+  userId: string;
+  kinopoiskId: string;
+}
