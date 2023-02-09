@@ -96,7 +96,7 @@ export const useMovieStore = defineStore("movie", {
     },
     async getAllInfo(id: number) {
       await this.getStaff(id);
-      await this.getSequelsAndPrequels(id);
+      // await this.getSequelsAndPrequels(id);
       await this.getReviews(id);
       await this.getImages(id);
       await this.getSimilars(id);

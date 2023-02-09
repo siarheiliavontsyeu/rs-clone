@@ -12,11 +12,14 @@ export const useSearchStore = defineStore("search", {
     loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
-    async getDataBySearch(keyword: string) {
-      const movie = await getMovieBySearch(keyword);
-      const person = await getPersonBySearch(keyword);
-      this.moviesList = movie.films;
-      this.personsList = person.items;
+    getDataBySearch(keyword: string) {
+       Promise.all([
+        getMovieBySearch(keyword),
+        getPersonBySearch(keyword)
+      ]).then(res => {
+        this.moviesList = res[0].films;
+        this.personsList = res[1].items
+      });
     },
   },
 });

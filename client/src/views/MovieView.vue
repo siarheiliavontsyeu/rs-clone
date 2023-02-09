@@ -5,10 +5,18 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useMovieStore } from '@/stores/movieStore';
-import { useRoute } from 'vue-router';
+import { useMovieStore } from "@/stores/movieStore";
+import { watch } from "vue";
+import { useRoute } from "vue-router";
 
 const movieStore = useMovieStore();
 const route = useRoute();
-movieStore.getAllInfo(+route.params.movieId)
+watch(() => route.params.movieId, (newValue, oldValue) => {
+  if (newValue !== oldValue) {
+    movieStore.getAllInfo(+newValue);
+  }
+},
+  { deep: true })
+
+movieStore.getAllInfo(+route.params.movieId);
 </script>

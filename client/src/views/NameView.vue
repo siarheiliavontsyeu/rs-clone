@@ -10,9 +10,7 @@ import { useRoute } from "vue-router";
 
 const route = useRoute();
 const personStore = usePersonStore();
-const personId = route.params.nameId
+const personId = route.params.nameId;
 personStore.getStaffPerson(+personId);
 </script>
-<style>
-
-</style>
+<style></style>
