@@ -12,6 +12,7 @@
           theme === "light" ? "mdi-weather-sunny" : "mdi-weather-night"
         }}</v-icon>
       </v-btn>
+      <ProfileBar></ProfileBar>
     </v-app-bar>
 
     <v-main>
@@ -23,6 +24,7 @@
 <script lang="ts" setup>
 import { ref } from "vue";
 import SearchField from "./components/SearchField.vue";
+import ProfileBar from "./components/ProfileBar.vue";
 import { useMoviesStore } from "./stores/moviesStore";
 
 const movies = useMoviesStore();

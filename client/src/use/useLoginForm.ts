@@ -1,10 +1,15 @@
 import { ref, computed } from "vue";
 import router from "@/router";
+import { useAuthStore } from "@/stores/authStore";
+import { storeToRefs } from "pinia";
 
 export function useLoginForm() {
+  const authStore = useAuthStore();
+  const { showError, token } = storeToRefs(authStore);
+  const { login } = authStore;
   const regLoginRef = ref<HTMLFormElement | null>(null);
   const loginValid = ref(false);
-  const login = ref("");
+  const loginFiled = ref("");
   const password = ref("");
   const loginRules = computed(() => [
     (v: string) => !!v || "Логин обязателен!",
@@ -13,25 +18,25 @@ export function useLoginForm() {
     (v: string) => !!v || "Пароль обязателен!",
   ]);
 
-  const doLogin = () => {
+  const doLogin = async () => {
     if (regLoginRef.value) {
-      regLoginRef.value.validate().then(({ valid }: { valid: boolean }) => {
-        if (valid) {
-          console.log("ok");
+      const { valid }: { valid: boolean } = await regLoginRef.value.validate();
+      if (valid) {
+        await login(loginFiled.value, password.value);
+        if (token.value) {
           router.push({ name: "home" });
-        } else {
-          console.log("not ok");
         }
-      });
+      }
     }
   };
   return {
     regLoginRef,
     loginValid,
-    login,
+    loginFiled,
     password,
     loginRules,
     passwordRules,
     doLogin,
+    showError,
   };
 }
