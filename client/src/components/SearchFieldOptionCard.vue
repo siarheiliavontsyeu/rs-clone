@@ -2,7 +2,7 @@
     <v-list-item @click="onPick">
         <router-link :to="props.item.isMovie
         ? { name: 'movie', params: { movieId: props.item.id } }
-        : { name: 'name', params: { nameId: props.item.id } }" class="d-flex">
+        : { name: 'name', params: { nameId: props.item.id } }" class="d-flex link">
             <div>
                 <img :src="item.img" class="card-img" alt="" />
             </div>
@@ -13,11 +13,15 @@
         </router-link>
     </v-list-item>
 </template>
-<script setup lang="ts">
+<script setup lang="ts">import { useSearchStore } from '@/stores/searchStore';
+
+const searchStore = useSearchStore();
+
 const props = defineProps(["item", "onClear"]);
 const emit = defineEmits(['clear']);
 
 const onPick = () => {
+    searchStore.setIsLoading();
     emit('clear');
 };
 </script>
@@ -28,5 +32,10 @@ const onPick = () => {
     border-radius: 50%;
     margin-right: 10px;
     object-fit: cover;
+}
+
+.link {
+    text-decoration: none;
+    color: var(--color-text);
 }
 </style>

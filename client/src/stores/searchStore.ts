@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 export const useSearchStore = defineStore("search", {
   state: () => ({
     searchText: "",
+    isLoading: false,
     moviesList: [] as IMovieSearch[],
     personsList: [] as IPersonByName[],
   }),
@@ -12,14 +13,19 @@ export const useSearchStore = defineStore("search", {
     loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
-    getDataBySearch(keyword: string) {
-       Promise.all([
-        getMovieBySearch(keyword),
-        getPersonBySearch(keyword)
-      ]).then(res => {
-        this.moviesList = res[0].films;
-        this.personsList = res[1].items
+    async getDataBySearch(keyword: string) {
+      getMovieBySearch(keyword).then((response) => {
+        this.moviesList = response.films;
+      });
+      getPersonBySearch(keyword).then((response) => {
+        this.personsList = response.items;
       });
     },
+    setIsLoading(){
+      this.isLoading = true;
+    },
+    unsetIsLoading(){
+      this.isLoading = false;
+    }
   },
 });

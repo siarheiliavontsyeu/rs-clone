@@ -29,9 +29,9 @@ const moviesV2 = `${base}v2.1/films`;
 const staff = `${base}v1/staff`;
 const person = `${base}v1/persons`;
 
-// const apiKey = "a416cbec-8426-43cd-a937-a71a92590c5a";
+const apiKey = "a416cbec-8426-43cd-a937-a71a92590c5a";
 // const apiKey = "8c127e8c-2803-48a5-873f-896a5bd57f56";
-const apiKey = "ea4d9c93-4b9c-46d5-890f-80a449dc95b4";
+// const apiKey = "ea4d9c93-4b9c-46d5-890f-80a449dc95b4";
 
 // шаблон запрос с ключом
 const requestTemplate = async (
