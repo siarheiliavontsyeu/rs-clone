@@ -27,6 +27,7 @@ import {
   getTvShowSeasons,
 } from "@/api";
 import { defineStore } from "pinia";
+import { useSearchStore } from "./searchStore";
 
 export const useMovieStore = defineStore("movie", {
   state: () => ({
@@ -95,18 +96,21 @@ export const useMovieStore = defineStore("movie", {
       this.staff = data;
     },
     async getAllInfo(id: number) {
-      await this.getStaff(id);
-      await this.getSequelsAndPrequels(id);
-      await this.getReviews(id);
-      await this.getImages(id);
-      await this.getSimilars(id);
-      await this.getVideos(id);
-      await this.getAwards(id);
-      await this.getDistribution(id);
-      await this.getFacts(id);
-      await this.getBoxOffice(id);
-      await this.getSeasons(id);
+      const searchStore = useSearchStore();
+      searchStore.setIsLoading();
+      // await this.getStaff(id);
+      // await this.getSequelsAndPrequels(id);
+      // await this.getReviews(id);
+      // await this.getImages(id);
+      // await this.getSimilars(id);
+      // await this.getVideos(id);
+      // await this.getAwards(id);
+      // await this.getDistribution(id);
+      // await this.getFacts(id);
+      // await this.getBoxOffice(id);
+      // await this.getSeasons(id);
       await this.getMovieById(id);
+      searchStore.unsetIsLoading();
     },
   },
 });

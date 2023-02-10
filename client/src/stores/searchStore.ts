@@ -5,6 +5,7 @@ import { defineStore } from "pinia";
 export const useSearchStore = defineStore("search", {
   state: () => ({
     searchText: "",
+    isLoading: false,
     moviesList: [] as IMovieSearch[],
     personsList: [] as IPersonByName[],
   }),
@@ -13,10 +14,18 @@ export const useSearchStore = defineStore("search", {
   },
   actions: {
     async getDataBySearch(keyword: string) {
-      const movie = await getMovieBySearch(keyword);
-      const person = await getPersonBySearch(keyword);
-      this.moviesList = movie.films;
-      this.personsList = person.items;
+      getMovieBySearch(keyword).then((response) => {
+        this.moviesList = response.films;
+      });
+      getPersonBySearch(keyword).then((response) => {
+        this.personsList = response.items;
+      });
     },
+    setIsLoading(){
+      this.isLoading = true;
+    },
+    unsetIsLoading(){
+      this.isLoading = false;
+    }
   },
 });

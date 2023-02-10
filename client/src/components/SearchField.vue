@@ -1,21 +1,30 @@
 <template>
-  <v-responsive class="mx-auto" max-width="344">
-    <v-autocomplete class="py-2" v-model="select" v-model:search="search" :loading="loading" :items="items"
-      item-title="nameRu" item-value="nameRu" density="compact" color="blue-grey-lighten-2"
-      placeholder="Фильмы, сериалы, персоны" clearable autocomplete="off">
-      <template v-slot:item="{ item, props }">
-        <v-list-item @click="navigateTo(item)" v-bind="props" :prepend-avatar="item?.raw?.img"
-          :title="item?.raw?.nameRu" :subtitle="item?.raw?.nameEn">
-        </v-list-item>
+  <div class="container">
+    <v-menu :value="4">
+      <template v-slot:activator="{ props }">
+        <div class="d-flex flex-column">
+          <input class="search_field" v-bind="props" v-model="search" />
+          <v-progress-linear v-show="search" indeterminate color="primary" rounded></v-progress-linear>
+        </div>
       </template>
-    </v-autocomplete>
-  </v-responsive>
+      <v-list class="options" v-if="moviesList.length && personsList.length">
+        <v-list-item value="movies-options">Фильмы</v-list-item>
+        <SearchFieldOptionCard v-for="item in moviesList" :key="item.id" :item="item" :value="item.id"
+          @clear='onClear' />
+        <v-list-item value="persons-options">Персоны</v-list-item>
+        <SearchFieldOptionCard v-for="item in personsList" :key="item.id" :item="item" :value="item.id"
+          @clear="onClear" />
+      </v-list>
+      <v-list class="no_options" v-else>
+        <v-list-item value="nodata">No data</v-list-item>
+      </v-list>
+    </v-menu>
+  </div>
 </template>
 <script setup lang="ts">
-import { usePersonStore } from "@/stores/personStore";
 import { useSearchStore } from "@/stores/searchStore";
-import { watch, ref } from "vue";
-import { useRouter } from "vue-router";
+import { reactive, ref, watch } from "vue";
+import SearchFieldOptionCard from "@/components/SearchFieldOptionCard.vue";
 type listTypes = {
   id: number;
   nameRu: string;
@@ -23,52 +32,74 @@ type listTypes = {
   img: string;
   isMovie: boolean;
 };
-const searchStore = useSearchStore();
-const personStore = usePersonStore();
-const router = useRouter();
-let loading = false;
-let search = ref("");
-let select: string;
-let searchText = ref("");
-let items: listTypes[] = [];
-watch(search, (val) => {
-  val && val !== select && querySelections();
-});
 
-watch(searchText, (val) => {
-  loading = true;
-  setTimeout(() => {
-    searchStore.getDataBySearch(val).then(() => {
-      loading = false;
-    });
-  }, 500);
-  const moviesList = searchStore.moviesList.map((movie) => ({
+const searchStore = useSearchStore();
+let search = ref("");
+const keyword = ref("");
+let moviesList: listTypes[] = reactive([]);
+let personsList: listTypes[] = reactive([]);
+watch(keyword, async (newValue) => {
+  if (newValue) {
+    await searchStore.getDataBySearch(newValue);
+    onFilter();
+  } else {
+    moviesList = [];
+    personsList = [];
+  }
+});
+watch(search, () => {
+  onChange();
+});
+const onFilter = () => {
+  moviesList = searchStore.moviesList.map((movie) => ({
     id: movie.filmId,
     nameRu: movie.nameRu,
     nameEn: movie.nameEn,
     img: movie.posterUrl,
     isMovie: true,
   }));
-  const personsList = searchStore.personsList.map((person) => ({
+  personsList = searchStore.personsList.map((person) => ({
     id: person.kinopoiskId,
     nameRu: person.nameRu,
     nameEn: person.nameEn,
     img: person.posterUrl,
     isMovie: false,
   }));
-  items = [...moviesList, ...personsList];
-});
-
-function querySelections() {
-  searchText.value = search.value;
-}
-
-function navigateTo(item: any) {
-  if (item.raw.isMovie) {
-    router.replace({ name: "movie", params: { movieId: item.raw.id } })
-  } else {
-    personStore.setPersonId(item.raw.id)
-    router.replace({ name: "name", params: { nameId: item.raw.id } })
-  }
+};
+const onChange = () => {
+  setTimeout(() => {
+    keyword.value = search.value;
+  }, 300)
+};
+const onClear = () => {
+  search.value = '';
 }
 </script>
+<style .scoped>
+.container {
+  display: flex;
+  justify-content: space-around;
+  width: 20vw;
+}
+
+.search_field {
+  width: 100%;
+  border: 1px solid gray;
+  border-radius: 5px;
+  padding: 4px;
+  outline-color: rgb(98, 0, 238);
+}
+
+.search_field:focus {
+  border: 1px solid gray;
+}
+
+.options {
+  margin-top: 40px;
+}
+
+.no_options {
+  margin-top: 10px;
+
+}
+</style>
