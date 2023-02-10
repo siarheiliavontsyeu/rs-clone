@@ -14,7 +14,7 @@ export const usePersonStore = defineStore("person", {
     async getStaffPerson(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
-      const data = await getStaffPerson(id);      
+      const data = await getStaffPerson(id);
       this.person = data;
       searchStore.unsetIsLoading();
     },

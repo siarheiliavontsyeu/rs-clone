@@ -1,22 +1,20 @@
 <template>
-  <div v-if="searchStore.isLoading" class="loader">
-    <v-progress-circular indeterminate :size="128"></v-progress-circular>
-  </div>
+  <MyLoaderVue v-if="searchStore.isLoading" />
   <div v-else>
     Инфо о фильме
     <p>Movie {{ movieStore.movie.nameRu }}</p>
   </div>
 </template>
 <script setup lang="ts">
-import { useMovieStore } from "@/stores/movieStore";
-import { useSearchStore } from "@/stores/searchStore";
 import { watch } from "vue";
 import { useRoute } from "vue-router";
+import { useMovieStore } from "@/stores/movieStore";
+import { useSearchStore } from "@/stores/searchStore";
+import MyLoaderVue from "@/components/MyLoader.vue";
 
 const movieStore = useMovieStore();
 const searchStore = useSearchStore();
 const route = useRoute();
-console.log(movieStore.movie);
 watch(() => route.params.movieId, (newValue, oldValue) => {
   if (newValue !== oldValue) {
     movieStore.getAllInfo(+newValue);
