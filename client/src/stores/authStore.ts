@@ -114,6 +114,34 @@ export const useAuthStore = defineStore("auth", () => {
     }
   };
 
+  const update = async (name: string, login: string, password: string) => {
+    if (token.value && user.value) {
+      const { loading, response, error } = await useBackend<
+        UserModel,
+        UserRegistrationModel
+      >({
+        url: BASE_URL + "users",
+        method: HttpMethod.PUT,
+        additionalUrl: "/" + user.value.id,
+        body: { login, name, password },
+        token: token.value,
+      });
+      if (!error.value) {
+        showError.value = false;
+        if (response?.value) {
+          showLoading.value = loading.value;
+          showSuccess.value = true;
+          user.value = response.value;
+          return true;
+        }
+      } else {
+        showError.value = true;
+        showLoading.value = loading.value;
+        return false;
+      }
+    }
+  };
+
   const logout = () => {
     localStorage.removeItem("user");
     localStorage.removeItem("token");
@@ -122,5 +150,14 @@ export const useAuthStore = defineStore("auth", () => {
     router.push({ name: "login" });
   };
 
-  return { user, token, showError, showSuccess, login, logout, registration };
+  return {
+    user,
+    token,
+    showError,
+    showSuccess,
+    login,
+    logout,
+    registration,
+    update,
+  };
 });

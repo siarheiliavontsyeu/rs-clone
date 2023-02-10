@@ -4,9 +4,11 @@ import { ref, computed } from "vue";
 
 export function useProfileEditForm() {
   const authStore = useAuthStore();
+  const { user } = storeToRefs(authStore);
+  const { update } = authStore;
   const formRef = ref<HTMLFormElement | null>(null);
   const formValid = ref(false);
-  const name = ref("");
+  const name = ref(user.value?.name);
   const password = ref("");
   const passwordRepeat = ref("");
   const nameRules = computed(() => [
@@ -31,8 +33,8 @@ export function useProfileEditForm() {
   const save = async () => {
     if (formRef.value) {
       const { valid }: { valid: boolean } = await formRef.value.validate();
-      if (valid) {
-        //
+      if (valid && user.value) {
+        await update(name.value, user.value.login, password.value);
       }
     }
   };
