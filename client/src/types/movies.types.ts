@@ -486,4 +486,5 @@ export interface MovieModel {
   ratingKinopoisk: number;
   reviews: ReviewModel[];
   critiques: CritiqueModel[];
+  watchedAt?: string;
 }

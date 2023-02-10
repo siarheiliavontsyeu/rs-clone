@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h1>История просмотров</h1>
+        <h1>Посмотреть позже</h1>
       </v-col>
     </v-row>
     <v-row> </v-row>

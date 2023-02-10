@@ -28,7 +28,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { UserModel } from "../types/user.types";
+import type { UserModel } from "../types/user.types";
 const props = defineProps<{
   user: UserModel;
 }>();

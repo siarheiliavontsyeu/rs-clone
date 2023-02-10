@@ -19,7 +19,7 @@ export interface WatchHistoryModel {
 
 export type WatchHistoryPostModel = Omit<WatchHistoryModel, "watchedAt">;
 
-export interface WatchHistoryLaterModel {
+export interface WatchLaterModel {
   userId: string;
   kinopoiskId: string;
 }

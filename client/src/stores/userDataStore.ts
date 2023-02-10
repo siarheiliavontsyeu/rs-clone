@@ -6,12 +6,15 @@ import { BASE_URL } from "@/constants/backend";
 import type {
   WatchHistoryModel,
   WatchHistoryPostModel,
+  WatchLaterModel,
 } from "@/types/user.types";
 import type { MovieModel } from "@/types/movies.types";
 
 export const useUserDataStore = defineStore("userData", () => {
-  const watchHistory = ref<WatchHistoryModel[] | null>(null);
-  const movies = ref<MovieModel[]>([]);
+  const watchHistory = ref<WatchHistoryModel[]>([]);
+  const moviesHistory = ref<MovieModel[]>([]);
+  const watchLater = ref<WatchLaterModel[]>([]);
+  const moviesLater = ref<MovieModel[]>([]);
 
   const showError = ref(false);
   const showLoading = ref(false);
@@ -48,6 +51,9 @@ export const useUserDataStore = defineStore("userData", () => {
     });
     if (!whError.value) {
       showError.value = false;
+      if (whResponse && whResponse.value) {
+        watchHistory.value = whResponse.value;
+      }
     } else {
       showError.value = true;
     }
@@ -62,14 +68,61 @@ export const useUserDataStore = defineStore("userData", () => {
         });
       });
       const mResponses = await Promise.all(requests);
+      moviesHistory.value.length = 0;
       for (const resp of mResponses) {
         if (resp && !resp.error.value && resp.response && resp.response.value) {
-          movies.value?.push(resp.response.value);
+          moviesHistory.value?.push(resp.response.value);
         }
       }
-      console.log(movies.value);
     }
   };
 
-  return { movies, showError, showSuccess, getWatchedHistory };
+  const getWatchedLater = async (userId: string, token: string) => {
+    const {
+      loading: whLoading,
+      response: whResponse,
+      error: whError,
+    } = await useBackend<WatchLaterModel[], null>({
+      url: BASE_URL + "watch-later",
+      method: HttpMethod.GET,
+      additionalUrl: "/" + userId,
+      token,
+    });
+    if (!whError.value) {
+      showError.value = false;
+      if (whResponse && whResponse.value) {
+        watchLater.value = whResponse.value;
+      }
+    } else {
+      showError.value = true;
+    }
+    showLoading.value = whLoading.value;
+    if (whResponse && whResponse.value) {
+      const requests = whResponse.value.map((r) => {
+        return useBackend<MovieModel, null>({
+          url: BASE_URL + "movie",
+          method: HttpMethod.GET,
+          additionalUrl: "/" + r.kinopoiskId,
+          token,
+        });
+      });
+      const mResponses = await Promise.all(requests);
+      moviesLater.value.length = 0;
+      for (const resp of mResponses) {
+        if (resp && !resp.error.value && resp.response && resp.response.value) {
+          moviesLater.value?.push(resp.response.value);
+        }
+      }
+    }
+  };
+
+  return {
+    moviesHistory,
+    watchHistory,
+    moviesLater,
+    showError,
+    showSuccess,
+    getWatchedHistory,
+    getWatchedLater,
+  };
 });
