@@ -8,7 +8,7 @@ export function useProfileEditForm() {
   const { update } = authStore;
   const formRef = ref<HTMLFormElement | null>(null);
   const formValid = ref(false);
-  const name = ref(user.value?.name);
+  const name = ref(user.value?.name || "");
   const password = ref("");
   const passwordRepeat = ref("");
   const nameRules = computed(() => [
