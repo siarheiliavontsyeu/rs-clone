@@ -40,4 +40,5 @@ export interface BackendProperties<K> {
   additionalUrl: string;
   body?: K;
   method: HttpMethod;
+  token?: string;
 }

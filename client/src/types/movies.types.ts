@@ -463,3 +463,28 @@ export interface IFilterGenreResponse {
   id: number;
   genre: string;
 }
+
+export interface ReviewModel {
+  userId: string;
+  rating: number;
+  text: string;
+  at: string;
+}
+
+export interface CritiqueModel {
+  userId: string;
+  text: string;
+  at: string;
+}
+
+export interface MovieModel {
+  kinopoiskId: string;
+  imdbId: string;
+  nameRu: string;
+  nameOriginal: string;
+  posterUrlPreview: string;
+  ratingKinopoisk: number;
+  reviews: ReviewModel[];
+  critiques: CritiqueModel[];
+  watchedAt?: string;
+}
