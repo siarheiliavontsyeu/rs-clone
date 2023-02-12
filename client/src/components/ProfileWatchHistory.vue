@@ -2,14 +2,21 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h1>История просмотров</h1>
+        <h2>История просмотров</h2>
       </v-col>
     </v-row>
     <v-row> </v-row>
   </v-container>
   <v-container fluid>
     <v-row>
-      <v-col v-for="(movie, index) in movies" :key="index" cols="12" md="4">
+      <v-col
+        v-for="(movie, index) in movies"
+        :key="index"
+        cols="12"
+        sm="6"
+        md="3"
+        lg="2"
+      >
         <MovieCard :movie="movie"></MovieCard>
       </v-col>
     </v-row>
