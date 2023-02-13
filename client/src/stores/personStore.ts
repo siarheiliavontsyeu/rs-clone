@@ -24,10 +24,10 @@ export const usePersonStore = defineStore("person", {
         return moviesCount + ` ${properEndingInRu(moviesCount)}`;
       };
     },
-    moviesByProfession: (state) => {
-      return state.person.films.filter(
-        (movie) => movie.professionKey === state.currentProfession
-      );
+    moviesByProfession: (state) => {      
+      return state.person.films
+        .filter((movie) => movie.professionKey === state.currentProfession)
+        .sort((a, b) => Number(b.rating) - Number(a.rating));
     },
   },
   actions: {
@@ -46,28 +46,3 @@ export const usePersonStore = defineStore("person", {
     },
   },
 });
-// personId: number;
-//   webUrl: string;
-//   nameRu: string;
-//   nameEn: string;
-//   sex: GenderTypeEnum;
-//   posterUrl: string;
-//   growth: string;
-//   birthday: string;
-//   death: string;
-//   age: number;
-//   birthplace: string;
-//   deathplace: string;
-//   hasAwards: number;
-//   profession: string;
-//   facts: string[];
-//   spouses: PersonSpousesI[];
-//   films: PersonRelatedMoviesI[];
-
-// filmId: number;
-//   nameRu: string;
-//   nameEn: string;
-//   rating: string;
-//   general: boolean;
-//   description: string;
-//   professionKey: string;

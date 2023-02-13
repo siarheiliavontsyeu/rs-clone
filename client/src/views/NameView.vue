@@ -102,7 +102,8 @@
       </div>
       <div class="movies-container">
         <ul class="movies-list">
-          <li v-for="movie in personStore.moviesByProfession" :key="movie.filmId" class="movie">
+          <li v-for="movie in personStore.moviesByProfession" :key="movie.filmId" class="movie"
+            @click="$router.push({ name: 'movie', params: { movieId: movie.filmId } })">
             <div class="movie-name">
               <div class="text-h6">{{ movie.nameRu }}</div>
               <div class="text-subtitle-2 text-medium-emphasis">
@@ -125,7 +126,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { watch, computed, ref } from "vue";
+import { watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { usePersonStore } from "@/stores/personStore";
 import { useSearchStore } from "@/stores/searchStore";
@@ -159,11 +160,10 @@ const deathdate = computed(() => {
 const onProfessionChange = (profession: string) => {
   personStore.setCurrentProfession(profession);
 };
-
 watch(
   () => route.params.nameId,
   (newValue, oldValue) => {
-    if (newValue !== oldValue) {
+    if (newValue !== oldValue && newValue) {
       personStore.getStaffPerson(Number(newValue));
     }
   },
@@ -252,15 +252,17 @@ personStore.getStaffPerson(Number(personId));
   grid-template-columns: 3fr 2fr 1fr;
   align-items: center;
   margin-bottom: 20px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
 }
 
-.movie-name {
-  /* margin-right: 100px; */
+.movie:hover {
+  transform: scale(1.2);
+  color: #f50;
+  transition: all .3s;
 }
 
-.movie-meta {
-  /* margin-right: 50px; */
-}
 
 .professions {
   margin-bottom: 20px;
@@ -300,7 +302,7 @@ personStore.getStaffPerson(Number(personId));
 }
 
 .profession:hover .profession-title,
-.profession:hover .profession-subtitle  {
+.profession:hover .profession-subtitle {
   opacity: 1;
   color: var(--color-text);
   transition: all .3s;
