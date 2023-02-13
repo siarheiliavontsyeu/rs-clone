@@ -43,3 +43,21 @@ export const properEndingInRu = (value: number): string => {
     return "фильма";
   else return "фильмов";
 };
+
+export const properRatingMpaa = (rating: string): [string, string] => {
+  switch (rating) {
+    case "g":
+      return ["g", "Нет возрастных ограничений"];
+    case "pg":
+      return ["pg", "Рекомендуется присутствие родителей"];
+    case "pg13":
+      return ["pg-13", "Детям до 13 лет просмотр не желателен"];
+    case "r":
+      return ["pg-13", "Лицам до 17 лет обязательно присутствие взрослого"];
+    case "nc17":
+      return ["nc-17", "Лицам до 18 лет просмотр запрещен"];
+    default:
+      return ["Неизвестно", "Неизвестно"];
+  }
+};
+

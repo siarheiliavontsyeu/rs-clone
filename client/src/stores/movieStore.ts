@@ -60,6 +60,9 @@ export const useMovieStore = defineStore("movie", {
     staff: [],
   }),
   getters: {
+    movieMainActors: (state) => {
+
+    }
     // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
@@ -113,6 +116,7 @@ export const useMovieStore = defineStore("movie", {
     async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
+      await this.getMovieById(id);
       // await this.getStaff(id);
       // await this.getSequelsAndPrequels(id);
       // await this.getReviews(id);
@@ -124,8 +128,52 @@ export const useMovieStore = defineStore("movie", {
       // await this.getFacts(id);
       // await this.getBoxOffice(id);
       // await this.getSeasons(id);
-      await this.getMovieById(id);
       searchStore.unsetIsLoading();
     },
   },
 });
+
+// kinopoiskId: number;
+//   imdbId: string;
+//   nameRu: string;
+//   nameEn: string;
+//   nameOriginal: string;
+//   posterUrl: string;
+//   posterUrlPreview: string;
+//   coverUrl: string;
+//   logoUrl: string;
+//   reviewsCount: number;
+//   ratingGoodReview: number;
+//   ratingGoodReviewVoteCount: number;
+//   ratingKinopoisk: number;
+//   ratingKinopoiskVoteCount: number;
+//   ratingImdb: number;
+//   ratingImdbVoteCount: number;
+//   ratingFilmCritics: number;
+//   ratingFilmCriticsVoteCount: number;
+//   ratingAwait: number;
+//   ratingAwaitCount: number;
+//   ratingRfCritics: number;
+//   ratingRfCriticsVoteCount: number;
+//   webUrl: string;
+//   year: number;
+//   filmLength: number;
+//   slogan: string;
+//   description: string;
+//   shortDescription: string;
+//   editorAnnotation: string;
+//   isTicketsAvailable: boolean;
+//   productionStatus: MovieProductionStatusEnum;
+//   type: MovieTypeEnum;
+//   ratingMpaa: string;
+//   ratingAgeLimits: string;
+//   hasImax: boolean;
+//   has3D: boolean;
+//   lastSync: string;
+//   countries: CountryI[];
+//   genres: GenreI[];
+//   startYear: number;
+//   endYear: number;
+//   serial?: boolean;
+//   shortFilm?: boolean;
+//   completed?: boolean;

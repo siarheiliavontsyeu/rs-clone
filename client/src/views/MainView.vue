@@ -47,5 +47,6 @@ function onClick() {
 }
 
 .main {
+  background-color: rgb(var(--v-theme-on-surface-variant));
 }
 </style>

@@ -132,7 +132,7 @@ import { usePersonStore } from "@/stores/personStore";
 import { useSearchStore } from "@/stores/searchStore";
 import MyLoaderVue from "@/components/MyLoader.vue";
 import { personDate } from "@/helpers/date";
-import { professionInRu } from "@/helpers/profession";
+import { professionInRu } from "@/helpers/composables";
 import { GenderTypeEnum } from "@/types/movies.types";
 
 const route = useRoute();
@@ -173,7 +173,7 @@ personStore.getStaffPerson(Number(personId));
 </script>
 <style scoped>
 .container {
-  background-color: var(--v-theme-background);
+  background-color: rgb(var(--v-theme-background));
   width: 100%;
   height: 100%;
   display: flex;
@@ -182,7 +182,6 @@ personStore.getStaffPerson(Number(personId));
 
 .body {
   width: 80%;
-  background-color: var(--vt-c-white);
   display: flex;
 }
 

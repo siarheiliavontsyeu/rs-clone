@@ -2,7 +2,7 @@ import { getStaffPerson } from "@/api";
 import type { StaffPersonSearchResponseI } from "@/types/movies.types";
 import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
-import { properEndingInRu } from "@/helpers/profession";
+import { properEndingInRu } from "@/helpers/composables";
 
 type personStoreStateType = {
   person: StaffPersonSearchResponseI;
