@@ -1,11 +1,11 @@
 import { defineStore } from "pinia";
 import type {
-  IDigitalReleaseMovie,
-  IFilterCountryResponse,
-  IFilterGenreResponse,
-  IMovieFromCollection,
-  IMovieSearchByFilters,
-  IPremiereMovie,
+  DigitalReleaseMovieI,
+  FilterCountryResponseI,
+  FilterGenreResponseI,
+  MovieFromCollectionI,
+  MovieSearchByFiltersI,
+  PremiereMovieI,
   MoviesTopTypesEnum,
 } from "@/types/movies.types";
 import {
@@ -16,14 +16,23 @@ import {
   getReleases,
 } from "@/api";
 
+type moviesStoreStateTypes = {
+  moviesFromCollection: MovieFromCollectionI[];
+  genres: FilterGenreResponseI[];
+  countries: FilterCountryResponseI[];
+  found: MovieSearchByFiltersI[];
+  premiereMovies: PremiereMovieI[];
+  releaseSoonMovies: DigitalReleaseMovieI[];
+};
+
 export const useMoviesStore = defineStore("movies", {
-  state: () => ({
-    moviesFromCollection: [] as IMovieFromCollection[],
-    genres: [] as IFilterGenreResponse[],
-    countries: [] as IFilterCountryResponse[],
-    found: [] as IMovieSearchByFilters[],
-    premiereMovies: [] as IPremiereMovie[],
-    releaseSoonMovies: [] as IDigitalReleaseMovie[],
+  state: (): moviesStoreStateTypes => ({
+    moviesFromCollection: [],
+    genres: [],
+    countries: [],
+    found: [],
+    premiereMovies: [],
+    releaseSoonMovies: [],
   }),
   actions: {
     async getMovies(type: MoviesTopTypesEnum, page: number) {

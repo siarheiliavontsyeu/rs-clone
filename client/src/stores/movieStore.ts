@@ -1,16 +1,16 @@
 import type {
-  IAward,
-  IBoxOffice,
-  IDistribution,
-  IFact,
-  IImage,
-  IMovie,
-  IMovieSequelsAndPrequelsResponse,
-  IRelatedMovie,
-  IReviewsResponse,
-  ISeason,
-  IStaffResponse,
-  IVideo,
+  AwardI,
+  BoxOfficeI,
+  DistributionI,
+  FactI,
+  ImageI,
+  MovieI,
+  MovieSequelsAndPrequelsResponseI,
+  RelatedMovieI,
+  ReviewsResponseI,
+  SeasonI,
+  StaffResponseI,
+  VideoI,
 } from "@/types/movies.types";
 import {
   getMovieAwards,
@@ -29,20 +29,35 @@ import {
 import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
 
+type movieStoreStateTypes = {
+  movie: MovieI;
+  seasons: SeasonI[];
+  boxOffice: BoxOfficeI[];
+  facts: FactI[];
+  distribution: DistributionI[];
+  awards: AwardI[];
+  videos: VideoI[];
+  sequelsAndPrequels: MovieSequelsAndPrequelsResponseI[];
+  similars: RelatedMovieI[];
+  reviewObj: ReviewsResponseI;
+  images: ImageI[];
+  staff: StaffResponseI[];
+};
+
 export const useMovieStore = defineStore("movie", {
-  state: () => ({
-    movie: {} as IMovie,
-    seasons: [] as ISeason[],
-    boxOffice: [] as IBoxOffice[],
-    facts: [] as IFact[],
-    distribution: [] as IDistribution[],
-    awards: [] as IAward[],
-    videos: [] as IVideo[],
-    sequelsAndPrequels: [] as IMovieSequelsAndPrequelsResponse[],
-    similars: [] as IRelatedMovie[],
-    reviewObj: {} as IReviewsResponse,
-    images: [] as IImage[],
-    staff: [] as IStaffResponse[],
+  state: (): movieStoreStateTypes => ({
+    movie: {} as MovieI,
+    seasons: [],
+    boxOffice: [],
+    facts: [],
+    distribution: [],
+    awards: [],
+    videos: [],
+    sequelsAndPrequels: [],
+    similars: [],
+    reviewObj: {} as ReviewsResponseI,
+    images: [],
+    staff: [],
   }),
   getters: {
     // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),

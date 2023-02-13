@@ -15,14 +15,17 @@ import MyLoaderVue from "@/components/MyLoader.vue";
 const movieStore = useMovieStore();
 const searchStore = useSearchStore();
 const route = useRoute();
-watch(() => route.params.movieId, (newValue, oldValue) => {
-  if (newValue !== oldValue) {
-    movieStore.getAllInfo(+newValue);
-  }
-},
-  { deep: true })
+watch(
+  () => route.params.movieId,
+  (newValue, oldValue) => {
+    if (newValue !== oldValue && newValue) {
+      movieStore.getAllInfo(Number(newValue));
+    }
+  },
+  { deep: true }
+);
 
-movieStore.getAllInfo(+route.params.movieId);
+movieStore.getAllInfo(Number(route.params.movieId));
 </script>
 
 <style scoped>

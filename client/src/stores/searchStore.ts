@@ -1,17 +1,19 @@
 import { getMovieBySearch, getPersonBySearch } from "@/api";
-import type { IMovieSearch, IPersonByName } from "@/types/movies.types";
+import type { MovieSearchI, PersonByNameI } from "@/types/movies.types";
 import { defineStore } from "pinia";
 
+type searchStoreStateTypes = {
+  isLoading: boolean;
+  moviesList: MovieSearchI[];
+  personsList: PersonByNameI[];
+};
+
 export const useSearchStore = defineStore("search", {
-  state: () => ({
-    searchText: "",
+  state: (): searchStoreStateTypes => ({
     isLoading: false,
-    moviesList: [] as IMovieSearch[],
-    personsList: [] as IPersonByName[],
+    moviesList: [],
+    personsList: [],
   }),
-  getters: {
-    loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
-  },
   actions: {
     async getDataBySearch(keyword: string) {
       getMovieBySearch(keyword).then((response) => {
@@ -21,11 +23,11 @@ export const useSearchStore = defineStore("search", {
         this.personsList = response.items;
       });
     },
-    setIsLoading(){
+    setIsLoading() {
       this.isLoading = true;
     },
-    unsetIsLoading(){
+    unsetIsLoading() {
       this.isLoading = false;
-    }
+    },
   },
 });
