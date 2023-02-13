@@ -1,5 +1,5 @@
 <template>
-  <div class="login-bg login-bg-img"></div>
+  <FullPageBg></FullPageBg>
   <v-container fluid class="container pa-0 ma-0">
     <v-row align="center" justify="center">
       <v-col cols="12" sm="8" md="4">
@@ -94,6 +94,7 @@
 import { ref } from "vue";
 import { useRegForm } from "@/use/useRegForm";
 import { useLoginForm } from "@/use/useLoginForm";
+import FullPageBg from "@/components/FullPageBg.vue";
 
 const tab = ref(0);
 
