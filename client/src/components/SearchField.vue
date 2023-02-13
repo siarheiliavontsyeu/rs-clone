@@ -4,16 +4,31 @@
       <template v-slot:activator="{ props }">
         <div class="d-flex flex-column">
           <input class="search_field" v-bind="props" v-model="search" />
-          <v-progress-linear v-show="search" indeterminate color="primary" rounded></v-progress-linear>
+          <v-progress-linear
+            v-show="search"
+            indeterminate
+            color="primary"
+            rounded
+          ></v-progress-linear>
         </div>
       </template>
       <v-list class="options" v-if="moviesList.length && personsList.length">
         <v-list-item value="movies-options">Фильмы</v-list-item>
-        <SearchFieldOptionCard v-for="item in moviesList" :key="item.id" :item="item" :value="item.id"
-          @clear='onClear' />
+        <SearchFieldOptionCard
+          v-for="item in moviesList"
+          :key="item.id"
+          :item="item"
+          :value="item.id"
+          @clear="onClear"
+        />
         <v-list-item value="persons-options">Персоны</v-list-item>
-        <SearchFieldOptionCard v-for="item in personsList" :key="item.id" :item="item" :value="item.id"
-          @clear="onClear" />
+        <SearchFieldOptionCard
+          v-for="item in personsList"
+          :key="item.id"
+          :item="item"
+          :value="item.id"
+          @clear="onClear"
+        />
       </v-list>
       <v-list class="no_options" v-else>
         <v-list-item value="nodata">No data</v-list-item>
@@ -69,11 +84,11 @@ const onFilter = () => {
 const onChange = () => {
   setTimeout(() => {
     keyword.value = search.value;
-  }, 300)
+  }, 300);
 };
 const onClear = () => {
-  search.value = '';
-}
+  search.value = "";
+};
 </script>
 <style .scoped>
 .container {
@@ -100,6 +115,5 @@ const onClear = () => {
 
 .no_options {
   margin-top: 10px;
-
 }
 </style>

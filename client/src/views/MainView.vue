@@ -1,9 +1,9 @@
 <template>
   <v-app :theme="theme">
     <v-app-bar>
-      <h1 class="text-h2 pa-2 cup" @click="$router.push({ name: 'home' })">
-        Online-cinema
-      </h1>
+      <RouterLink :to="{ name: 'home' }" class="link">
+        <h1 class="text-h2 pa-2 cup">Online-cinema</h1>
+      </RouterLink>
       <v-spacer></v-spacer>
       <SearchField></SearchField>
       <v-spacer></v-spacer>
@@ -14,7 +14,7 @@
       </v-btn>
       <ProfileBar></ProfileBar>
     </v-app-bar>
-    <v-main>
+    <v-main class="main">
       <router-view></router-view>
     </v-main>
   </v-app>
@@ -39,5 +39,13 @@ function onClick() {
 <style>
 .cup {
   cursor: pointer;
+}
+
+.link {
+  text-decoration: none;
+  color: var(--color-text);
+}
+
+.main {
 }
 </style>

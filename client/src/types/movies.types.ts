@@ -1,11 +1,3 @@
-export interface ICountry {
-  country: string;
-}
-
-export interface IGenre {
-  genre: string;
-}
-
 export enum FactTypeEnum {
   fact = "FACT",
   blooper = "BLOOPER",
@@ -74,7 +66,15 @@ export enum VideoTypeEnum {
   unknown = "UNKNOWN",
 }
 
-export interface IEpisode {
+export interface CountryI {
+  country: string;
+}
+
+export interface GenreI {
+  genre: string;
+}
+
+export interface EpisodeI {
   seasonNumber: number;
   episodeNumber: number;
   nameRu: string;
@@ -83,7 +83,7 @@ export interface IEpisode {
   releaseDate: string;
 }
 
-export interface IMovie {
+export interface MovieI {
   kinopoiskId: number;
   imdbId: string;
   nameRu: string;
@@ -121,8 +121,8 @@ export interface IMovie {
   hasImax: boolean;
   has3D: boolean;
   lastSync: string;
-  countries: ICountry[];
-  genres: IGenre[];
+  countries: CountryI[];
+  genres: GenreI[];
   startYear: number;
   endYear: number;
   serial?: boolean;
@@ -130,27 +130,27 @@ export interface IMovie {
   completed?: boolean;
 }
 
-export interface ISeason {
+export interface SeasonI {
   number: number;
-  episodes: IEpisode[];
+  episodes: EpisodeI[];
 }
 
-export interface ISeasonResponse {
+export interface SeasonResponseI {
   total: number;
-  items: ISeason[];
+  items: SeasonI[];
 }
 
-export interface IFact {
+export interface FactI {
   text: string;
   type: FactTypeEnum;
   spoiler: boolean;
 }
-export interface IFactResponse {
+export interface FactResponseI {
   total: number;
-  items: IFact[];
+  items: FactI[];
 }
 
-export interface IBoxOffice {
+export interface BoxOfficeI {
   type: string;
   amount: number;
   currencyCode: string;
@@ -158,42 +158,42 @@ export interface IBoxOffice {
   symbol: string;
 }
 
-export interface IBoxOfficeResponse {
+export interface BoxOfficeResponseI {
   total: number;
-  items: IBoxOffice[];
+  items: BoxOfficeI[];
 }
-export interface ICompany {
+export interface CompanyI {
   name: string;
 }
-export interface IDistribution {
+export interface DistributionI {
   type: string;
   subType: string;
   date: string;
   reRelease: boolean;
-  country: ICountry;
-  companies: ICompany[];
+  country: CountryI;
+  companies: CompanyI[];
 }
 
-export interface IDistributionResponse {
+export interface DistributionResponseI {
   total: number;
-  items: IDistribution[];
+  items: DistributionI[];
 }
 
-export interface IAward {
+export interface AwardI {
   name: string;
   win: boolean;
   imageUrl: string;
   nominationName: string;
   year: number;
-  persons: IAwardPerson[];
+  persons: AwardPersonI[];
 }
 
-export interface IAwardResponse {
+export interface AwardResponseI {
   total: number;
-  items: IAward[];
+  items: AwardI[];
 }
 
-export interface IAwardPerson {
+export interface AwardPersonI {
   kinopoiskId: number;
   webUrl: string;
   nameRu: string;
@@ -209,7 +209,7 @@ export interface IAwardPerson {
   profession: string;
 }
 
-export interface IMovieSearch {
+export interface MovieSearchI {
   filmId: number;
   nameRu: string;
   nameEn: string;
@@ -217,29 +217,29 @@ export interface IMovieSearch {
   year: string;
   description: string;
   filmLength: string;
-  countries: ICountry[];
-  genres: IGenre[];
+  countries: CountryI[];
+  genres: GenreI[];
   rating: string;
   ratingVoteCount: number;
   posterUrl: string;
   posterUrlPreview: string;
 }
 
-export interface IMovieSearchResponse {
+export interface MovieSearchResponseI {
   keyword: string;
   pagesCount: number;
   searchFilmsCountResult: number;
-  films: IMovieSearch[];
+  films: MovieSearchI[];
 }
 
-export interface IMovieSearchByFilters {
+export interface MovieSearchByFiltersI {
   kinopoiskId: number;
   imdbId: string;
   nameRu: string;
   nameEn: string;
   nameOriginal: string;
-  countries: ICountry[];
-  genres: IGenre[];
+  countries: CountryI[];
+  genres: GenreI[];
   ratingKinopoisk: number;
   ratingImdb: number;
   year: number;
@@ -248,13 +248,13 @@ export interface IMovieSearchByFilters {
   posterUrlPreview: string;
 }
 
-export interface IMovieSearchByFiltersResponse {
+export interface MovieSearchByFiltersResponseI {
   total: number;
   totalPages: number;
-  items: IMovieSearchByFilters[];
+  items: MovieSearchByFiltersI[];
 }
 
-export interface IMovieSequelsAndPrequelsResponse {
+export interface MovieSequelsAndPrequelsResponseI {
   filmId: number;
   nameRu: string;
   nameEn: string;
@@ -264,7 +264,7 @@ export interface IMovieSequelsAndPrequelsResponse {
   relationType: RelationTypeEnum;
 }
 
-export interface IRelatedMovie {
+export interface RelatedMovieI {
   filmId: number;
   nameRu: string;
   nameEn: string;
@@ -274,21 +274,21 @@ export interface IRelatedMovie {
   relationType: RelationTypeEnum;
 }
 
-export interface IRelatedMovieResponse {
+export interface RelatedMovieResponseI {
   totals: number;
-  items: IRelatedMovie[];
+  items: RelatedMovieI[];
 }
 
-export interface IReviewsResponse {
+export interface ReviewsResponseI {
   total: number;
   totalPages: number;
   totalPositiveReviews: number;
   totalNegativeReviews: number;
   totalNeutralReviews: number;
-  items: IReviewResponse[];
+  items: ReviewResponseI[];
 }
 
-export interface IReviewResponse {
+export interface ReviewResponseI {
   kinopoiskId: number;
   type: ReviewTypeEnum;
   date: string;
@@ -299,13 +299,13 @@ export interface IReviewResponse {
   description: string;
 }
 
-export interface IMovieFromCollection {
+export interface MovieFromCollectionI {
   filmId: number;
   nameRu: string;
   nameEn: string;
   year: string;
-  genres: IGenre[];
-  countries: ICountry[];
+  genres: GenreI[];
+  countries: CountryI[];
   filmLength: string;
   rating: string;
   ratingVoteCount: number;
@@ -313,17 +313,17 @@ export interface IMovieFromCollection {
   posterUrlPreview: string;
 }
 
-export interface IMoviesCollectionResponse {
+export interface MoviesCollectionResponseI {
   pagesCount: number;
-  films: IMovieFromCollection[];
+  films: MovieFromCollectionI[];
 }
 
-export interface ICountriesAndGenresResponse {
-  genres: IFilterGenreResponse[];
-  countries: IFilterCountryResponse[];
+export interface CountriesAndGenresResponseI {
+  genres: FilterGenreResponseI[];
+  countries: FilterCountryResponseI[];
 }
 
-export interface IStaffResponse {
+export interface StaffResponseI {
   professionKey: ProfessionTypeEnum;
   staffId: number;
   nameRu: string;
@@ -333,7 +333,7 @@ export interface IStaffResponse {
   professionText: string;
 }
 
-export interface IStaffPersonSearchResponse {
+export interface StaffPersonSearchResponseI {
   personId: number;
   webUrl: string;
   nameRu: string;
@@ -349,11 +349,11 @@ export interface IStaffPersonSearchResponse {
   hasAwards: number;
   profession: string;
   facts: string[];
-  spouses: IPersonSpouses[];
-  films: IPersonRelatedMovies[];
+  spouses: PersonSpousesI[];
+  films: PersonRelatedMoviesI[];
 }
 
-export interface IPersonSpouses {
+export interface PersonSpousesI {
   personId: number;
   name: string;
   divorced: boolean;
@@ -364,7 +364,7 @@ export interface IPersonSpouses {
   relation: string;
 }
 
-export interface IPersonRelatedMovies {
+export interface PersonRelatedMoviesI {
   filmId: number;
   nameRu: string;
   nameEn: string;
@@ -374,12 +374,12 @@ export interface IPersonRelatedMovies {
   professionKey: string;
 }
 
-export interface IPersonByNameResponse {
+export interface PersonByNameResponseI {
   total: number;
-  items: IPersonByName[];
+  items: PersonByNameI[];
 }
 
-export interface IPersonByName {
+export interface PersonByNameI {
   kinopoiskId: number;
   webUrl: string;
   nameRu: string;
@@ -388,50 +388,50 @@ export interface IPersonByName {
   posterUrl: string;
 }
 
-export interface IImage {
+export interface ImageI {
   imageUrl: string;
   previewUrl: string;
 }
 
-export interface IImageResponse {
+export interface ImageResponseI {
   total: number;
   totalPages: number;
-  items: IImage[];
+  items: ImageI[];
 }
 
-export interface IPremiereResponse {
+export interface PremiereResponseI {
   total: number;
-  items: IPremiereMovie[];
+  items: PremiereMovieI[];
 }
 
-export interface IPremiereMovie {
+export interface PremiereMovieI {
   kinopoiskId: number;
   nameRu: string;
   nameEn: string;
   year: number;
   posterUrl: string;
   posterUrlPreview: string;
-  countries: ICountry[];
-  genres: IGenre[];
+  countries: CountryI[];
+  genres: GenreI[];
   duration: number;
   premiereRu: string;
 }
 
-export interface IDigitalReleaseResponse {
+export interface DigitalReleaseResponseI {
   page: number;
   total: number;
-  releases: IDigitalReleaseMovie[];
+  releases: DigitalReleaseMovieI[];
 }
 
-export interface IDigitalReleaseMovie {
+export interface DigitalReleaseMovieI {
   filmId: number;
   nameRu: string;
   nameEn: string;
   year: number;
   posterUrl: string;
   posterUrlPreview: string;
-  countries: ICountry[];
-  genres: IGenre[];
+  countries: CountryI[];
+  genres: GenreI[];
   rating: number;
   ratingVoteCount: number;
   expectationsRating: number;
@@ -440,26 +440,26 @@ export interface IDigitalReleaseMovie {
   releaseDate: string;
 }
 
-export interface IVideo {
+export interface VideoI {
   url: string;
   name: string;
   site: VideoTypeEnum;
 }
 
-export interface IVideoResponse {
+export interface VideoResponseI {
   total: number;
-  items: IVideo[];
+  items: VideoI[];
 }
-export interface IApiError {
+export interface ApiErrorI {
   message: string;
 }
 
-export interface IFilterCountryResponse {
+export interface FilterCountryResponseI {
   id: number;
   country: string;
 }
 
-export interface IFilterGenreResponse {
+export interface FilterGenreResponseI {
   id: number;
   genre: string;
 }
