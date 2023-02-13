@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h1>Профиль</h1>
+        <h2><v-icon dark> mdi-badge-account </v-icon>Профиль</h2>
       </v-col>
     </v-row>
     <v-row> </v-row>

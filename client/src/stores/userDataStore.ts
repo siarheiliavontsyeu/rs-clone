@@ -17,7 +17,7 @@ export const useUserDataStore = defineStore("userData", () => {
   const moviesLater = ref<MovieModel[]>([]);
 
   const showError = ref(false);
-  const showLoading = ref(false);
+  const showLoading = ref(true);
   const showSuccess = ref(false);
 
   watch(
@@ -57,7 +57,6 @@ export const useUserDataStore = defineStore("userData", () => {
     } else {
       showError.value = true;
     }
-    showLoading.value = whLoading.value;
     if (whResponse && whResponse.value) {
       const requests = whResponse.value.map((r) => {
         return useBackend<MovieModel, null>({
@@ -75,6 +74,7 @@ export const useUserDataStore = defineStore("userData", () => {
         }
       }
     }
+    showLoading.value = whLoading.value;
   };
 
   const getWatchedLater = async (userId: string, token: string) => {
@@ -96,7 +96,6 @@ export const useUserDataStore = defineStore("userData", () => {
     } else {
       showError.value = true;
     }
-    showLoading.value = whLoading.value;
     if (whResponse && whResponse.value) {
       const requests = whResponse.value.map((r) => {
         return useBackend<MovieModel, null>({
@@ -114,6 +113,7 @@ export const useUserDataStore = defineStore("userData", () => {
         }
       }
     }
+    showLoading.value = whLoading.value;
   };
 
   return {
@@ -122,6 +122,7 @@ export const useUserDataStore = defineStore("userData", () => {
     moviesLater,
     showError,
     showSuccess,
+    showLoading,
     getWatchedHistory,
     getWatchedLater,
   };

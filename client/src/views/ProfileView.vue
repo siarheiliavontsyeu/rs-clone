@@ -1,20 +1,23 @@
 <template>
-  <ProfileInfo
-    v-if="user"
-    :user="user"
-    @open-dialog="dialog = true"
-  ></ProfileInfo>
-  <v-divider></v-divider>
-  <ProfileWatchHistory
-    :movies="moviesHistoryWithWatchedDate"
-  ></ProfileWatchHistory>
-  <v-divider></v-divider>
-  <ProfileWatchLater :movies="moviesLater"></ProfileWatchLater>
-  <v-divider></v-divider>
-  <v-divider></v-divider>
-  <v-dialog v-model="dialog" max-width="500">
-    <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
-  </v-dialog>
+  <MyLoader v-if="showLoading" />
+  <template v-else>
+    <ProfileInfo
+      v-if="user"
+      :user="user"
+      @open-dialog="dialog = true"
+    ></ProfileInfo>
+    <v-divider></v-divider>
+    <ProfileWatchHistory
+      :movies="moviesHistoryWithWatchedDate"
+    ></ProfileWatchHistory>
+    <v-divider></v-divider>
+    <ProfileWatchLater :movies="moviesLater"></ProfileWatchLater>
+    <v-divider></v-divider>
+    <v-divider></v-divider>
+    <v-dialog v-model="dialog" max-width="500">
+      <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
+    </v-dialog>
+  </template>
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
@@ -26,12 +29,14 @@ import ProfileWatchLater from "@/components/ProfileWatchLater.vue";
 
 import { useUserDataStore } from "@/stores/userDataStore";
 import ProfileEdit from "@/components/ProfileEdit.vue";
+import MyLoader from "@/components/MyLoader.vue";
 
 const dialog = ref(false);
 const authStore = useAuthStore();
 const { user, token } = storeToRefs(authStore);
 
 const userDataStore = useUserDataStore();
+const { showLoading } = storeToRefs(userDataStore);
 const { getWatchedHistory, getWatchedLater } = userDataStore;
 const { moviesHistory, watchHistory, moviesLater } = storeToRefs(userDataStore);
 const moviesHistoryWithWatchedDate = computed(() => {
