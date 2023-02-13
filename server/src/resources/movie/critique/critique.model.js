@@ -3,7 +3,9 @@ const Schema = mongoose.Schema;
 
 const CritiqueSchema = Schema({
   userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  title: { type: String, required: true },
   text: { type: String, required: true },
+  type: { type: String, required: true },
   at: { type: Date }
 });
 

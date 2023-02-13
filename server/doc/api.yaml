@@ -60,7 +60,7 @@ components:
               text:
                 type: string
               at:
-                type: date
+                type: string
         critiques:
           type: array
           items:
@@ -68,10 +68,14 @@ components:
             properties:
               userId:
                 type: string
+              title:
+                type: string
               text:
                 type: string
+              type: 
+                type: string
               at:
-                type: date
+                type: string
   responses:
     UnauthorizedError:
       description: Access token is missing or invalid
@@ -522,6 +526,8 @@ paths:
                         type: string
                       text:
                         type: string
+                      type:
+                        type: string
                   description: The movie critiques
               required:
                 - kinopoiskId
@@ -634,12 +640,21 @@ paths:
                 userId:
                   type: string
                   description: The userId
+                title:
+                  type: string
                 text:
                   type: string
                   description: The movie critique text
+                type:
+                  type: string
+                  enum:
+                    - positive
+                    - negative
+                    - neutral
+                  description: The movie critique type 
               required:
                 - userId
-                - rating 
+                - type 
                 - text
       responses:
         201:

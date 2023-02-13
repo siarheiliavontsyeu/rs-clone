@@ -31,7 +31,11 @@ const reviewSchema = Joi.object({
 
 const critiqueSchema = Joi.object({
   userId: Joi.objectId().required(),
-  text: Joi.string().required()
+  title: Joi.string().required(),
+  text: Joi.string().required(),
+  type: Joi.string()
+    .required()
+    .regex(/^(positive|negative|neutral)$/)
 });
 
 const movieSchema = Joi.object({
