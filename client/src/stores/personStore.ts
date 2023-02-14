@@ -24,7 +24,7 @@ export const usePersonStore = defineStore("person", {
         return moviesCount + ` ${properEndingInRu(moviesCount)}`;
       };
     },
-    moviesByProfession: (state) => {      
+    moviesByProfession: (state) => {
       return state.person.films
         .filter((movie) => movie.professionKey === state.currentProfession)
         .sort((a, b) => Number(b.rating) - Number(a.rating));

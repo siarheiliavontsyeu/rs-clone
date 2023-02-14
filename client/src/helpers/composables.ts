@@ -61,3 +61,34 @@ export const properRatingMpaa = (rating: string): [string, string] => {
   }
 };
 
+export const properMoney = (amount?: number): string => {
+  if (amount) {
+    const number = new Intl.NumberFormat("en-US", {
+      style: "decimal",
+    });
+    return number.format(amount);
+  } else return "--";
+};
+
+export const properText = (text: string): string => {
+  return text
+    .replace(/<(.*?)>/g, "")
+    .replace(/&laquo;/gm, "«")
+    .replace(/&raquo;/gm, "»");
+};
+
+export const properRates = (rate: number): string => {
+  const number = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+  });
+  const str = String(rate);
+  if (str.at(-1) === "1") return `${number.format(rate)} оценка`;
+  if (str.at(-1) === "2") return  `${number.format(rate)} оценки`;
+  else return  `${number.format(rate)} оценок`;
+};
+
+export const ratingColor = (rating: number): string => {
+  if (rating < 5) return "red";
+  if (rating >= 5 && rating < 7) return "gray";
+  else return "green";
+};

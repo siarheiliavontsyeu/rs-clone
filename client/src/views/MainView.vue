@@ -45,7 +45,17 @@ function onClick() {
   text-decoration: none;
   color: var(--color-text);
 }
+.red {
+  color: red;
+}
 
+.gray {
+  color: #777;
+}
+
+.green {
+  color: #3bb33b
+}
 .main {
   background-color: rgb(var(--v-theme-on-surface-variant));
 }

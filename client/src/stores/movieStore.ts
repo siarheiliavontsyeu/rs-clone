@@ -61,8 +61,58 @@ export const useMovieStore = defineStore("movie", {
   }),
   getters: {
     movieMainActors: (state) => {
+      return state.staff
+        .filter((person) => person.professionKey === "ACTOR")
+        .slice(0, 10);
+    },
+    movieProducers: (state) => {
+      return state.staff.filter(
+        (person) => person.professionKey === "PRODUCER"
+      );
+    },
+    movieWriter: (state) => {
+      return state.staff.filter(
+        (person) => person.professionKey === "PRODUCER"
+      );
+    },
+    movieOperator: (state) => {
+      return state.staff.filter(
+        (person) => person.professionKey === "OPERATOR"
+      );
+    },
+    movieDirector: (state) => {
+      return state.staff.filter(
+        (person) => person.professionKey === "DIRECTOR"
+      );
+    },
+    movieEditor: (state) => {
+      return state.staff.filter((person) => person.professionKey === "EDITOR");
+    },
+    movieDesigner: (state) => {
+      return state.staff.filter((person) => person.professionKey === "DESIGN");
+    },
+    movieComposer: (state) => {
+      return state.staff.filter(
+        (person) => person.professionKey === "COMPOSER"
+      );
+    },
+    budgetSpent: (state) => {
+      return state.boxOffice.find((b) => b.type === "BUDGET");
+    },
+    budgetUsa: (state) => {
+      return state.boxOffice.find((b) => b.type === "USA");
+    },
+    budgetWorld: (state) => {
+      return state.boxOffice.find((b) => b.type === "WORLD");
+    },
+    worldPremiere: (state) => {
+      return state.distribution.find((d) => (d.type = "WORLD_PREMIER"));
+    },
+    allPremieres: (state) => {
+      return new Set(state.distribution.filter((d) => (d.type = "PREMIERE")));
+    },
+    marketing: (state) => {},
 
-    }
     // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
@@ -117,16 +167,16 @@ export const useMovieStore = defineStore("movie", {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
       await this.getMovieById(id);
-      // await this.getStaff(id);
-      // await this.getSequelsAndPrequels(id);
-      // await this.getReviews(id);
-      // await this.getImages(id);
-      // await this.getSimilars(id);
-      // await this.getVideos(id);
-      // await this.getAwards(id);
-      // await this.getDistribution(id);
-      // await this.getFacts(id);
-      // await this.getBoxOffice(id);
+      await this.getStaff(id);
+      await this.getBoxOffice(id);
+      await this.getDistribution(id);
+      await this.getSequelsAndPrequels(id);
+      await this.getSimilars(id);
+      await this.getFacts(id);
+      await this.getAwards(id);
+      await this.getImages(id);
+      await this.getReviews(id);
+      await this.getVideos(id);
       // await this.getSeasons(id);
       searchStore.unsetIsLoading();
     },
