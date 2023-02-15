@@ -2,6 +2,12 @@
   <MyLoader v-if="showLoading" />
   <template v-else>
     <ScrollToTop></ScrollToTop>
+    <iframe
+      is="x-frame-bypass"
+      src="https://widgets.kinopoisk.ru/discovery/trailer/167560?onlyPlayer=1&autoplay=1&cover=1"
+      width="500"
+      height="500"
+    ></iframe>
     <ProfileInfo
       v-if="user"
       :user="user"
@@ -22,7 +28,7 @@
 </template>
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useAuthStore } from "@/stores/authStore";
 import ProfileInfo from "@/components/ProfileInfo.vue";
 import ProfileWatchHistory from "@/components/ProfileWatchHistory.vue";
@@ -57,5 +63,16 @@ if (user.value && token.value) {
   getWatchedHistory(user.value.id, token.value);
   getWatchedLater(user.value.id, token.value);
 }
+
+onMounted(() => {
+  const script1 = document.createElement("script");
+  script1.src = "https://unpkg.com/@ungap/custom-elements-builtin";
+  document.body.appendChild(script1);
+
+  const script2 = document.createElement("script");
+  script2.type = "module";
+  script2.src = "https://unpkg.com/x-frame-bypass";
+  document.body.appendChild(script2);
+});
 </script>
 <style lang=""></style>
