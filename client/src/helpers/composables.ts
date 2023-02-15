@@ -74,7 +74,9 @@ export const properText = (text: string): string => {
   return text
     .replace(/<(.*?)>/g, "")
     .replace(/&laquo;/gm, "«")
-    .replace(/&raquo;/gm, "»");
+    .replace(/&raquo;/gm, "»")
+    .replace(/&#171;/gm, "«")
+  .replace(/&#187; /gm, "»");
 };
 
 export const properRates = (rate: number): string => {
@@ -83,8 +85,8 @@ export const properRates = (rate: number): string => {
   });
   const str = String(rate);
   if (str.at(-1) === "1") return `${number.format(rate)} оценка`;
-  if (str.at(-1) === "2") return  `${number.format(rate)} оценки`;
-  else return  `${number.format(rate)} оценок`;
+  if (str.at(-1) === "2") return `${number.format(rate)} оценки`;
+  else return `${number.format(rate)} оценок`;
 };
 
 export const ratingColor = (rating: number): string => {

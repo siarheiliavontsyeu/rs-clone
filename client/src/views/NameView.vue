@@ -90,7 +90,7 @@
         </div>
       </div>
     </v-container>
-    <v-container class="facts">
+    <v-container class="facts" v-show="personStore.person.facts.length">
       <div>
         <h4 class="text-h2 font-weight-bold mb-2">Знаете ли вы, что...</h4>
         <ul class="facts-list">
@@ -299,10 +299,24 @@ personStore.getStaffPerson(Number(personId));
 .professions-list {
   display: flex;
   list-style-type: none;
-  overflow: hidden;
-
   border-bottom: 1px solid #eee;
   padding-bottom: 5px;
+
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 71vw;
+  scroll-behavior: smooth;
+}
+
+.professions-list::-webkit-scrollbar {
+  height: 8px;
+  width: 100%;
+  border: none;
+}
+
+.professions-list::-webkit-scrollbar-thumb:horizontal {
+  background: #000;
+  border-radius: 10px;
 }
 
 .profession {
@@ -311,6 +325,7 @@ personStore.getStaffPerson(Number(personId));
   flex-direction: column;
   align-items: start;
   cursor: pointer;
+  white-space: wrap;
 }
 
 .profession-title {

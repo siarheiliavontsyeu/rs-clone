@@ -9,7 +9,7 @@ export const formatDate = (date: string) => {
   });
 };
 
-export const personDate = (date: string, allowAge: boolean = true) => {
+export const personDate = (date: string, allowAge: boolean = true) => {  
   const date_ = new Date(date);
   const today = new Date();
   let age = today.getFullYear() - date_.getFullYear();

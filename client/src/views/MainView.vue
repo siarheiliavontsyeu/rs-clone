@@ -54,7 +54,7 @@ function onClick() {
 }
 
 .green {
-  color: #3bb33b
+  color: #3bb33b;
 }
 .main {
   background-color: rgb(var(--v-theme-on-surface-variant));

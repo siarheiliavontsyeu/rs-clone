@@ -111,6 +111,18 @@ export const useMovieStore = defineStore("movie", {
     allPremieres: (state) => {
       return new Set(state.distribution.filter((d) => (d.type = "PREMIERE")));
     },
+    allowedAge: (state) => {
+      return state.movie.ratingAgeLimits.replace(/\D/g, "");
+    },
+    positiveReviewPercentage: (state) => {
+      return (state.reviewObj.totalPositiveReviews / state.reviewObj.total *100).toFixed(2)
+    },
+    negativeReviewPercentage: (state) => {
+      return (state.reviewObj.totalNegativeReviews / state.reviewObj.total *100).toFixed(2)
+    },
+    neutralReviewPercentage: (state) => {
+      return (state.reviewObj.totalNeutralReviews / state.reviewObj.total *100).toFixed(2)
+    },
     marketing: (state) => {},
 
     // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
@@ -176,54 +188,23 @@ export const useMovieStore = defineStore("movie", {
       await this.getAwards(id);
       await this.getImages(id);
       await this.getReviews(id);
-      await this.getVideos(id);
+      // await this.getVideos(id);
       // await this.getSeasons(id);
       searchStore.unsetIsLoading();
     },
   },
 });
-
-// kinopoiskId: number;
-//   imdbId: string;
-//   nameRu: string;
-//   nameEn: string;
-//   nameOriginal: string;
-//   posterUrl: string;
-//   posterUrlPreview: string;
-//   coverUrl: string;
-//   logoUrl: string;
-//   reviewsCount: number;
-//   ratingGoodReview: number;
-//   ratingGoodReviewVoteCount: number;
-//   ratingKinopoisk: number;
-//   ratingKinopoiskVoteCount: number;
-//   ratingImdb: number;
-//   ratingImdbVoteCount: number;
-//   ratingFilmCritics: number;
-//   ratingFilmCriticsVoteCount: number;
-//   ratingAwait: number;
-//   ratingAwaitCount: number;
-//   ratingRfCritics: number;
-//   ratingRfCriticsVoteCount: number;
-//   webUrl: string;
-//   year: number;
-//   filmLength: number;
-//   slogan: string;
+// total: number;
+//   totalPages: number;
+//   totalPositiveReviews: number;
+//   totalNegativeReviews: number;
+//   totalNeutralReviews: number;
+//   items: ReviewResponseI[];
+//   kinopoiskId: number;
+//   type: ReviewTypeEnum;
+//   date: string;
+//   positiveRating: number;
+//   negativeRating: number;
+//   author: string;
+//   title: string;
 //   description: string;
-//   shortDescription: string;
-//   editorAnnotation: string;
-//   isTicketsAvailable: boolean;
-//   productionStatus: MovieProductionStatusEnum;
-//   type: MovieTypeEnum;
-//   ratingMpaa: string;
-//   ratingAgeLimits: string;
-//   hasImax: boolean;
-//   has3D: boolean;
-//   lastSync: string;
-//   countries: CountryI[];
-//   genres: GenreI[];
-//   startYear: number;
-//   endYear: number;
-//   serial?: boolean;
-//   shortFilm?: boolean;
-//   completed?: boolean;

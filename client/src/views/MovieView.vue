@@ -12,6 +12,7 @@
           </h1>
           <h4 class="text-medium-emphasis">
             {{ movieStore.movie.nameOriginal }}
+            <span v-show="movieStore.allowedAge">{{ movieStore.allowedAge }}+</span>
           </h4>
         </div>
         <div>
@@ -40,15 +41,17 @@
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: director.staffId } }" class="link"
                   v-for="director in movieStore.movieDirector" :key="director.staffId">{{
-                    director.nameRu
-                  }}</router-link>
+                    director.nameRu ||
+                      director.nameEn
+                  }},
+                </router-link>
               </p>
             </div>
             <div class="table-row">
               <p class="table-row-title text-medium-emphasis">Сценарий</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: writer.staffId } }" class="link"
-                  v-for="writer in movieStore.movieWriter" :key="writer.staffId">{{ writer.nameRu }},
+                  v-for="writer in movieStore.movieWriter" :key="writer.staffId">{{ writer.nameRu || writer.nameEn }},
                 </router-link>
               </p>
             </div>
@@ -56,7 +59,10 @@
               <p class="table-row-title text-medium-emphasis">Продюсер</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: producer.staffId } }" class="link"
-                  v-for="producer in movieStore.movieProducers" :key="producer.staffId">{{ producer.nameRu }},
+                  v-for="producer in movieStore.movieProducers" :key="producer.staffId">{{
+                    producer.nameRu ||
+                      producer.nameEn
+                  }},
                 </router-link>
               </p>
             </div>
@@ -64,7 +70,10 @@
               <p class="table-row-title text-medium-emphasis">Оператор</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: operator.staffId } }" class="link"
-                  v-for="operator in movieStore.movieOperator" :key="operator.staffId">{{ operator.nameRu }}
+                  v-for="operator in movieStore.movieOperator" :key="operator.staffId">{{
+                    operator.nameRu ||
+                      operator.nameEn
+                  }},
                 </router-link>
               </p>
             </div>
@@ -72,7 +81,10 @@
               <p class="table-row-title text-medium-emphasis">Композитор</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: composer.staffId } }" class="link"
-                  v-for="composer in movieStore.movieComposer" :key="composer.staffId">{{ composer.nameRu }}
+                  v-for="composer in movieStore.movieComposer" :key="composer.staffId">{{
+                    composer.nameRu ||
+                      composer.nameEn
+                  }},
                 </router-link>
               </p>
             </div>
@@ -80,7 +92,10 @@
               <p class="table-row-title text-medium-emphasis">Художник</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: designer.staffId } }" class="link"
-                  v-for="designer in movieStore.movieDesigner" :key="designer.staffId">{{ designer.nameRu }},
+                  v-for="designer in movieStore.movieDesigner" :key="designer.staffId">{{
+                    designer.nameRu ||
+                      designer.nameEn
+                  }},
                 </router-link>
               </p>
             </div>
@@ -88,7 +103,7 @@
               <p class="table-row-title text-medium-emphasis">Монтаж</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: editor.staffId } }" class="link"
-                  v-for="editor in movieStore.movieEditor" :key="editor.staffId">{{ editor.nameRu }},
+                  v-for="editor in movieStore.movieEditor" :key="editor.staffId">{{ editor.nameRu || editor.nameEn }},
                 </router-link>
               </p>
             </div>
@@ -128,7 +143,7 @@
             </div>
             <div class="table-row" v-show="movieStore.movie.ratingAgeLimits">
               <p class="table-row-title text-medium-emphasis">Возраст</p>
-              <p>{{ movieStore.movie.ratingAgeLimits }}</p>
+              <p class="age-limit">{{ movieStore.allowedAge }}+</p>
             </div>
             <div class="table-row">
               <p class="table-row-title text-medium-emphasis">Рейтинг MPAA</p>
@@ -209,8 +224,10 @@
     <v-container class="videos" v-show="movieStore.videos.length">
       <h4 class="mb-10 text-h5 font-weight-bold">Видео и трейлеры</h4>
       <div class="videos-container">
-        <div v-for="(video, index) in movieStore.videos" :key="index">
-          <iframe width="386" height="250" :src="video.url.replace('watch?v=', 'embed/')" frameborder="0" allowfullscreen></iframe>
+        <div v-for="(video, index) in movieStore.videos" :key="index" v-show="video.url.includes('youtube')">
+          <iframe width="386" height="250" :src="video.url.replace('watch?v=', 'embed/')" frameborder="0"
+            allowfullscreen></iframe>
+          <p>{{ video.name }}</p>
         </div>
       </div>
     </v-container>
@@ -225,9 +242,42 @@
       </div>
     </v-container>
     <v-container class="reviews" v-show="movieStore.reviewObj.total">
-      <div>{{ movieStore.reviewObj }}</div>
+      <h5>Рецензии зрителей</h5>
+      <div class="reviews-body">
+        <div class="reviews-container">
+          <ReviewCard v-for="review in movieStore.reviewObj.items" :review="review" :key="review.kinopoiskId" />
+        </div>
+        <div class="reviews-count">
+          <div class="reviews-overall all-reviews">
+            <p class="reviewsCountTitle">{{ movieStore.reviewObj.total }}</p>
+            <p class="reviews-overall-text">Всего</p>
+          </div>
+          <div class="reviews-overall">
+            <p>
+              <span class="reviewsCountTitle positive">{{ movieStore.reviewObj.totalPositiveReviews }}</span>
+              <span class="text-medium-emphasis "> {{
+                movieStore.positiveReviewPercentage
+              }}%</span>
+            </p>
+            <p class="reviews-overall-text">Положительные</p>
+          </div>
+          <div class="reviews-overall">
+            <p><span class="reviewsCountTitle negative">{{ movieStore.reviewObj.totalNegativeReviews }}</span> <span
+                class="text-medium-emphasis">{{
+                  movieStore.negativeReviewPercentage
+                }}%</span></p>
+            <p class="reviews-overall-text">Отрицательные</p>
+          </div>
+          <div class="reviews-overall">
+            <p><span class="reviewsCountTitle neutral">{{ movieStore.reviewObj.totalNeutralReviews }}</span> <span
+                class="text-medium-emphasis">{{
+  movieStore.neutralReviewPercentage
+                }}%</span></p>
+            <p class="reviews-overall-text">Нейтральные</p>
+          </div>
+        </div>
+      </div>
     </v-container>
-    
   </v-container>
 </template>
 <script setup lang="ts">
@@ -242,6 +292,7 @@ import {
   properText,
 } from "@/helpers/composables";
 import { personDate } from "@/helpers/date";
+import ReviewCard from "@/components/ReviewCard.vue";
 
 const movieStore = useMovieStore();
 const searchStore = useSearchStore();
@@ -256,7 +307,9 @@ const countries = computed(() => {
 });
 const movieLength = computed(() => {
   const length = movieStore.movie.filmLength;
-  return `${length} мин. / 0${Math.trunc(length / 60)}:${length % 60}`;
+  const hours = length / 60;
+  const minutes = length % 60 < 10 ? "0" + (length % 60) : length % 60;
+  return `${length} мин. / 0${Math.trunc(hours)}:${minutes}`;
 });
 
 watch(
@@ -285,7 +338,6 @@ movieStore.getAllInfo(Number(route.params.movieId));
   display: flex;
   align-items: start;
   border-bottom: 2px solid #f50;
-  margin-bottom: 30px;
 }
 
 .poster {
@@ -325,7 +377,8 @@ movieStore.getAllInfo(Number(route.params.movieId));
   transition: color 0.2s;
 }
 
-.mpaa {
+.mpaa,
+.age-limit {
   border: 1px solid rgb(var(--v-border-color));
   padding: 2px;
   text-transform: uppercase;
@@ -365,17 +418,18 @@ movieStore.getAllInfo(Number(route.params.movieId));
   justify-content: center;
   align-items: center;
   border-bottom: 2px solid #f50;
-  margin-bottom: 20px;
 }
 
 .preq-movie {
   margin-right: 20px;
   cursor: pointer;
+  white-space: normal;
+  width: 100%;
 }
 
 .preq-movie:hover {
-  transform: scale(1.2);
-  transition: transform 0.3s;
+  color: #f50;
+  transition: color 0.3s;
 }
 
 .prequel-img {
@@ -406,7 +460,6 @@ movieStore.getAllInfo(Number(route.params.movieId));
 }
 
 .router {
-
   border-bottom: 2px solid #f50;
   padding-bottom: 40px;
 }
@@ -422,6 +475,7 @@ movieStore.getAllInfo(Number(route.params.movieId));
   margin-right: 10px;
   font-weight: 500;
   font-size: 16px;
+  z-index: 70000;
 }
 
 .active-link {
@@ -433,16 +487,80 @@ movieStore.getAllInfo(Number(route.params.movieId));
   transform: scale(1.2);
   transition: transform 0.3s;
 }
-.videos{
-  
+
+.videos {
   border-bottom: 2px solid #f50;
   margin-bottom: 30px;
 }
+
 .videos-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   flex-wrap: wrap;
   gap: 30px;
+}
+
+.preq-container {
+  overflow-x: auto;
+  width: 71vw;
+  padding: 10px;
+  scroll-behavior: smooth;
+}
+
+.preq-container::-webkit-scrollbar {
+  height: 8px;
+  width: 100%;
+  border: none;
+}
+
+.preq-container::-webkit-scrollbar-thumb:horizontal {
+  background: #000;
+  border-radius: 10px;
+}
+
+.reviews-body {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  gap: 20px;
+}
+
+.reviews-count {
+  position: sticky;
+  top: 70px;
+  height: 200px;
+}
+
+.all-reviews {
+  margin-bottom: 2px;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 28px;
+  padding-left: 4px;
+  border-left: 3px solid #f50;
+}
+
+.reviews-overall-text {
+  font-size: 12px;
+}
+
+.reviewsCountTitle {
+  margin-bottom: 2px;
+  margin-right: 3px;
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 28px;
+}
+
+.positive {
+  color: #3bb33b;
+}
+
+.negative {
+  color: red;
+}
+
+.neutral {
+  color: #777;
 }
 
 .slide-fade-enter-active {
