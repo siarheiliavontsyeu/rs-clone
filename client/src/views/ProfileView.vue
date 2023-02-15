@@ -1,6 +1,7 @@
 <template>
   <MyLoader v-if="showLoading" />
   <template v-else>
+    <ScrollToTop></ScrollToTop>
     <ProfileInfo
       v-if="user"
       :user="user"
@@ -26,6 +27,7 @@ import { useAuthStore } from "@/stores/authStore";
 import ProfileInfo from "@/components/ProfileInfo.vue";
 import ProfileWatchHistory from "@/components/ProfileWatchHistory.vue";
 import ProfileWatchLater from "@/components/ProfileWatchLater.vue";
+import ScrollToTop from "@/components/ScrollToTop.vue";
 
 import { useUserDataStore } from "@/stores/userDataStore";
 import ProfileEdit from "@/components/ProfileEdit.vue";
