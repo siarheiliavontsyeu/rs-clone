@@ -13,6 +13,18 @@ const get = async kinopoiskId => {
   return movie;
 };
 
+const getRating = async kinopoiskId => {
+  const movie = await Movie.findOne({ kinopoiskId });
+  if (!movie) {
+    throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
+  }
+
+  const rating =
+    movie.reviews.reduce((acc, next) => acc + next.rating, 0) /
+    movie.reviews.length;
+  return { kinopoiskId, rating: rating.toFixed(1) };
+};
+
 const create = async movie => {
   try {
     return await Movie.create({ ...movie });
@@ -72,4 +84,12 @@ const createCritique = async ({ kinopoiskId, userId, ...body }) => {
   }
 };
 
-module.exports = { getAll, get, create, remove, createReview, createCritique };
+module.exports = {
+  getAll,
+  get,
+  getRating,
+  create,
+  remove,
+  createReview,
+  createCritique
+};

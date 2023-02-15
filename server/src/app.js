@@ -19,6 +19,7 @@ const watchLaterRouter = require('./resources/watch-later/watch-later.router');
 const movieRouter = require('./resources/movie/movie.router');
 const reviewRouter = require('./resources/movie/review/review.router');
 const critiqueRouter = require('./resources/movie/critique/critique.router');
+const ratingRouter = require('./resources/movie/rating/rating.router');
 
 const corsOptions = {
   origin: '*',
@@ -59,6 +60,7 @@ app.use('/watch-later', watchLaterRouter);
 app.use('/movie', movieRouter);
 movieRouter.use('/:kinopoiskId/review', reviewRouter);
 movieRouter.use('/:kinopoiskId/critique', critiqueRouter);
+movieRouter.use('/:kinopoiskId/rating', ratingRouter);
 
 app.use((req, res, next) => next(createError(NOT_FOUND)));
 
