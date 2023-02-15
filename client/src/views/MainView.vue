@@ -45,6 +45,10 @@ function onClick() {
   text-decoration: none;
   color: var(--color-text);
 }
+
+.tac{
+  text-align: center;
+}
 .red {
   color: red;
 }

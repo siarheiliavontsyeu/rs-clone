@@ -42,6 +42,7 @@ type movieStoreStateTypes = {
   reviewObj: ReviewsResponseI;
   images: ImageI[];
   staff: StaffResponseI[];
+  currentSeason: number;
 };
 
 export const useMovieStore = defineStore("movie", {
@@ -58,6 +59,7 @@ export const useMovieStore = defineStore("movie", {
     reviewObj: {} as ReviewsResponseI,
     images: [],
     staff: [],
+    currentSeason: 1,
   }),
   getters: {
     movieMainActors: (state) => {
@@ -123,6 +125,9 @@ export const useMovieStore = defineStore("movie", {
     neutralReviewPercentage: (state) => {
       return (state.reviewObj.totalNeutralReviews / state.reviewObj.total *100).toFixed(2)
     },
+    episodes: (state) => {
+      return state.seasons.find((season) => season.number === state.currentSeason)?.episodes
+    },
     marketing: (state) => {},
 
     // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
@@ -175,6 +180,9 @@ export const useMovieStore = defineStore("movie", {
       const data = await getMovieStaff(id);
       this.staff = data;
     },
+    setCurrentSeason(season: number) {
+      this.currentSeason = season;
+    },
     async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
@@ -189,7 +197,7 @@ export const useMovieStore = defineStore("movie", {
       await this.getImages(id);
       await this.getReviews(id);
       // await this.getVideos(id);
-      // await this.getSeasons(id);
+      await this.getSeasons(id);
       searchStore.unsetIsLoading();
     },
   },

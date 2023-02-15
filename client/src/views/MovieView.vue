@@ -66,7 +66,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieOperator.length">
               <p class="table-row-title text-medium-emphasis">Оператор</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: operator.staffId } }" class="link"
@@ -77,7 +77,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieComposer.length">
               <p class="table-row-title text-medium-emphasis">Композитор</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: composer.staffId } }" class="link"
@@ -88,7 +88,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieDesigner.length">
               <p class="table-row-title text-medium-emphasis">Художник</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: designer.staffId } }" class="link"
@@ -99,7 +99,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieEditor.length">
               <p class="table-row-title text-medium-emphasis">Монтаж</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: editor.staffId } }" class="link"
@@ -111,7 +111,7 @@
               <p class="table-row-title text-medium-emphasis">Маркетинг</p>
               <p>Маркетинг</p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.budgetSpent">
               <p class="table-row-title text-medium-emphasis">Бюджет</p>
               <p>
                 {{
@@ -119,15 +119,15 @@
                 }}{{ properMoney(movieStore.budgetSpent?.amount) }}
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.budgetUsa">
               <p class="table-row-title text-medium-emphasis">Сборы в США</p>
               <p>
                 {{
-                  movieStore.budgetSpent?.symbol
+                  movieStore.budgetUsa?.symbol
                 }}{{ properMoney(movieStore.budgetUsa?.amount) }}
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.budgetWorld">
               <p class="table-row-title text-medium-emphasis">Сборы в мире</p>
               <p>
                 {{
@@ -135,7 +135,7 @@
                 }}{{ properMoney(movieStore.budgetWorld?.amount) }}
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.worldPremiere">
               <p class="table-row-title text-medium-emphasis">
                 Премьера в мире
               </p>
@@ -145,7 +145,7 @@
               <p class="table-row-title text-medium-emphasis">Возраст</p>
               <p class="age-limit">{{ movieStore.allowedAge }}+</p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movie.ratingMpaa">
               <p class="table-row-title text-medium-emphasis">Рейтинг MPAA</p>
               <p class="ratingMpaa">
                 <span class="mpaa">
@@ -155,7 +155,11 @@
                 }}</span>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-if="movieStore.movie.serial">
+              <p class="table-row-title text-medium-emphasis">Время</p>
+              <p>{{ movieStore.movie.filmLength }} мин.</p>
+            </div>
+            <div class="table-row" v-else>
               <p class="table-row-title text-medium-emphasis">Время</p>
               <p>{{ movieLength }}</p>
             </div>
@@ -170,6 +174,26 @@
             {{ person.nameRu }}</router-link>
         </div>
       </div>
+    </v-container>
+    <v-container class="seasons" v-show="movieStore.seasons.length">
+      <h4 class="text-h5 font-weight-bold tac">Сезоны</h4>
+      <ul class="d-flex preq-container seasons-list">
+        <li v-for="season in movieStore.seasons" :key="season.number" class="season"
+          :class="{ active: movieStore.currentSeason === season.number }" @click="onSeasonChange(season.number)">{{
+            season.number
+          }} Сезон</li>
+      </ul>
+      <TransitionGroup :duration="{ enter: 500, leave: 800 }" name="slide-fade" tag="ul" class="episodes">
+        <li v-for="episode in movieStore.episodes" :key="episode.episodeNumber" class="episode">
+          <div class="text-h6">{{ episode.episodeNumber }} серия</div>
+          <div>
+            <p>{{ episode.nameRu }}</p>
+            <p>{{ episode.nameEn }}</p>
+          </div>
+          <div>{{ personDate(episode.releaseDate, false) }}</div>
+          <div>{{ episode.synopsis }}</div>
+        </li>
+      </TransitionGroup>
     </v-container>
     <v-container class="prequels" v-show="movieStore.sequelsAndPrequels.length">
       <h4 class="text-h5 font-weight-bold">Сиквелы и приквелы</h4>
@@ -186,7 +210,8 @@
       </div>
     </v-container>
     <v-container class="similars">
-      <h4 class="text-h5 font-weight-bold">Схожие фильмы</h4>
+      <h4 class="text-h5 font-weight-bold" v-if="movieStore.movie.serial">Похожие сериалы</h4>
+      <h4 class="text-h5 font-weight-bold" v-else>Похожие фильмы</h4>
       <div class="d-flex preq-container" v-if="movieStore.similars.length">
         <div class="preq-movie" @click="
           $router.push({ name: 'movie', params: { movieId: movie.filmId } })
@@ -312,6 +337,10 @@ const movieLength = computed(() => {
   return `${length} мин. / 0${Math.trunc(hours)}:${minutes}`;
 });
 
+const onSeasonChange = (season: number) => {
+  movieStore.setCurrentSeason(season);
+};
+
 watch(
   () => route.params.movieId,
   (newValue, oldValue) => {
@@ -412,14 +441,15 @@ movieStore.getAllInfo(Number(route.params.movieId));
 }
 
 .prequels,
-.similars {
+.similars,
+.facts,
+.seasons {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   border-bottom: 2px solid #f50;
 }
-
 .preq-movie {
   margin-right: 20px;
   cursor: pointer;
@@ -435,15 +465,6 @@ movieStore.getAllInfo(Number(route.params.movieId));
 .prequel-img {
   width: 150px;
   height: 225px;
-}
-
-.facts {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 30px;
-
-  border-bottom: 2px solid #f50;
 }
 
 .facts-list {
@@ -475,7 +496,6 @@ movieStore.getAllInfo(Number(route.params.movieId));
   margin-right: 10px;
   font-weight: 500;
   font-size: 16px;
-  z-index: 70000;
 }
 
 .active-link {
@@ -487,6 +507,8 @@ movieStore.getAllInfo(Number(route.params.movieId));
   transform: scale(1.2);
   transition: transform 0.3s;
 }
+
+
 
 .videos {
   border-bottom: 2px solid #f50;
@@ -562,6 +584,50 @@ movieStore.getAllInfo(Number(route.params.movieId));
 .neutral {
   color: #777;
 }
+
+.seasons-list {
+  list-style-type: none;
+  margin-bottom: 20px;
+}
+
+.season {
+  font-size: 20px;
+  font-weight: bold;
+  padding-bottom: 2px;
+  cursor: pointer;
+  color: #777;
+  margin-right: 10px;
+  white-space: nowrap;
+}
+
+.season.active {
+  border-bottom: 3px solid #f50;
+  color: var(--color-text);
+}
+
+.season:hover {
+  color: var(--color-text);
+  transition: all 0.3s;
+}
+
+.episode {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr 1fr;
+  align-items: start;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.episode:last-of-type {
+  border: none;
+}
+
+.episode:hover {
+  color: #f50;
+  transition: all 0.3s;
+}
+
 
 .slide-fade-enter-active {
   transition: all 0.3s ease-out;
