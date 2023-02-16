@@ -3,7 +3,11 @@
   <v-container v-else class="container">
     <v-container class="body">
       <div class="avatar">
-        <img class="avatar-img" :src="personStore.person.posterUrl" :alt="personStore.person.nameRu" />
+        <img
+          class="avatar-img"
+          :src="personStore.person.posterUrl"
+          :alt="personStore.person.nameRu"
+        />
       </div>
       <div>
         <div class="meta-header">
@@ -32,7 +36,9 @@
               <p>
                 <span>{{ birthdate[0] }}</span>
                 <span> • </span>
-                <span class="text-medium-emphasis font-weight-light">{{ birthdate[1] }} от роду</span>
+                <span class="text-medium-emphasis font-weight-light"
+                  >{{ birthdate[1] }} от роду</span
+                >
               </p>
             </div>
             <div class="table-row">
@@ -58,13 +64,21 @@
             <div class="table-row">
               <p class="table-row-title text-medium-emphasis">Супруг/супруга</p>
               <div class="spouses">
-                <div class="d-flex" v-for="spouse in personStore.person.spouses" :key="spouse.personId">
+                <div
+                  class="d-flex"
+                  v-for="spouse in personStore.person.spouses"
+                  :key="spouse.personId"
+                >
                   <p class="mr-1">{{ spouse.name }}</p>
-                  <span class="text-medium-emphasis font-weight-light" v-if="spouse.divorced">({{
-                    spouse.divorcedReason
-                  }})</span>
-                  <span class="text-medium-emphasis font-weight-light" v-else>{{ spouse.children }}
-                    {{ spouse.children === 1 ? "ребенок" : "детей" }}</span>
+                  <span
+                    class="text-medium-emphasis font-weight-light"
+                    v-if="spouse.divorced"
+                    >({{ spouse.divorcedReason }})</span
+                  >
+                  <span class="text-medium-emphasis font-weight-light" v-else
+                    >{{ spouse.children }}
+                    {{ spouse.children === 1 ? "ребенок" : "детей" }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -76,11 +90,15 @@
         </div>
       </div>
     </v-container>
-    <v-container class="facts">
+    <v-container class="facts" v-show="personStore.person.facts.length">
       <div>
         <h4 class="text-h2 font-weight-bold mb-2">Знаете ли вы, что...</h4>
         <ul class="facts-list">
-          <li class="fact text-subtitle-2" v-for="(fact, index) in personStore.person.facts" :key="index">
+          <li
+            class="fact text-subtitle-2"
+            v-for="(fact, index) in personStore.person.facts"
+            :key="index"
+          >
             {{ fact }}
           </li>
         </ul>
@@ -89,8 +107,13 @@
     <v-container class="movies">
       <div class="professions">
         <ul class="professions-list">
-          <li v-for="profession in personStore.professionKeys" :key="profession" class="profession"
-            :class="{ active: personStore.currentProfession === profession }" @click="onProfessionChange(profession)">
+          <li
+            v-for="profession in personStore.professionKeys"
+            :key="profession"
+            class="profession"
+            :class="{ active: personStore.currentProfession === profession }"
+            @click="onProfessionChange(profession)"
+          >
             <div class="profession-title">
               {{ professionInRu(profession) }}
             </div>
@@ -102,8 +125,14 @@
       </div>
       <div class="movies-container">
         <ul class="movies-list">
-          <li v-for="movie in personStore.moviesByProfession" :key="movie.filmId" class="movie"
-            @click="$router.push({ name: 'movie', params: { movieId: movie.filmId } })">
+          <li
+            v-for="movie in personStore.moviesByProfession"
+            :key="movie.filmId"
+            class="movie"
+            @click="
+              $router.push({ name: 'movie', params: { movieId: movie.filmId } })
+            "
+          >
             <div class="movie-name">
               <div class="text-h6">{{ movie.nameRu }}</div>
               <div class="text-subtitle-2 text-medium-emphasis">
@@ -132,7 +161,7 @@ import { usePersonStore } from "@/stores/personStore";
 import { useSearchStore } from "@/stores/searchStore";
 import MyLoaderVue from "@/components/MyLoader.vue";
 import { personDate } from "@/helpers/date";
-import { professionInRu } from "@/helpers/profession";
+import { professionInRu } from "@/helpers/composables";
 import { GenderTypeEnum } from "@/types/movies.types";
 
 const route = useRoute();
@@ -154,7 +183,7 @@ const birthdate = computed(() => {
 });
 
 const deathdate = computed(() => {
-  return personDate(personStore.person.death);
+  return personDate(personStore.person.death, false);
 });
 
 const onProfessionChange = (profession: string) => {
@@ -173,7 +202,7 @@ personStore.getStaffPerson(Number(personId));
 </script>
 <style scoped>
 .container {
-  background-color: var(--v-theme-background);
+  background-color: rgb(var(--v-theme-background));
   width: 100%;
   height: 100%;
   display: flex;
@@ -182,7 +211,6 @@ personStore.getStaffPerson(Number(personId));
 
 .body {
   width: 80%;
-  background-color: var(--vt-c-white);
   display: flex;
 }
 
@@ -243,7 +271,8 @@ personStore.getStaffPerson(Number(personId));
   width: 100%;
 }
 
-.movies-list {}
+.movies-list {
+}
 
 .movie {
   display: grid;
@@ -260,9 +289,8 @@ personStore.getStaffPerson(Number(personId));
 .movie:hover {
   transform: scale(1.2);
   color: #f50;
-  transition: all .3s;
+  transition: all 0.3s;
 }
-
 
 .professions {
   margin-bottom: 20px;
@@ -271,10 +299,24 @@ personStore.getStaffPerson(Number(personId));
 .professions-list {
   display: flex;
   list-style-type: none;
-  overflow: hidden;
-
   border-bottom: 1px solid #eee;
   padding-bottom: 5px;
+
+  overflow-x: auto;
+  white-space: nowrap;
+  width: 71vw;
+  scroll-behavior: smooth;
+}
+
+.professions-list::-webkit-scrollbar {
+  height: 8px;
+  width: 100%;
+  border: none;
+}
+
+.professions-list::-webkit-scrollbar-thumb:horizontal {
+  background: #000;
+  border-radius: 10px;
 }
 
 .profession {
@@ -283,8 +325,8 @@ personStore.getStaffPerson(Number(personId));
   flex-direction: column;
   align-items: start;
   cursor: pointer;
+  white-space: wrap;
 }
-
 
 .profession-title {
   opacity: 0.6;
@@ -305,7 +347,7 @@ personStore.getStaffPerson(Number(personId));
 .profession:hover .profession-subtitle {
   opacity: 1;
   color: var(--color-text);
-  transition: all .3s;
+  transition: all 0.3s;
 }
 
 .active .profession-title,

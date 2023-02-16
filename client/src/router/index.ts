@@ -49,10 +49,30 @@ const router = createRouter({
         {
           path: "/movie/:movieId",
           name: "movie",
-          // route level code-splitting
-          // this generates a separate chunk (About.[hash].js) for this route
-          // which is lazy-loaded when the route is visited.
+          redirect: { name: "review" },
           component: () => import("../views/MovieView.vue"),
+          children: [
+            {
+              name: "review",
+              path: "review",
+              component: () => import("../views/MovieViews/ReviewView.vue"),
+            },
+            {
+              name: "award",
+              path: "awards",
+              component: () => import("../views/MovieViews/AwardView.vue"),
+            },
+            {
+              name: "premiere",
+              path: "premiere",
+              component: () => import("../views/MovieViews/PremiereView.vue"),
+            },
+            {
+              name: "image",
+              path: "images",
+              component: () => import("../views/MovieViews/ImageView.vue"),
+            },
+          ],
         },
       ],
     },

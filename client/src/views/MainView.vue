@@ -46,6 +46,21 @@ function onClick() {
   color: var(--color-text);
 }
 
+.tac{
+  text-align: center;
+}
+.red {
+  color: red;
+}
+
+.gray {
+  color: #777;
+}
+
+.green {
+  color: #3bb33b;
+}
 .main {
+  background-color: rgb(var(--v-theme-on-surface-variant));
 }
 </style>

@@ -2,7 +2,7 @@ import { getStaffPerson } from "@/api";
 import type { StaffPersonSearchResponseI } from "@/types/movies.types";
 import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
-import { properEndingInRu } from "@/helpers/profession";
+import { properEndingInRu } from "@/helpers/composables";
 
 type personStoreStateType = {
   person: StaffPersonSearchResponseI;
@@ -24,7 +24,7 @@ export const usePersonStore = defineStore("person", {
         return moviesCount + ` ${properEndingInRu(moviesCount)}`;
       };
     },
-    moviesByProfession: (state) => {      
+    moviesByProfession: (state) => {
       return state.person.films
         .filter((movie) => movie.professionKey === state.currentProfession)
         .sort((a, b) => Number(b.rating) - Number(a.rating));
