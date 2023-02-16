@@ -1,7 +1,6 @@
 <template>
   <MyLoader v-if="showLoading" />
   <template v-else>
-    <ScrollToTop></ScrollToTop>
     <ProfileInfo
       v-if="user"
       :user="user"

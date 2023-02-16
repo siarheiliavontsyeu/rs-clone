@@ -1,10 +1,8 @@
 <template>
-  <div ref="topElement"></div>
   <v-btn
     class="scroll-top-btn"
     @click="scrollToTop"
     fab
-    color="primary"
     v-show="showScrollTopBtn"
   >
     <v-icon>mdi-chevron-up</v-icon>
@@ -14,15 +12,12 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, onUnmounted } from "vue";
 
-const topElement = ref<HTMLElement | null>(null);
 
 const scrollTop = ref(0);
 const showScrollTopBtn = computed(() => scrollTop.value > 200);
 
 const scrollToTop = () => {
-  if (topElement.value) {
-    topElement.value.scrollIntoView({ behavior: "smooth" });
-  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
 };
 
 const handleScroll = () => {
@@ -44,5 +39,6 @@ onUnmounted(() => {
   bottom: 24px;
   right: 24px;
   z-index: 1000;
+  color: #f50;
 }
 </style>

@@ -17,6 +17,7 @@
     <v-main class="main">
       <router-view></router-view>
     </v-main>
+    <ScrollToTop />
   </v-app>
 </template>
 
@@ -25,6 +26,7 @@ import { ref } from "vue";
 import SearchField from "@/components/SearchField.vue";
 import ProfileBar from "@/components/ProfileBar.vue";
 import { useMoviesStore } from "@/stores/moviesStore";
+import ScrollToTop from "@/components/ScrollToTop.vue";
 
 const movies = useMoviesStore();
 

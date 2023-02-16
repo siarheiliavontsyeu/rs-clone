@@ -47,7 +47,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieWriter.length">
               <p class="table-row-title text-medium-emphasis">Сценарий</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: writer.staffId } }" class="link"
@@ -55,7 +55,7 @@
                 </router-link>
               </p>
             </div>
-            <div class="table-row">
+            <div class="table-row" v-show="movieStore.movieProducers.length">
               <p class="table-row-title text-medium-emphasis">Продюсер</p>
               <p class="large-text">
                 <router-link :to="{ name: 'name', params: { nameId: producer.staffId } }" class="link"
