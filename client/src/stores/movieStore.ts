@@ -114,7 +114,7 @@ export const useMovieStore = defineStore("movie", {
       return new Set(state.distribution.filter((d) => (d.type = "PREMIERE")));
     },
     allowedAge: (state) => {
-      return state.movie.ratingAgeLimits.replace(/\D/g, "");
+      return state.movie.ratingAgeLimits?.replace(/\D/g, "");
     },
     positiveReviewPercentage: (state) => {
       return (state.reviewObj.totalPositiveReviews / state.reviewObj.total *100).toFixed(2)

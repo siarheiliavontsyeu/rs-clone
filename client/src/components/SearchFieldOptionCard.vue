@@ -1,13 +1,10 @@
 <template>
   <v-list-item @click="onPick">
-    <router-link
-      :to="
-        props.item.isMovie
-          ? { name: 'movie', params: { movieId: props.item.id } }
-          : { name: 'name', params: { nameId: props.item.id } }
-      "
-      class="d-flex link"
-    >
+    <router-link :to="
+      item.isMovie
+        ? { name: 'movie', params: { movieId: item.id } }
+        : { name: 'name', params: { nameId: item.id } }
+    " class="d-flex link">
       <div>
         <img :src="item.img" class="card-img" alt="" />
       </div>
@@ -20,10 +17,9 @@
 </template>
 <script setup lang="ts">
 import { useSearchStore } from "@/stores/searchStore";
-
+import type { itemType } from "./SearchField.vue";
 const searchStore = useSearchStore();
-
-const props = defineProps(["item", "onClear"]);
+const props = defineProps<{ item: itemType }>();
 const emit = defineEmits(["clear"]);
 
 const onPick = () => {

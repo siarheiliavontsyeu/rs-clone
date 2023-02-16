@@ -14,6 +14,26 @@ export const useSearchStore = defineStore("search", {
     moviesList: [],
     personsList: [],
   }),
+  getters: {
+    movies: (state) => {
+      return state.moviesList.map((movie) => ({
+        id: movie.filmId,
+        nameRu: movie.nameRu,
+        nameEn: movie.nameEn,
+        img: movie.posterUrl,
+        isMovie: true,
+      }));
+    },
+    persons: (state) => {
+      return state.personsList.map((person) => ({
+        id: person.kinopoiskId,
+        nameRu: person.nameRu,
+        nameEn: person.nameEn,
+        img: person.posterUrl,
+        isMovie: false,
+      }));
+    },
+  },
   actions: {
     async getDataBySearch(keyword: string) {
       getMovieBySearch(keyword).then((response) => {
