@@ -49,17 +49,18 @@ const remove = async id => {
 };
 
 const createReview = async ({ kinopoiskId, userId, ...body }) => {
-  try {
-    const movie = await Movie.findOneAndUpdate(
-      { kinopoiskId, 'reviews.userId': { $ne: userId } },
-      { $push: { reviews: { userId, ...body, at: Date.now() } } },
-      { new: true }
-    );
-    if (!movie) {
-      throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
-    }
-  } catch (error) {
-    throw new DUPLICATE(`${ENTITY_NAME} review userID`, {
+  const movie = await Movie.findOne({ kinopoiskId });
+  console.log('1111', movie);
+  if (!movie) {
+    throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
+  }
+  const updateMovie = await Movie.findOneAndUpdate(
+    { kinopoiskId, 'reviews.userId': { $ne: userId } },
+    { $push: { reviews: { userId, ...body, at: Date.now() } } },
+    { new: true }
+  );
+  if (!updateMovie) {
+    throw new DUPLICATE(`${ENTITY_NAME} review`, {
       kinopoiskId,
       userId
     });
@@ -67,21 +68,70 @@ const createReview = async ({ kinopoiskId, userId, ...body }) => {
 };
 
 const createCritique = async ({ kinopoiskId, userId, ...body }) => {
-  try {
-    const movie = await Movie.findOneAndUpdate(
-      { kinopoiskId, 'critiques.userId': { $ne: userId } },
-      { $push: { critiques: { userId, ...body, at: Date.now() } } },
-      { new: true }
-    );
-    if (!movie) {
-      throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
-    }
-  } catch (error) {
-    throw new DUPLICATE(`${ENTITY_NAME} critique userID`, {
+  const movie = await Movie.findOne({ kinopoiskId });
+  if (!movie) {
+    throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
+  }
+
+  const updateMovie = await Movie.findOneAndUpdate(
+    { kinopoiskId, 'critiques.userId': { $ne: userId } },
+    {
+      $push: {
+        critiques: { userId, ...body, useful: 0, useless: 0, at: Date.now() }
+      }
+    },
+    { new: true }
+  );
+  if (!updateMovie) {
+    throw new DUPLICATE(`${ENTITY_NAME} critique`, {
       kinopoiskId,
       userId
     });
   }
+};
+
+const updateUseful = async ({ kinopoiskId, userId, useful }) => {
+  const movie = await Movie.findOne({
+    kinopoiskId,
+    'critiques.userId': userId
+  });
+  if (!movie) {
+    throw new NOT_FOUND_ERROR(`${ENTITY_NAME} critiques`, {
+      kinopoiskId,
+      userId
+    });
+  }
+  const updateMovie = await Movie.updateOne(
+    { kinopoiskId, 'critiques.userId': userId },
+    {
+      $set: {
+        'critiques.$.useful': useful
+      }
+    }
+  );
+  return updateMovie;
+};
+
+const updateUseLess = async ({ kinopoiskId, userId, useless }) => {
+  const movie = await Movie.findOne({
+    kinopoiskId,
+    'critiques.userId': userId
+  });
+  if (!movie) {
+    throw new NOT_FOUND_ERROR(`${ENTITY_NAME} critiques`, {
+      kinopoiskId,
+      userId
+    });
+  }
+  const updateMovie = await Movie.updateOne(
+    { kinopoiskId, 'critiques.userId': userId },
+    {
+      $set: {
+        'critiques.$.useless': useless
+      }
+    }
+  );
+  return updateMovie;
 };
 
 module.exports = {
@@ -91,5 +141,7 @@ module.exports = {
   create,
   remove,
   createReview,
-  createCritique
+  createCritique,
+  updateUseful,
+  updateUseLess
 };

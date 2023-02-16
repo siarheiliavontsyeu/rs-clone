@@ -26,16 +26,30 @@ const watchLaterSchema = Joi.object({
 const reviewSchema = Joi.object({
   userId: Joi.objectId().required(),
   rating: Joi.number().required(),
-  text: Joi.string().required()
+  text: Joi.string()
+    .required()
+    .allow('')
 });
 
 const critiqueSchema = Joi.object({
   userId: Joi.objectId().required(),
   title: Joi.string().required(),
   text: Joi.string().required(),
+  useful: Joi.number(),
+  useless: Joi.number(),
   type: Joi.string()
     .required()
     .regex(/^(positive|negative|neutral)$/)
+});
+
+const usefulSchema = Joi.object({
+  userId: Joi.objectId().required(),
+  useful: Joi.number()
+});
+
+const uselessSchema = Joi.object({
+  userId: Joi.objectId().required(),
+  useless: Joi.number()
 });
 
 const movieSchema = Joi.object({
@@ -61,7 +75,9 @@ const schemas = {
   watchLater: watchLaterSchema,
   review: reviewSchema,
   critique: critiqueSchema,
-  movie: movieSchema
+  movie: movieSchema,
+  useful: usefulSchema,
+  useless: uselessSchema
 };
 
 module.exports = schemas;

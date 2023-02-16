@@ -11,6 +11,7 @@ class NotFoundError extends Error {
     super(
       message || `Couldn't find a(an) ${entity} with: ${JSON.stringify(params)}`
     );
+    this.name = 'NotFoundError';
     this.status = NOT_FOUND;
   }
 }

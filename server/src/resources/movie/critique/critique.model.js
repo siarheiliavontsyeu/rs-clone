@@ -6,15 +6,20 @@ const CritiqueSchema = Schema({
   title: { type: String, required: true },
   text: { type: String, required: true },
   type: { type: String, required: true },
+  useful: { type: Number },
+  useless: { type: Number },
   at: { type: Date }
 });
 
 const toResponse = review => {
-  const { userId, text, at } = review;
+  const { userId, type, text, useful, useless, at } = review;
 
   return {
     userId,
+    type,
     text,
+    useful,
+    useless,
     at
   };
 };
