@@ -14,6 +14,8 @@ require('express-async-errors');
 const loginRouter = require('./resources/login/login.router');
 const registrationRouter = require('./resources/registration/registration.router');
 const userRouter = require('./resources/users/user.router');
+const userReviewsRouter = require('./resources/users/user-reviews/user-reviews.router');
+const useCritiquesRouter = require('./resources/users/user-critiques/user-critiques.router');
 const watchHistoryRouter = require('./resources/watch-history/watch-history.router');
 const watchLaterRouter = require('./resources/watch-later/watch-later.router');
 const movieRouter = require('./resources/movie/movie.router');
@@ -55,6 +57,8 @@ app.use('/', (req, res, next) => {
 app.use('/login', loginRouter);
 app.use('/registration', registrationRouter);
 app.use('/users', userRouter);
+userRouter.use('/:userId/user-reviews', userReviewsRouter);
+userRouter.use('/:userId/user-critiques', useCritiquesRouter);
 app.use('/watch-history', watchHistoryRouter);
 app.use('/watch-later', watchLaterRouter);
 app.use('/movie', movieRouter);

@@ -50,7 +50,6 @@ const remove = async id => {
 
 const createReview = async ({ kinopoiskId, userId, ...body }) => {
   const movie = await Movie.findOne({ kinopoiskId });
-  console.log('1111', movie);
   if (!movie) {
     throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
   }
@@ -65,6 +64,24 @@ const createReview = async ({ kinopoiskId, userId, ...body }) => {
       userId
     });
   }
+};
+
+const getUserReviews = async userId => {
+  const movies = await Movie.find({ 'reviews.${}.userId': userId });
+  if (!movies) {
+    throw new NOT_FOUND_ERROR(`${ENTITY_NAME} user reviews`, { userId });
+  }
+  console.log(movies);
+  return movies;
+};
+
+const getUserCritiques = async userId => {
+  const movies = await Movie.find({ 'critiques.${}.userId': userId });
+  if (!movies) {
+    throw new NOT_FOUND_ERROR(`${ENTITY_NAME} user critiques`, { userId });
+  }
+  console.log(movies);
+  return movies;
 };
 
 const createCritique = async ({ kinopoiskId, userId, ...body }) => {
@@ -143,5 +160,7 @@ module.exports = {
   createReview,
   createCritique,
   updateUseful,
-  updateUseLess
+  updateUseLess,
+  getUserReviews,
+  getUserCritiques
 };
