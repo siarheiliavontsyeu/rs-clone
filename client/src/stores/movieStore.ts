@@ -31,6 +31,7 @@ import { useSearchStore } from "./searchStore";
 import useBackend from "@/use/useBackend";
 import { BASE_URL } from "@/constants/backend";
 import { HttpMethod } from "@/types/fetch.types";
+import { useAuthStore } from "./authStore";
 
 type movieStoreStateTypes = {
   movie: MovieI;
@@ -148,28 +149,26 @@ export const useMovieStore = defineStore("movie", {
   },
   actions: {
     async getMovieById(id: number) {
-      const movieUrl = BASE_URL + "movie/";
-      const { response, error } = await useBackend({
+      const movieUrl = BASE_URL + "movie";
+      const { error } = await useBackend({
         url: movieUrl,
-        additionalUrl: id,
+        additionalUrl: "/" + id,
       });
       this.movie = await getMovieById(id);
-      await this.getReviews(id)
       if (error.value) {
         await useBackend({
           url: movieUrl,
-          additionalUrl: id,
-          method: HttpMethod.PUT,
+          additionalUrl: "",
+          method: HttpMethod.POST,
           body: {
             kinopoiskId: String(this.movie.kinopoiskId),
             imdbId: String(this.movie.imdbId),
             nameRu: this.movie.nameRu,
-            nameOriginal: this.movie.nameEn,
+            nameOriginal: this.movie.nameOriginal,
             posterUrlPreview: this.movie.posterUrlPreview,
             ratingKinopoisk: this.movie.ratingKinopoisk,
-            reviews: this.movie.,
+            reviews: [],
             critiques: [],
-            watchedAt: new Date().toISOString(),
           },
         });
       }
@@ -221,6 +220,21 @@ export const useMovieStore = defineStore("movie", {
     setCurrentSeason(season: number) {
       this.currentSeason = season;
     },
+    setWatchLater(id:string) {
+      const userStore = useAuthStore();
+      
+      if (userStore.user) {
+        useBackend({
+          url: BASE_URL + "watch-later",
+          additionalUrl: "",
+          method: HttpMethod.POST,
+          body: {
+            kinopoiskId: id,
+            userId: userStore.user.id,
+          },
+        });
+      }
+    },
     async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
@@ -228,6 +242,7 @@ export const useMovieStore = defineStore("movie", {
       // await this.getStaff(id);
       // await this.getBoxOffice(id);
       // await this.getDistribution(id);
+      // await this.getReviews(id)
       // await this.getSequelsAndPrequels(id);
       // await this.getSimilars(id);
       // await this.getFacts(id);
