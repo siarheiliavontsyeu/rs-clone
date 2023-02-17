@@ -1,13 +1,9 @@
 import { defineStore } from "pinia";
-import { computed, ref, watch } from "vue";
+import { ref, watch } from "vue";
 import useBackend from "@/use/useBackend";
 import { HttpMethod } from "@/types/fetch.types";
 import { BASE_URL } from "@/constants/backend";
-import type {
-  WatchHistoryModel,
-  WatchHistoryPostModel,
-  WatchLaterModel,
-} from "@/types/user.types";
+import type { WatchHistoryModel, WatchLaterModel } from "@/types/user.types";
 import type { MovieModel } from "@/types/movies.types";
 
 export const useUserDataStore = defineStore("userData", () => {
@@ -15,6 +11,7 @@ export const useUserDataStore = defineStore("userData", () => {
   const moviesHistory = ref<MovieModel[]>([]);
   const watchLater = ref<WatchLaterModel[]>([]);
   const moviesLater = ref<MovieModel[]>([]);
+  const critiqueMovies = ref<MovieModel[]>([]);
 
   const showError = ref(false);
   const showLoading = ref(true);
@@ -82,15 +79,56 @@ export const useUserDataStore = defineStore("userData", () => {
     showLoading.value = whLoading.value;
   };
 
+  const getMyCritiques = async (userId: string, token: string) => {
+    const {
+      loading: whLoading,
+      response: whResponse,
+      error: whError,
+    } = await useBackend<MovieModel[], null>({
+      url: BASE_URL + "users",
+      method: HttpMethod.GET,
+      additionalUrl: "/" + userId + "/user-critiques",
+      token,
+    });
+    if (!whError.value) {
+      showError.value = false;
+      if (whResponse && whResponse.value) {
+        critiqueMovies.value = whResponse.value;
+      }
+    } else {
+      showError.value = true;
+    }
+    if (whResponse && whResponse.value) {
+      const requests = whResponse.value.map((r) => {
+        return useBackend<MovieModel, null>({
+          url: BASE_URL + "movie",
+          method: HttpMethod.GET,
+          additionalUrl: "/" + r.kinopoiskId,
+          token,
+        });
+      });
+      const mResponses = await Promise.all(requests);
+      moviesLater.value.length = 0;
+      for (const resp of mResponses) {
+        if (resp && !resp.error.value && resp.response && resp.response.value) {
+          moviesLater.value?.push(resp.response.value);
+        }
+      }
+    }
+    showLoading.value = whLoading.value;
+  };
+
   return {
     moviesHistory,
     watchHistory,
     moviesLater,
+    critiqueMovies,
     showError,
     watchLater,
     showSuccess,
     showLoading,
     getWatchedHistory,
     getWatchedLater,
+    getMyCritiques,
   };
 });

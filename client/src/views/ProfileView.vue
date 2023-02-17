@@ -6,14 +6,15 @@
       :user="user"
       @open-dialog="dialog = true"
     ></ProfileInfo>
-    <v-divider></v-divider>
+    <v-divider color="orange" thickness="4"></v-divider>
     <ProfileWatchHistory
       :movies="moviesHistoryWithWatchedDate"
     ></ProfileWatchHistory>
-    <v-divider></v-divider>
+    <v-divider color="orange" thickness="4"></v-divider>
     <ProfileWatchLater :movies="moviesLater"></ProfileWatchLater>
-    <v-divider></v-divider>
-    <v-divider></v-divider>
+    <v-divider color="orange" thickness="4"></v-divider>
+    <ProfileCritiques :movies="critiqueMovies"></ProfileCritiques>
+    <v-divider color="orange" thickness="4"></v-divider>
     <v-dialog v-model="dialog" max-width="500">
       <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
     </v-dialog>
@@ -26,6 +27,7 @@ import { useAuthStore } from "@/stores/authStore";
 import ProfileInfo from "@/components/ProfileInfo.vue";
 import ProfileWatchHistory from "@/components/ProfileWatchHistory.vue";
 import ProfileWatchLater from "@/components/ProfileWatchLater.vue";
+import ProfileCritiques from "@/components/ProfileCritiques.vue";
 
 import { useUserDataStore } from "@/stores/userDataStore";
 import ProfileEdit from "@/components/ProfileEdit.vue";
@@ -37,8 +39,9 @@ const { user, token } = storeToRefs(authStore);
 
 const userDataStore = useUserDataStore();
 const { showLoading } = storeToRefs(userDataStore);
-const { getWatchedHistory, getWatchedLater } = userDataStore;
-const { moviesHistory, watchHistory, moviesLater } = storeToRefs(userDataStore);
+const { getWatchedHistory, getWatchedLater, getMyCritiques } = userDataStore;
+const { moviesHistory, watchHistory, moviesLater, critiqueMovies } =
+  storeToRefs(userDataStore);
 const moviesHistoryWithWatchedDate = computed(() => {
   return moviesHistory.value.map((movie) => {
     const watched = watchHistory.value.find(
@@ -54,6 +57,7 @@ const moviesHistoryWithWatchedDate = computed(() => {
 if (user.value && token.value) {
   getWatchedHistory(user.value.id, token.value);
   getWatchedLater(user.value.id, token.value);
+  getMyCritiques(user.value.id, token.value);
 }
 </script>
-<style lang=""></style>
+<style lang="" scoped></style>
