@@ -48,7 +48,7 @@ function onClick() {
   color: var(--color-text);
 }
 
-.tac{
+.tac {
   text-align: center;
 }
 .red {

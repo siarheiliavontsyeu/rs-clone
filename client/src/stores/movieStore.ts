@@ -28,6 +28,9 @@ import {
 } from "@/api";
 import { defineStore } from "pinia";
 import { useSearchStore } from "./searchStore";
+import useBackend from "@/use/useBackend";
+import { BASE_URL } from "@/constants/backend";
+import { HttpMethod } from "@/types/fetch.types";
 
 type movieStoreStateTypes = {
   movie: MovieI;
@@ -117,16 +120,27 @@ export const useMovieStore = defineStore("movie", {
       return state.movie.ratingAgeLimits?.replace(/\D/g, "");
     },
     positiveReviewPercentage: (state) => {
-      return (state.reviewObj.totalPositiveReviews / state.reviewObj.total *100).toFixed(2)
+      return (
+        (state.reviewObj.totalPositiveReviews / state.reviewObj.total) *
+        100
+      ).toFixed(2);
     },
     negativeReviewPercentage: (state) => {
-      return (state.reviewObj.totalNegativeReviews / state.reviewObj.total *100).toFixed(2)
+      return (
+        (state.reviewObj.totalNegativeReviews / state.reviewObj.total) *
+        100
+      ).toFixed(2);
     },
     neutralReviewPercentage: (state) => {
-      return (state.reviewObj.totalNeutralReviews / state.reviewObj.total *100).toFixed(2)
+      return (
+        (state.reviewObj.totalNeutralReviews / state.reviewObj.total) *
+        100
+      ).toFixed(2);
     },
     episodes: (state) => {
-      return state.seasons.find((season) => season.number === state.currentSeason)?.episodes
+      return state.seasons.find(
+        (season) => season.number === state.currentSeason
+      )?.episodes;
     },
     marketing: (state) => {},
 
@@ -134,7 +148,31 @@ export const useMovieStore = defineStore("movie", {
   },
   actions: {
     async getMovieById(id: number) {
+      const movieUrl = BASE_URL + "movie/";
+      const { response, error } = await useBackend({
+        url: movieUrl,
+        additionalUrl: id,
+      });
       this.movie = await getMovieById(id);
+      await this.getReviews(id)
+      if (error.value) {
+        await useBackend({
+          url: movieUrl,
+          additionalUrl: id,
+          method: HttpMethod.PUT,
+          body: {
+            kinopoiskId: String(this.movie.kinopoiskId),
+            imdbId: String(this.movie.imdbId),
+            nameRu: this.movie.nameRu,
+            nameOriginal: this.movie.nameEn,
+            posterUrlPreview: this.movie.posterUrlPreview,
+            ratingKinopoisk: this.movie.ratingKinopoisk,
+            reviews: this.movie.,
+            critiques: [],
+            watchedAt: new Date().toISOString(),
+          },
+        });
+      }
     },
     async getSeasons(id: number) {
       const data = await getTvShowSeasons(id);
@@ -187,32 +225,17 @@ export const useMovieStore = defineStore("movie", {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
       await this.getMovieById(id);
-      await this.getStaff(id);
-      await this.getBoxOffice(id);
-      await this.getDistribution(id);
-      await this.getSequelsAndPrequels(id);
-      await this.getSimilars(id);
-      await this.getFacts(id);
-      await this.getAwards(id);
-      await this.getImages(id);
-      await this.getReviews(id);
-      // await this.getVideos(id);
-      await this.getSeasons(id);
+      // await this.getStaff(id);
+      // await this.getBoxOffice(id);
+      // await this.getDistribution(id);
+      // await this.getSequelsAndPrequels(id);
+      // await this.getSimilars(id);
+      // await this.getFacts(id);
+      // await this.getAwards(id);
+      // await this.getImages(id);
+      // // await this.getVideos(id);
+      // await this.getSeasons(id);
       searchStore.unsetIsLoading();
     },
   },
 });
-// total: number;
-//   totalPages: number;
-//   totalPositiveReviews: number;
-//   totalNegativeReviews: number;
-//   totalNeutralReviews: number;
-//   items: ReviewResponseI[];
-//   kinopoiskId: number;
-//   type: ReviewTypeEnum;
-//   date: string;
-//   positiveRating: number;
-//   negativeRating: number;
-//   author: string;
-//   title: string;
-//   description: string;

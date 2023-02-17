@@ -37,8 +37,8 @@ export type UsableBackend<T> = Promise<{
 
 export interface BackendProperties<K> {
   url: string;
-  additionalUrl: string;
+  additionalUrl: string|number;
   body?: K;
-  method: HttpMethod;
+  method?: HttpMethod;
   token?: string;
 }
