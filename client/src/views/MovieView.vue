@@ -301,11 +301,11 @@
         </div>
       </div>
     </v-container>
-    <SubmitReview />
+    <SubmitReview v-show="authStore.user" :movieId="$route.params.movieId" />
   </v-container>
 </template>
 <script setup lang="ts">
-import { watch, computed, onMounted } from "vue";
+import { watch, computed } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 import { useSearchStore } from "@/stores/searchStore";
@@ -355,14 +355,12 @@ watch(
   },
   { deep: true }
 );
-onMounted(() => {
-  if (!Array.isArray(route.params.movieId)) {
-    
-    if (!userDataStore.moviesHistory.map(m => m.kinopoiskId).includes(route.params.movieId)){
-      movieStore.addToWatchHistory(route.params.movieId);
-    }
+
+if (!Array.isArray(route.params.movieId)) {
+  if (userDataStore.moviesHistory.map(m => m.kinopoiskId).includes(route.params.movieId)) {
+    movieStore.addToWatchHistory(route.params.movieId);
   }
-})
+}
 movieStore.getAllInfo(Number(route.params.movieId));
 </script>
 

@@ -49,12 +49,11 @@ const router = createRouter({
         {
           path: "/movie/:movieId",
           name: "movie",
-          redirect: { name: "review" },
           component: () => import("../views/MovieView.vue"),
           children: [
             {
               name: "review",
-              path: "review",
+              path: "",
               component: () => import("../views/MovieViews/ReviewView.vue"),
             },
             {

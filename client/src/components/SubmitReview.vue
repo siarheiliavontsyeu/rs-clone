@@ -14,7 +14,7 @@
                         label="Текст" variant="outlined"></v-textarea>
                 </div>
                 <div class="buttons">
-                    <v-btn class="submit">Опубликовать рецензию</v-btn>
+                    <v-btn class="submit" @click="onReviewSubmit">Опубликовать рецензию</v-btn>
                     <v-btn class="check" variant="text" @click="onReviewViewChange">Предварительный просмотр</v-btn>
                 </div>
             </div>
@@ -32,6 +32,9 @@
     <v-snackbar v-model="noType" color="#f50" timeout="4000" location="bottom left" variant="tonal">
         Необходимо выбрать тип рецензии. Текст рецензии отсутствует
     </v-snackbar>
+    <v-snackbar v-model="noTitle" color="#f50" timeout="4000" location="bottom left" variant="tonal">
+        Отсутствует заголовок рецензии
+    </v-snackbar>
     <v-snackbar v-model="noDescription" color="#f50" timeout="4000" location="bottom left" variant="tonal">
         Текст рецензии отсутствует
     </v-snackbar>
@@ -41,10 +44,13 @@
 </template>
 <script setup lang="ts">
 import { useAuthStore } from "@/stores/authStore";
+import { useMovieStore } from "@/stores/movieStore";
 import ReviewCard from "@/components/ReviewCard.vue";
 import { ref } from "vue";
 
 const authStore = useAuthStore();
+const movieStore = useMovieStore();
+
 const writeView = ref(false);
 
 const reviewType = ref();
@@ -53,6 +59,8 @@ const description = ref("");
 const noType = ref(false);
 const noDescription = ref(false);
 const noDescriptionLength = ref(false);
+const noTitle = ref(false);
+const props = defineProps<{ movieId: string | string[] }>();
 
 let review = {
     type: reviewType.value,
@@ -74,10 +82,15 @@ const onReviewViewChange = () => {
     const isError = [
         noType.value,
         noDescription.value,
+        noTitle.value,
         noDescriptionLength.value,
     ];
     if (!reviewType.value) {
         noType.value = true;
+        return;
+    }
+    if (!title.value) {
+        noTitle.value = true;
         return;
     }
     if (!description.value) {
@@ -102,6 +115,36 @@ const onReviewViewChange = () => {
     }
 };
 
+const onReviewSubmit = () => {
+    if (!Array.isArray(props.movieId)) {
+        const isError = [
+            noType.value,
+            noDescription.value,
+            noTitle.value,
+            noDescriptionLength.value,
+        ];
+        if (!reviewType.value) {
+            noType.value = true;
+            return;
+        }
+        if (!title.value) {
+            noTitle.value = true;
+            return;
+        }
+        if (!description.value) {
+            noDescription.value = true;
+            return;
+        }
+        if (description.value.length < 50) {
+            noDescriptionLength.value = true;
+            return;
+        }
+        if (!isError.some((err) => err === true)) {
+            movieStore.submitReview(props.movieId, description.value, title.value, reviewType.value);
+        }
+
+    }
+}
 const rules = [(v: string) => v.length <= 200 || "Максимум 200 символов"];
 </script>
 <style scoped>

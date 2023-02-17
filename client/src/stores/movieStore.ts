@@ -250,6 +250,40 @@ export const useMovieStore = defineStore("movie", {
         });
       }
     },
+    rateMovieByStars(id: number, rating: number) {
+      const userStore = useAuthStore();
+      if (userStore.user && userStore.token) {
+        useBackend({
+          url: BASE_URL + "movie/",
+          additionalUrl: String(id) + "/review",
+          method: HttpMethod.POST,
+          token: userStore.token,
+          body: {
+            rating,
+            userId: userStore.user.id,
+            text: "",
+          },
+        });
+      }
+    },
+    submitReview(id: string, text: string, title: string, type: string) {
+      const userStore = useAuthStore();
+      if (userStore.user && userStore.token) {
+        useBackend({
+          url: BASE_URL + "movie/",
+          additionalUrl: id + "/critique",
+          method: HttpMethod.POST,
+          token: userStore.token,
+          body: {
+            text,
+            userId: userStore.user.id,
+            title,
+            type
+          },
+        });
+      }
+    },
+
     async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
