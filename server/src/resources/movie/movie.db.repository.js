@@ -48,21 +48,23 @@ const remove = async id => {
   return movie;
 };
 
-const createReview = async ({ kinopoiskId, userId, ...body }) => {
-  const movie = await Movie.findOne({ kinopoiskId });
-  if (!movie) {
-    throw new NOT_FOUND_ERROR(ENTITY_NAME, { kinopoiskId });
-  }
-  const updateMovie = await Movie.findOneAndUpdate(
-    { kinopoiskId, 'reviews.userId': { $ne: userId } },
-    { $push: { reviews: { userId, ...body, at: Date.now() } } },
-    { new: true }
-  );
-  if (!updateMovie) {
-    throw new DUPLICATE(`${ENTITY_NAME} review`, {
-      kinopoiskId,
-      userId
-    });
+const createOrUpdateReview = async ({ kinopoiskId, userId, ...body }) => {
+  const filter = { kinopoiskId };
+  const updateInsert = {
+    $push: { reviews: { userId, ...body, at: Date.now() } }
+  };
+  const updateUpdate = {
+    $set: { 'reviews.$[review]': { userId, ...body, at: Date.now() } }
+  };
+  const options = {
+    new: true,
+    upsert: true,
+    arrayFilters: [{ 'review.userId': userId }]
+  };
+
+  const updatedMovie = await Movie.updateOne(filter, updateUpdate, options);
+  if (updatedMovie.nModified === 0) {
+    await Movie.updateOne(filter, updateInsert, options);
   }
 };
 
@@ -157,7 +159,7 @@ module.exports = {
   getRating,
   create,
   remove,
-  createReview,
+  createOrUpdateReview,
   createCritique,
   updateUseful,
   updateUseLess,

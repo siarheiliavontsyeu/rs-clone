@@ -4,9 +4,9 @@ const reviewService = require('./review.service');
 const validator = require('../../../utils/validation/validator');
 const { review } = require('../../../utils/validation/schemas');
 
-router.route('/').post([validator(review, 'body')], async (req, res) => {
+router.route('/').put([validator(review, 'body')], async (req, res) => {
   const { kinopoiskId } = req.params;
-  await reviewService.create({ ...req.body, kinopoiskId });
+  await reviewService.createOrUpdate({ ...req.body, kinopoiskId });
   res.sendStatus(CREATED);
 });
 
