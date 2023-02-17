@@ -220,14 +220,29 @@ export const useMovieStore = defineStore("movie", {
     setCurrentSeason(season: number) {
       this.currentSeason = season;
     },
-    setWatchLater(id:string) {
+    setWatchLater(id: string) {
       const userStore = useAuthStore();
-      
-      if (userStore.user) {
+      if (userStore.user && userStore.token) {
         useBackend({
           url: BASE_URL + "watch-later",
           additionalUrl: "",
           method: HttpMethod.POST,
+          token: userStore.token,
+          body: {
+            kinopoiskId: id,
+            userId: userStore.user.id,
+          },
+        });
+      }
+    },
+    addToWatchHistory(id: string) {
+      const userStore = useAuthStore();
+      if (userStore.user && userStore.token) {
+        useBackend({
+          url: BASE_URL + "watch-history",
+          additionalUrl: "",
+          method: HttpMethod.POST,
+          token: userStore.token,
           body: {
             kinopoiskId: id,
             userId: userStore.user.id,

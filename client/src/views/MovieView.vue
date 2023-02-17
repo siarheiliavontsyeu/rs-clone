@@ -305,7 +305,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { watch, computed } from "vue";
+import { watch, computed, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 import { useSearchStore } from "@/stores/searchStore";
@@ -320,9 +320,11 @@ import {
 import { personDate } from "@/helpers/date";
 import ReviewCard from "@/components/ReviewCard.vue";
 import WatchLaterButtonVue from "@/components/WatchLaterButton.vue";
+import { useUserDataStore } from "@/stores/userDataStore";
 
 const movieStore = useMovieStore();
 const searchStore = useSearchStore();
+const userDataStore = useUserDataStore();
 const authStore = useAuthStore();
 const route = useRoute();
 
@@ -353,7 +355,14 @@ watch(
   },
   { deep: true }
 );
-
+onMounted(() => {
+  if (!Array.isArray(route.params.movieId)) {
+    
+    if (!userDataStore.moviesHistory.map(m => m.kinopoiskId).includes(route.params.movieId)){
+      movieStore.addToWatchHistory(route.params.movieId);
+    }
+  }
+})
 movieStore.getAllInfo(Number(route.params.movieId));
 </script>
 
