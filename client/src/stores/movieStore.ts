@@ -1,12 +1,15 @@
 import type {
   AwardI,
   BoxOfficeI,
+  CritiqueModel,
   DistributionI,
   FactI,
   ImageI,
   MovieI,
+  MovieModel,
   MovieSequelsAndPrequelsResponseI,
   RelatedMovieI,
+  ReviewModel,
   ReviewsResponseI,
   SeasonI,
   StaffResponseI,
@@ -32,6 +35,8 @@ import useBackend from "@/use/useBackend";
 import { BASE_URL } from "@/constants/backend";
 import { HttpMethod } from "@/types/fetch.types";
 import { useAuthStore } from "./authStore";
+import { useUserDataStore } from "./userDataStore";
+import type { WatchHistoryModel } from "@/types/user.types";
 
 type movieStoreStateTypes = {
   movie: MovieI;
@@ -47,6 +52,10 @@ type movieStoreStateTypes = {
   images: ImageI[];
   staff: StaffResponseI[];
   currentSeason: number;
+  currentMovie: WatchHistoryModel | MovieModel | null;
+  currentMovieCritique: CritiqueModel[] | null;
+  currentMovieReview: ReviewModel | null;
+  currentMovieRating: number;
 };
 
 export const useMovieStore = defineStore("movie", {
@@ -64,6 +73,10 @@ export const useMovieStore = defineStore("movie", {
     images: [],
     staff: [],
     currentSeason: 1,
+    currentMovie: null,
+    currentMovieCritique: [],
+    currentMovieReview: {} as ReviewModel,
+    currentMovieRating: 0,
   }),
   getters: {
     movieMainActors: (state) => {
@@ -120,23 +133,47 @@ export const useMovieStore = defineStore("movie", {
     allowedAge: (state) => {
       return state.movie.ratingAgeLimits?.replace(/\D/g, "");
     },
-    positiveReviewPercentage: (state) => {
-      return (
-        (state.reviewObj.totalPositiveReviews / state.reviewObj.total) *
-        100
-      ).toFixed(2);
+    totalReviewsCount: (state) => {
+      const kpReviews = state.reviewObj.total || 0;
+      const customReview = state.currentMovieCritique?.length || 0;
+      return kpReviews + customReview;
     },
-    negativeReviewPercentage: (state) => {
-      return (
-        (state.reviewObj.totalNegativeReviews / state.reviewObj.total) *
-        100
-      ).toFixed(2);
+    totalPositiveReviewCount: (state) => {
+      const kpPositiveReviewCount = state.reviewObj.totalPositiveReviews || 0;
+      const customPositiveReviewCount =
+        state.currentMovieCritique?.filter((c) => c.type === "positive")
+          .length || 0;
+      return kpPositiveReviewCount + customPositiveReviewCount;
     },
-    neutralReviewPercentage: (state) => {
-      return (
-        (state.reviewObj.totalNeutralReviews / state.reviewObj.total) *
-        100
-      ).toFixed(2);
+    negativeReviewCount: (state) => {
+      const kpNegativeReviewCount = state.reviewObj.totalNegativeReviews || 0;
+      const customNegativeReviewCount =
+        state.currentMovieCritique?.filter((c) => c.type === "negative")
+          .length || 0;
+      return kpNegativeReviewCount + customNegativeReviewCount;
+    },
+    neutralReviewCount: (state) => {
+      const kpNeutralReviewCount = state.reviewObj.totalNeutralReviews || 0;
+      const customNeutralReviewCount =
+        state.currentMovieCritique?.filter((c) => c.type === "neutral")
+          .length || 0;
+      return kpNeutralReviewCount + customNeutralReviewCount;
+    },
+    positiveReviewPercentage: function () {
+      const overall =
+        Number(this.totalPositiveReviewCount) /
+          Number(this.totalReviewsCount) || 0; // ts ругается
+      return (overall * 100).toFixed(2);
+    },
+    negativeReviewPercentage: function () {
+      const overall =
+        Number(this.negativeReviewCount) / Number(this.totalReviewsCount); // ts ругается
+      return (overall * 100).toFixed(2);
+    },
+    neutralReviewPercentage: function () {
+      const overall =
+        Number(this.neutralReviewCount) / Number(this.totalReviewsCount); // ts ругается
+      return (overall * 100).toFixed(2);
     },
     episodes: (state) => {
       return state.seasons.find(
@@ -144,33 +181,57 @@ export const useMovieStore = defineStore("movie", {
       )?.episodes;
     },
     marketing: (state) => {},
-
-    // loweredSearchText: (state) => state.searchText.toLocaleLowerCase(),
   },
   actions: {
     async getMovieById(id: number) {
+      const userDataStore = useUserDataStore();
+      const userStore = useAuthStore();
       const movieUrl = BASE_URL + "movie";
-      const { error } = await useBackend({
-        url: movieUrl,
-        additionalUrl: "/" + id,
-      });
       this.movie = await getMovieById(id);
-      if (error.value) {
-        await useBackend({
+      try {
+        const { error, response } = await useBackend<MovieModel, null>({
           url: movieUrl,
-          additionalUrl: "",
-          method: HttpMethod.POST,
-          body: {
-            kinopoiskId: String(this.movie.kinopoiskId),
-            imdbId: String(this.movie.imdbId),
-            nameRu: this.movie.nameRu,
-            nameOriginal: this.movie.nameOriginal,
-            posterUrlPreview: this.movie.posterUrlPreview,
-            ratingKinopoisk: this.movie.ratingKinopoisk,
-            reviews: [],
-            critiques: [],
-          },
+          additionalUrl: "/" + id,
         });
+        if (error.value) {
+          const { response } = await useBackend<MovieModel, MovieModel>({
+            url: movieUrl,
+            additionalUrl: "",
+            method: HttpMethod.POST,
+            body: {
+              kinopoiskId: String(this.movie.kinopoiskId),
+              imdbId: String(this.movie.imdbId),
+              nameRu: this.movie.nameRu,
+              nameOriginal: this.movie.nameOriginal,
+              posterUrlPreview: this.movie.posterUrlPreview,
+              ratingKinopoisk: this.movie.ratingKinopoisk,
+              reviews: [],
+              critiques: [],
+            },
+          });
+          this.currentMovie = response?.value || null;
+        } else {
+          this.currentMovie = response?.value || null;
+          if (this.currentMovie) {
+            this.currentMovieCritique = this.currentMovie.critiques;
+            if (userStore.user && userStore.token) {
+              this.currentMovieReview =
+                this.currentMovie.reviews.find(
+                  (r) => r.userId === userStore.user?.id
+                ) || null;
+              this.currentMovieRating = this.currentMovieReview?.rating || 0;
+            }
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+      if (
+        !userDataStore.watchHistory
+          .map((m) => m.kinopoiskId)
+          .includes(String(id))
+      ) {
+        this.addToWatchHistory(String(id));
       }
     },
     async getSeasons(id: number) {
@@ -256,7 +317,7 @@ export const useMovieStore = defineStore("movie", {
         useBackend({
           url: BASE_URL + "movie/",
           additionalUrl: String(id) + "/review",
-          method: HttpMethod.POST,
+          method: HttpMethod.PUT,
           token: userStore.token,
           body: {
             rating,
@@ -278,7 +339,7 @@ export const useMovieStore = defineStore("movie", {
             text,
             userId: userStore.user.id,
             title,
-            type
+            type,
           },
         });
       }

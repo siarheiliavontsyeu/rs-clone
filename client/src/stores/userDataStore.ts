@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import useBackend from "@/use/useBackend";
 import { HttpMethod } from "@/types/fetch.types";
 import { BASE_URL } from "@/constants/backend";
@@ -57,23 +57,6 @@ export const useUserDataStore = defineStore("userData", () => {
     } else {
       showError.value = true;
     }
-    if (whResponse && whResponse.value) {
-      const requests = whResponse.value.map((r) => {
-        return useBackend<MovieModel, null>({
-          url: BASE_URL + "movie",
-          method: HttpMethod.GET,
-          additionalUrl: "/" + r.kinopoiskId,
-          token,
-        });
-      });
-      const mResponses = await Promise.all(requests);
-      moviesHistory.value.length = 0;
-      for (const resp of mResponses) {
-        if (resp && !resp.error.value && resp.response && resp.response.value) {
-          moviesHistory.value?.push(resp.response.value);
-        }
-      }
-    }
     showLoading.value = whLoading.value;
   };
 
@@ -96,23 +79,6 @@ export const useUserDataStore = defineStore("userData", () => {
     } else {
       showError.value = true;
     }
-    if (whResponse && whResponse.value) {
-      const requests = whResponse.value.map((r) => {
-        return useBackend<MovieModel, null>({
-          url: BASE_URL + "movie",
-          method: HttpMethod.GET,
-          additionalUrl: "/" + r.kinopoiskId,
-          token,
-        });
-      });
-      const mResponses = await Promise.all(requests);
-      moviesLater.value.length = 0;
-      for (const resp of mResponses) {
-        if (resp && !resp.error.value && resp.response && resp.response.value) {
-          moviesLater.value?.push(resp.response.value);
-        }
-      }
-    }
     showLoading.value = whLoading.value;
   };
 
@@ -121,6 +87,7 @@ export const useUserDataStore = defineStore("userData", () => {
     watchHistory,
     moviesLater,
     showError,
+    watchLater,
     showSuccess,
     showLoading,
     getWatchedHistory,

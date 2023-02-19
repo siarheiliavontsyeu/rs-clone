@@ -1,14 +1,14 @@
 <template>
   <div class="review" :class="review.type.toLowerCase()">
     <div class="header">
-      <div>{{ review.author }}</div>
+      <div>{{ review.userId }}</div>
       <div>{{ date }}</div>
     </div>
     <div class="content">
       <v-expansion-panels>
         <v-expansion-panel
           :title="review.title || 'Коммент'"
-          :text="review.description"
+          :text="review.text"
         >
         </v-expansion-panel>
       </v-expansion-panels>
@@ -16,25 +16,25 @@
     <div class="footer">
       <v-btn class="ma-2" variant="text" color="green-darken-1"
         ><v-icon start icon="mdi-thumb-up"></v-icon>Полезно
-        {{ review.positiveRating }}</v-btn
+        {{ review.useful }}</v-btn
       >
       <v-btn class="ma-2" variant="text" color="red"
         ><v-icon start icon="mdi-thumb-down"></v-icon>Нет
-        {{ review.negativeRating }}</v-btn
+        {{ review.useless }}</v-btn
       >
     </div>
   </div>
 </template>
 <script setup lang="ts">
-import type { ReviewResponseI } from "@/types/movies.types";
+import type { CritiqueModel } from "@/types/movies.types";
 import { computed } from "vue";
 
 const props = defineProps<{
-  review: Omit<ReviewResponseI, "kinopoiskId">;
+  review: CritiqueModel;
 }>();
 
 const date = computed(() => {
-  const date_ = new Date(props.review.date);
+  const date_ = new Date(props.review.at);
   const reviewDate = date_.toLocaleDateString("ru-RU", {
     day: "numeric",
     month: "long",

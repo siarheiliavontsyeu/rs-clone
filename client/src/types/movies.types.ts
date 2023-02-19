@@ -472,9 +472,14 @@ export interface ReviewModel {
 }
 
 export interface CritiqueModel {
-  userId: string;
-  text: string;
+  _id: string;
   at: string;
+  text: string;
+  title: string;
+  type: string;
+  useful: number;
+  useless: number;
+  userId: string;
 }
 
 export interface MovieModel {
