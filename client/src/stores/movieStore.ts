@@ -349,17 +349,17 @@ export const useMovieStore = defineStore("movie", {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
       await this.getMovieById(id);
-      // await this.getStaff(id);
-      // await this.getBoxOffice(id);
-      // await this.getDistribution(id);
-      // await this.getReviews(id)
-      // await this.getSequelsAndPrequels(id);
-      // await this.getSimilars(id);
-      // await this.getFacts(id);
-      // await this.getAwards(id);
-      // await this.getImages(id);
-      // // await this.getVideos(id);
-      // await this.getSeasons(id);
+      await this.getStaff(id);
+      await this.getBoxOffice(id);
+      await this.getDistribution(id);
+      await this.getReviews(id);
+      await this.getSequelsAndPrequels(id);
+      await this.getSimilars(id);
+      await this.getFacts(id);
+      await this.getAwards(id);
+      await this.getImages(id);
+      // await this.getVideos(id);
+      await this.getSeasons(id);
       searchStore.unsetIsLoading();
     },
   },
