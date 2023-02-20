@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h2>История просмотров</h2>
+        <h2 class="text-center">История просмотров</h2>
       </v-col>
     </v-row>
     <v-row> </v-row>
@@ -18,7 +18,6 @@
         lg="2"
       >
         <MovieCard :movie="hist.movie"></MovieCard>
-        {{ hist.movie }}
       </v-col>
     </v-row>
   </v-container>

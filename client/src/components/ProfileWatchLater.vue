@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h2>Посмотреть позже</h2>
+        <h2 class="text-center">Посмотреть позже</h2>
       </v-col>
     </v-row>
     <v-row> </v-row>

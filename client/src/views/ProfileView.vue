@@ -6,13 +6,13 @@
       :user="user"
       @open-dialog="dialog = true"
     ></ProfileInfo>
-    <v-divider color="orange" thickness="4"></v-divider>
+    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
     <ProfileWatchHistory :history="watchHistory"></ProfileWatchHistory>
-    <v-divider color="orange" thickness="4"></v-divider>
+    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
     <ProfileWatchLater :later="watchLater"></ProfileWatchLater>
-    <v-divider color="orange" thickness="4"></v-divider>
+    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
     <ProfileCritiques :movies="critiqueMovies"></ProfileCritiques>
-    <v-divider color="orange" thickness="4"></v-divider>
+    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
     <v-dialog v-model="dialog" max-width="500">
       <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
     </v-dialog>
@@ -46,4 +46,8 @@ if (user.value && token.value) {
   getMyCritiques(user.value.id, token.value);
 }
 </script>
-<style lang="" scoped></style>
+<style scoped>
+.divider-opacity {
+  opacity: 1;
+}
+</style>

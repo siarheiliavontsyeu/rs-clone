@@ -2,7 +2,7 @@
   <v-container fluid>
     <v-row align="center">
       <v-col>
-        <h2>Мои рецензии</h2>
+        <h2 class="text-center">Мои рецензии</h2>
       </v-col>
     </v-row>
     <v-row> </v-row>
@@ -14,8 +14,8 @@
         :key="index"
         cols="12"
         sm="6"
-        md="3"
-        lg="2"
+        md="4"
+        lg="3"
       >
         <v-card
           v-if="movie.critique"
