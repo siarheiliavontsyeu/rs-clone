@@ -150,6 +150,22 @@ export const useAuthStore = defineStore("auth", () => {
     router.push({ name: "login" });
   };
 
+  const getUserById = async (id: string) => {
+    const { loading, response, error } = await useBackend<UserModel, null>({
+      url: BASE_URL + "users/",
+      additionalUrl: id,
+    });
+    if (!error.value) {
+      showError.value = false;
+      if (response?.value) {
+        return response.value;
+      }
+    } else {
+      showError.value = true;
+    }
+    showLoading.value = loading.value;
+  };
+
   return {
     user,
     token,
@@ -159,5 +175,6 @@ export const useAuthStore = defineStore("auth", () => {
     logout,
     registration,
     update,
+    getUserById,
   };
 });

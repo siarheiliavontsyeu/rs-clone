@@ -6,7 +6,7 @@
     <div class="ratings">
       <h6 class="rating-title">Рейтинг фильма</h6>
       <div class="ratings-container">
-        <div class="stars">
+        <div class="stars" v-if="authStore.user">
           <v-rating
             v-model="rate"
             density="compact"
@@ -17,7 +17,20 @@
             half-increments
             length="10"
           ></v-rating>
-          <div>Ваша оценка {{ rate }}</div>
+          <div v-show="rate !== movieStore.movie.ratingKinopoisk">
+            Ваша оценка {{ rate }}
+          </div>
+        </div>
+        <div class="stars" v-else>
+          <v-rating
+            v-model="rate"
+            density="compact"
+            size="large"
+            active-color="deep-orange"
+            color="grey-lighten-2"
+            length="10"
+            readonly
+          ></v-rating>
         </div>
         <div class="review-counts">
           <div
@@ -44,10 +57,23 @@
 </template>
 <script setup lang="ts">
 import { properRates, ratingColor } from "@/helpers/composables";
+import { useAuthStore } from "@/stores/authStore";
 import { useMovieStore } from "@/stores/movieStore";
-import { ref } from "vue";
+import { useUserDataStore } from "@/stores/userDataStore";
+import { ref, watch } from "vue";
+
 const movieStore = useMovieStore();
-const rate = ref(movieStore.movie.ratingKinopoisk);
+const authStore = useAuthStore();
+
+const rate = ref(
+  movieStore.currentMovieRating || movieStore.movie.ratingKinopoisk
+);
+watch(
+  () => rate.value,
+  (newValue) => {
+    movieStore.rateMovieByStars(movieStore.movie.kinopoiskId, newValue);
+  }
+);
 </script>
 <style scoped>
 .description {

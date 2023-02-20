@@ -11,7 +11,7 @@ export default async function useBackend<T, K>({
   additionalUrl,
   body,
   method = HttpMethod.GET,
-  token = "",
+  token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZWYyYTQyMDZlODg4MDk5ZmMwYTM5NiIsImxvZ2luIjoiZ3Vlc3QiLCJpYXQiOjE2NzY2MTgzMjN9.r4LLLhpLjuSBc2hjrh1Gsi6T-kZVVDDzVaxzQha_uiU",
 }: BackendProperties<K>): UsableBackend<T> {
   const loading = ref<boolean>(true);
   const options: RequestInit = {
