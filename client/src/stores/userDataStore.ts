@@ -104,7 +104,6 @@ export const useUserDataStore = defineStore("userData", () => {
     watchLater,
     critiqueMovies,
     showError,
-    watchLater,
     showSuccess,
     showLoading,
     getWatchedHistory,

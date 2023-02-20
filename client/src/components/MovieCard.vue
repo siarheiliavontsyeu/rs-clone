@@ -41,7 +41,7 @@
       <v-btn
         :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }"
         prepend-icon="mdi-dots-horizontal-circle-outline"
-        color="primary"
+        color="#f50"
         >Подробнее</v-btn
       >
     </v-card-actions>

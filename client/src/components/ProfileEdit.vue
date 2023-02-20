@@ -33,8 +33,8 @@
       </v-form>
     </v-card-text>
     <v-card-actions>
-      <v-btn color="primary" text @click="$emit('close-dialog')">Отмена</v-btn>
-      <v-btn color="primary" text @click="update">Сохранить</v-btn>
+      <v-btn color="#f50" text @click="$emit('close-dialog')">Отмена</v-btn>
+      <v-btn color="#f50" text @click="update">Сохранить</v-btn>
     </v-card-actions>
   </v-card>
 </template>
