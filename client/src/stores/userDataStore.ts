@@ -8,9 +8,7 @@ import type { MovieModel } from "@/types/movies.types";
 
 export const useUserDataStore = defineStore("userData", () => {
   const watchHistory = ref<WatchHistoryModel[]>([]);
-  const moviesHistory = ref<MovieModel[]>([]);
   const watchLater = ref<WatchLaterModel[]>([]);
-  const moviesLater = ref<MovieModel[]>([]);
   const critiqueMovies = ref<MovieModel[]>([]);
 
   const showError = ref(false);
@@ -98,30 +96,12 @@ export const useUserDataStore = defineStore("userData", () => {
     } else {
       showError.value = true;
     }
-    if (whResponse && whResponse.value) {
-      const requests = whResponse.value.map((r) => {
-        return useBackend<MovieModel, null>({
-          url: BASE_URL + "movie",
-          method: HttpMethod.GET,
-          additionalUrl: "/" + r.kinopoiskId,
-          token,
-        });
-      });
-      const mResponses = await Promise.all(requests);
-      moviesLater.value.length = 0;
-      for (const resp of mResponses) {
-        if (resp && !resp.error.value && resp.response && resp.response.value) {
-          moviesLater.value?.push(resp.response.value);
-        }
-      }
-    }
     showLoading.value = whLoading.value;
   };
 
   return {
-    moviesHistory,
     watchHistory,
-    moviesLater,
+    watchLater,
     critiqueMovies,
     showError,
     watchLater,
