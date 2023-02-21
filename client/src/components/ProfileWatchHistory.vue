@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row align="center">
       <v-col>
         <h2 class="text-center">История просмотров</h2>
@@ -7,7 +7,7 @@
     </v-row>
     <v-row> </v-row>
   </v-container>
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col
         v-for="(hist, index) in history"

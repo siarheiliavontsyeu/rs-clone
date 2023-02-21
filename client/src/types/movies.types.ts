@@ -501,7 +501,7 @@ export interface ProfileCritiqueModel {
   nameOriginal: string;
   posterUrlPreview: string;
   ratingKinopoisk: number;
-  review: ReviewModel | undefined;
-  critique: CritiqueModel | undefined;
-  watchedAt: string | undefined;
+  review?: ReviewModel;
+  critique?: CritiqueModel;
+  watchedAt?: string;
 }

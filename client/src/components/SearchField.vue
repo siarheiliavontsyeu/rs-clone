@@ -65,7 +65,7 @@ const onFieldClear = () => {
   search.value = "";
 };
 </script>
-<style .scoped>
+<style scoped>
 .container {
   display: flex;
   justify-content: space-around;

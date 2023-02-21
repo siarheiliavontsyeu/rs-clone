@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row align="center">
       <v-col>
         <h2 class="text-center">Мои рецензии</h2>
@@ -7,7 +7,7 @@
     </v-row>
     <v-row> </v-row>
   </v-container>
-  <v-container fluid>
+  <v-container>
     <v-row>
       <v-col
         v-for="(movie, index) in reviews"
@@ -27,6 +27,7 @@
               :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }"
               ><v-img :src="movie.posterUrlPreview" height="100px"></v-img
             ></router-link>
+            {{ movie.nameRu }}
           </v-card-title>
           <v-card-text>
             <v-expansion-panels>
@@ -59,19 +60,22 @@ const props = defineProps<{
 }>();
 
 const reviews = computed<ProfileCritiqueModel[]>(() => {
-  return props.movies.map((movie) => {
-    return {
-      kinopoiskId: movie.kinopoiskId,
-      imdbId: movie.imdbId,
-      nameRu: movie.nameRu,
-      nameOriginal: movie.nameOriginal,
-      posterUrlPreview: movie.posterUrlPreview,
-      ratingKinopoisk: movie.ratingKinopoisk,
-      review: movie.reviews.find((m) => m.userId === user.value?.id),
-      critique: movie.critiques.find((c) => c.userId === user.value?.id),
-      watchedAt: movie.watchedAt,
-    };
-  });
+  const reviews = props.movies
+    .map((movie) => {
+      const critique = movie.critiques.find((c) => c.userId === user.value?.id);
+      const review = movie.reviews.find((m) => m.userId === user.value?.id);
+      if (critique) {
+        return {
+          ...movie,
+          critique,
+          review,
+        };
+      }
+      return null;
+    })
+    .filter(Boolean);
+
+  return reviews;
 });
 </script>
 <style scoped>

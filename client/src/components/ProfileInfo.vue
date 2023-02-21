@@ -1,5 +1,5 @@
 <template>
-  <v-container fluid>
+  <v-container>
     <v-row align="center">
       <v-col>
         <h2><v-icon dark> mdi-badge-account </v-icon>Профиль</h2>

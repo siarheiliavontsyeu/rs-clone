@@ -1,21 +1,39 @@
 <template>
   <MyLoader v-if="showLoading" />
   <template v-else>
-    <ProfileInfo
-      v-if="user"
-      :user="user"
-      @open-dialog="dialog = true"
-    ></ProfileInfo>
-    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
-    <ProfileWatchHistory :history="watchHistory"></ProfileWatchHistory>
-    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
-    <ProfileWatchLater :later="watchLater"></ProfileWatchLater>
-    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
-    <ProfileCritiques :movies="critiqueMovies"></ProfileCritiques>
-    <v-divider class="divider-opacity" color="orange" thickness="2"></v-divider>
-    <v-dialog v-model="dialog" max-width="500">
-      <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
-    </v-dialog>
+    <div class="container">
+      <ProfileInfo
+        v-if="user"
+        :user="user"
+        @open-dialog="dialog = true"
+      ></ProfileInfo>
+      <v-divider
+        class="divider-opacity"
+        color="orange"
+        thickness="2"
+      ></v-divider>
+      <ProfileWatchHistory :history="watchHistory"></ProfileWatchHistory>
+      <v-divider
+        class="divider-opacity"
+        color="orange"
+        thickness="2"
+      ></v-divider>
+      <ProfileWatchLater :later="watchLater"></ProfileWatchLater>
+      <v-divider
+        class="divider-opacity"
+        color="orange"
+        thickness="2"
+      ></v-divider>
+      <ProfileCritiques :movies="critiqueMovies"></ProfileCritiques>
+      <v-divider
+        class="divider-opacity"
+        color="orange"
+        thickness="2"
+      ></v-divider>
+      <v-dialog v-model="dialog" max-width="500">
+        <ProfileEdit @close-dialog="dialog = false"></ProfileEdit>
+      </v-dialog>
+    </div>
   </template>
 </template>
 <script setup lang="ts">
@@ -49,5 +67,12 @@ if (user.value && token.value) {
 <style scoped>
 .divider-opacity {
   opacity: 1;
+}
+.container {
+  background-color: rgb(var(--v-theme-background));
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
 }
 </style>
