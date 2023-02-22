@@ -493,3 +493,15 @@ export interface MovieModel {
   critiques: CritiqueModel[];
   watchedAt?: string;
 }
+
+export interface ProfileCritiqueModel {
+  kinopoiskId: string;
+  imdbId: string;
+  nameRu: string;
+  nameOriginal: string;
+  posterUrlPreview: string;
+  ratingKinopoisk: number;
+  review?: ReviewModel;
+  critique?: CritiqueModel;
+  watchedAt?: string;
+}
