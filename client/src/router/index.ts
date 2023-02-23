@@ -74,6 +74,11 @@ const router = createRouter({
             },
           ],
         },
+        {
+          path: "/filters",
+          name: "filters",
+          component: () => import("../views/FiltersView.vue"),
+        },
       ],
     },
     {

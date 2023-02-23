@@ -20,6 +20,7 @@ import type {
   StaffResponseI,
   VideoResponseI,
   MoviesTopTypesEnum,
+  FilterOptionsI,
 } from "@/types/movies.types";
 
 const base = "https://kinopoiskapiunofficial.tech/api/";
@@ -200,19 +201,19 @@ export const getPersonBySearch = async (
   return resp.json();
 };
 
-export const getMovieFilters = async (
-  country?: number,
-  genre?: number,
+export const getMovieFilters = async ({
+  country,
+  genre,
   order = "RATING",
   type = "ALL",
   ratingFrom = 0,
   ratingTo = 10,
   yearFrom = 1000,
   yearTo = 3000,
-  imdbId?: string,
-  keyword?: string,
-  page = 1
-): Promise<MovieSearchByFiltersResponseI> => {
+  imdbId,
+  keyword,
+  page = 1,
+}: FilterOptionsI): Promise<MovieSearchByFiltersResponseI> => {
   const resp = await requestTemplate(
     `${movies}?
     countries=${country}&

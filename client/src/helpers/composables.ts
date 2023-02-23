@@ -77,7 +77,8 @@ export const properText = (text: string): string => {
     .replace(/&raquo;/gm, "»")
     .replace(/&#171;/gm, "«")
     .replace(/&#187;/gm, "»")
-    .replace(/&#160;/gm, " ");
+    .replace(/&#160;/gm, " ")
+    .replace(/&#8217;/gm, "'");
 };
 
 export const properRates = (rate: number): string => {

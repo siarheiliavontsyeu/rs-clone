@@ -7,6 +7,8 @@ import type {
   MovieSearchByFiltersI,
   PremiereMovieI,
   MoviesTopTypesEnum,
+  FilterOptionsI,
+  MovieSearchByFiltersResponseI,
 } from "@/types/movies.types";
 import {
   getAllCountriesAndGenres,
@@ -20,7 +22,8 @@ type moviesStoreStateTypes = {
   moviesFromCollection: MovieFromCollectionI[];
   genres: FilterGenreResponseI[];
   countries: FilterCountryResponseI[];
-  found: MovieSearchByFiltersI[];
+  foundMovies: MovieSearchByFiltersI[];
+  filtersRespone: MovieSearchByFiltersResponseI;
   premiereMovies: PremiereMovieI[];
   releaseSoonMovies: DigitalReleaseMovieI[];
 };
@@ -30,10 +33,19 @@ export const useMoviesStore = defineStore("movies", {
     moviesFromCollection: [],
     genres: [],
     countries: [],
-    found: [],
+    foundMovies: [],
     premiereMovies: [],
     releaseSoonMovies: [],
+    filtersRespone: {} as MovieSearchByFiltersResponseI,
   }),
+  getters: {
+    sortedCountries: (state) =>
+      state.countries
+        .filter((c) => c.id !== 54 && c.id !== 235)
+        .sort((a, b) => (a.country < b.country ? -1 : 1)),
+    sortedGenres: (state) =>
+      state.genres.filter((g) => g.id !== 25 && g.id !== 28),
+  },
   actions: {
     async getMovies(type: MoviesTopTypesEnum, page: number) {
       this.moviesFromCollection = await getMoviesByCollection(type, page).then(
@@ -45,9 +57,10 @@ export const useMoviesStore = defineStore("movies", {
       this.genres = genres;
       this.countries = countries;
     },
-    async getMovieFilters() {
-      const data = await getMovieFilters();
-      this.found = data.items;
+    async getMovieFilters(options: FilterOptionsI) {
+      const data = await getMovieFilters(options);
+      this.filtersRespone = data;
+      this.foundMovies = data.items;
     },
     async getPremiereMovies(year: number, month: string) {
       const data = await getPremiereMovies(year, month);
