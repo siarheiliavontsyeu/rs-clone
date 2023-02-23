@@ -29,6 +29,5 @@ import MovieCard from "@/components/MovieCard.vue";
 const props = defineProps<{
   movies: MovieModel[];
 }>();
-console.log(props.movies);
 </script>
 <style scoped></style>
