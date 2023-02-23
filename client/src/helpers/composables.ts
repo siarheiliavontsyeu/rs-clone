@@ -1,3 +1,5 @@
+import { MovieTypeEnum } from "@/types/movies.types";
+
 export const professionInRu = (profession: string) => {
   switch (profession) {
     case "WRITER":
@@ -30,6 +32,21 @@ export const professionInRu = (profession: string) => {
       return "Актер";
     case "VOICE_DIRECTOR":
       return "Озвучивает";
+    default:
+      return "Неизвестно";
+  }
+};
+
+export const properMovieCategory = (category: string): string => {
+  switch (category) {
+    case MovieTypeEnum.film:
+      return "Полнометражный";
+    case MovieTypeEnum.tvSeries:
+      return "Сериалы";
+    case MovieTypeEnum.tvShow:
+      return "Шоу";
+    case MovieTypeEnum.miniSeries:
+      return "Короткометражный";
     default:
       return "Неизвестно";
   }

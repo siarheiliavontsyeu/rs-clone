@@ -60,7 +60,11 @@ export const useMoviesStore = defineStore("movies", {
     async getMovieFilters(options: FilterOptionsI) {
       const data = await getMovieFilters(options);
       this.filtersRespone = data;
-      this.foundMovies = data.items;
+      if (options.page > 1) {
+        this.foundMovies.push(...data.items);
+      } else {
+        this.foundMovies = data.items;
+      }
     },
     async getPremiereMovies(year: number, month: string) {
       const data = await getPremiereMovies(year, month);

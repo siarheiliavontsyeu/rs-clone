@@ -171,14 +171,14 @@ export interface FilterOptionsI {
   country?: number;
   genre?: number;
   order?: string;
-  type?: Omit<MovieTypeEnum, MovieTypeEnum.video> | "ALL";
+  type?: string;
   ratingFrom?: number;
   ratingTo?: number;
   yearFrom?: number;
   yearTo?: number;
   imdbId?: string;
   keyword?: string;
-  page?: number;
+  page: number;
 }
 export interface GenreI {
   genre: string;
@@ -255,12 +255,12 @@ export interface MovieSearchByFiltersI {
   kinopoiskId: number;
   imdbId: string;
   nameRu: string;
-  nameEn: string;
+  nameEn: null;
   nameOriginal: string;
   countries: CountryI[];
   genres: GenreI[];
   ratingKinopoisk: number;
-  ratingImdb: number;
+  ratingImdb: number | null;
   year: number;
   type: MovieTypeEnum | "UNKNOWN";
   posterUrl: string;
