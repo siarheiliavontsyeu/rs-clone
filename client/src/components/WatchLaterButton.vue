@@ -20,7 +20,7 @@ const userDataStore = useUserDataStore();
 
 const isButtonDisabled = computed(() => {
   if (!Array.isArray(props.movieId)) {
-    return userDataStore.moviesLater
+    return userDataStore.watchLater
       .map((m) => m.kinopoiskId)
       .includes(props.movieId);
   } else return false;
