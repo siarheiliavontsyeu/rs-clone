@@ -456,3 +456,15 @@ export interface ReviewModel {
   text: string;
   at: string;
 }
+
+export interface ProfileCritiqueModel {
+  kinopoiskId: string;
+  imdbId: string;
+  nameRu: string;
+  nameOriginal: string;
+  posterUrlPreview: string;
+  ratingKinopoisk: number;
+  review?: ReviewModel;
+  critique?: CritiqueModel;
+  watchedAt?: string;
+}
