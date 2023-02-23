@@ -450,12 +450,7 @@ export interface MovieModel {
   critiques: CritiqueModel[];
   watchedAt?: string;
 }
-export interface ReviewModel {
-  userId: string;
-  rating: number;
-  text: string;
-  at: string;
-}
+
 
 export interface ProfileCritiqueModel {
   kinopoiskId: string;
@@ -467,4 +462,11 @@ export interface ProfileCritiqueModel {
   review?: ReviewModel;
   critique?: CritiqueModel;
   watchedAt?: string;
+}
+export interface ReviewModel {
+  userId: string;
+  rating: number;
+  text: string;
+  at: string;
+
 }
