@@ -18,7 +18,8 @@ const get = async userId => {
 
 const create = async history => {
   const existingHistory = await WatchHistory.findOne({
-    kinopoiskId: history.kinopoiskId
+    kinopoiskId: history.kinopoiskId,
+    userId: history.userId
   });
   if (existingHistory) {
     throw new DUPLICATE(`${ENTITY_NAME} kinopoiskId`, {
