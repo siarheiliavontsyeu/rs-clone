@@ -77,11 +77,15 @@ const onFieldClear = () => {
   border: 1px solid gray;
   border-radius: 5px;
   padding: 4px;
-  outline-color: #f50;
+}
+
+.search_field:hover {
+  border: 2px solid #f50;
+  transition: border 0.3s;
 }
 
 .search_field:focus {
-  border: 1px solid gray;
+  border: 2px solid gray;
 }
 
 .options {

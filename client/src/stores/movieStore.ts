@@ -202,7 +202,7 @@ export const useMovieStore = defineStore("movie", {
               kinopoiskId: String(this.movie.kinopoiskId),
               imdbId: String(this.movie.imdbId),
               nameRu: this.movie.nameRu,
-              nameOriginal: this.movie.nameOriginal,
+              nameOriginal: this.movie.nameOriginal || this.movie.nameRu,
               posterUrlPreview: this.movie.posterUrlPreview,
               ratingKinopoisk: this.movie.ratingKinopoisk,
               reviews: [],

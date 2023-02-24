@@ -20,6 +20,7 @@ import type {
   StaffResponseI,
   VideoResponseI,
   MoviesTopTypesEnum,
+  FilterOptionsI,
 } from "@/types/movies.types";
 
 const base = "https://kinopoiskapiunofficial.tech/api/";
@@ -200,32 +201,29 @@ export const getPersonBySearch = async (
   return resp.json();
 };
 
-export const getMovieFilters = async (
-  country?: number,
-  genre?: number,
+export const getMovieFilters = async ({
+  country,
+  genre,
   order = "RATING",
   type = "ALL",
   ratingFrom = 0,
   ratingTo = 10,
   yearFrom = 1000,
   yearTo = 3000,
-  imdbId?: string,
-  keyword?: string,
-  page = 1
-): Promise<MovieSearchByFiltersResponseI> => {
-  const resp = await requestTemplate(
-    `${movies}?
-    countries=${country}&
-    genres=${genre}&
-    order=${order}&
-    type=${type}&
-    ratingFrom=${ratingFrom}&
-    ratingTo=${ratingTo}&
-    yearFrom=${yearFrom}&
-    yearTo=${yearTo}&
-    imdbId=${imdbId}&
-    keyword=${keyword}&
-    page=${page}`
-  );
+  page = 1,
+}: FilterOptionsI): Promise<MovieSearchByFiltersResponseI> => {
+  const url = new URLSearchParams();
+  if (country) url.set("countries", String(country));
+  if (genre) url.set("genres", String(genre));
+  url.set("order", String(order));
+  url.set("type", String(type));
+  url.set("ratingFrom", String(ratingFrom));
+  url.set("ratingTo", String(ratingTo));
+  url.set("yearFrom", String(yearFrom));
+  url.set("yearTo", String(yearTo));
+  url.set("page", String(page));
+
+  const resp = await requestTemplate(`${movies}?${url}`);
+
   return resp.json();
 };
