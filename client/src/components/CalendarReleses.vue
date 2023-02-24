@@ -88,6 +88,7 @@ export default {
     ],
     movies: { isItemsReady: false, array: [] },
     date: new Date(),
+    authStore: useAuthStore(),
   }),
   props: {
     moviesProps: {
@@ -123,9 +124,6 @@ export default {
     },
   },
 };
-</script>
-<script setup lang="ts">
-const authStore = useAuthStore();
 </script>
 
 <style lang="css" scoped>

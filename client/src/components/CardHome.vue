@@ -131,6 +131,7 @@ export default {
   },
   data: () => ({
     movieCard: { isItemsReady: false, body: [], images: [] },
+    authStore: useAuthStore(),
   }),
   props: {
     movieProps: {
@@ -155,9 +156,6 @@ export default {
     },
   },
 };
-</script>
-<script setup lang="ts">
-const authStore = useAuthStore();
 </script>
 
 <style lang="css" scoped>
