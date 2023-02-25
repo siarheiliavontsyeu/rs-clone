@@ -4,10 +4,22 @@
       <v-row no-gutters>
         <v-list>
           <v-list-item
-            @click="$router.push({ name: item.link })"
+            @click="
+              $router.push(
+                item.link.length === 1
+                  ? {
+                      name: item.link[0],
+                    }
+                  : {
+                      name: item.link[0],
+                      params: { nameList: item.link[1] },
+                    }
+              )
+            "
             v-for="(item, i) in items"
             :key="i"
             :value="item"
+            :class="item.status"
             active-color="primary"
             variant="plain"
           >
@@ -34,6 +46,15 @@
             "
           >
             Топ 100 >
+          </slide-group>
+
+          <slide-group
+            color="grey-darken-3"
+            v-if="authStore.user"
+            class="w-100"
+            :moviesProps="moviesWatchLater"
+          >
+            Посмотреть позже >
           </slide-group>
 
           <slide-group
@@ -85,6 +106,7 @@ import {
 import SlideGroup from "@/components/SlideGroup.vue";
 import CalendarReleses from "@/components/CalendarReleses.vue";
 import CardHome from "@/components/CardHome.vue";
+import { useAuthStore } from "@/stores/authStore";
 export default {
   components: {
     SlideGroup,
@@ -93,11 +115,31 @@ export default {
   },
   data: () => ({
     items: [
-      { text: "Главная", icon: "mdi-home", link: "home" },
-      { text: "Онлайн-кинотеатр", icon: "mdi-television", link: "login" },
-      { text: "Фильмы", icon: "mdi-filmstrip", link: "login" },
-      { text: "Сериалы", icon: "mdi-filmstrip-box-multiple", link: "login" },
-      { text: "О команде", icon: "mdi-account-group", link: "about" },
+      { text: "Главная", icon: "mdi-home", link: ["home"], status: "active" },
+      {
+        text: "Онлайн-кинотеатр",
+        icon: "mdi-television",
+        link: ["login"],
+        status: "inactive",
+      },
+      {
+        text: "Фильмы",
+        icon: "mdi-filmstrip",
+        link: ["lists", "films"],
+        status: "none",
+      },
+      {
+        text: "Сериалы",
+        icon: "mdi-filmstrip-box-multiple",
+        link: ["lists", "serials"],
+        status: "none",
+      },
+      {
+        text: "О проекте",
+        icon: "mdi-account-group",
+        link: ["about"],
+        status: "none",
+      },
     ],
     month: [
       "JANUARY",
@@ -117,7 +159,7 @@ export default {
       isItemsReady: false,
       array: [],
     },
-    collectionMovies: {
+    moviesWatchLater: {
       isItemsReady: false,
       array: [],
     },
@@ -132,6 +174,7 @@ export default {
       images: [],
     },
     date: new Date(),
+    authStore: useAuthStore(),
   }),
   methods: {
     getMovieById(id: number) {
@@ -186,6 +229,25 @@ export default {
         })
         .catch((err) => {});
     },
+    getMoviesWatchLater() {
+      if (this.authStore.user) {
+        const userId = this.authStore.user.id;
+        fetch(`https://rs.globocenter.by:4000/watch-later/${userId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + this.authStore.token,
+          },
+        })
+          .then((movies) => movies.json())
+          .then((data) => {
+            this.moviesWatchLater.array = data.map((item) => item.movie);
+            this.moviesWatchLater.isItemsReady = true;
+            console.log(this.moviesWatchLater.array);
+          })
+          .catch((err) => {});
+      }
+    },
     addNewMonthFilms(trigger = false) {
       if (trigger) {
         if (this.month[this.date.getMonth() + 1] === undefined) {
@@ -210,6 +272,7 @@ export default {
       return ArrayFilms.filter((item) => item.nameRu.length !== 0);
     },
   },
+  computed() {},
   mounted() {
     this.addNewMonthFilms();
     this.getMovieById(685246);
@@ -217,6 +280,7 @@ export default {
     this.getMoviesByCollectionArr("top100");
     this.getMoviesByCollectionArr("top250");
     this.getMoviesByCollectionArr("topAwait");
+    this.getMoviesWatchLater();
   },
 };
 </script>
@@ -272,5 +336,15 @@ export default {
 }
 .card-logo {
   cursor: pointer;
+}
+.inactive {
+  opacity: 0.3;
+  pointer-events: none;
+}
+.active {
+  opacity: 1.5;
+  pointer-events: all;
+}
+.active:hover {
 }
 </style>
