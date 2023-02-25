@@ -2,11 +2,10 @@
   <v-app :theme="theme">
     <v-app-bar>
       <RouterLink :to="{ name: 'home' }" class="link home">
-        <img
-          src="https://fontmeme.com/permalink/230222/90dd6a080269539390d20737f37a639d.png"
-          alt="calligraphy-fonts"
-          border="0"
-        />
+        <img src="https://fontmeme.com/permalink/230224/338a7214be1736dc22bc6a8d2e51145a.png" alt="calligraphy-fonts"
+          border="0" v-if="theme === 'light'">
+        <img src="https://fontmeme.com/permalink/230224/9105c74b8b143f58b5913956d37c3072.png" alt="calligraphy-fonts"
+          border="0" v-else>
       </RouterLink>
       <v-spacer></v-spacer>
       <SearchField></SearchField>
@@ -22,7 +21,9 @@
       <ProfileBar></ProfileBar>
     </v-app-bar>
     <v-main class="main">
+      <!-- <v-parallax src="https://yastatic.net/s3/passport-auth-customs/customs/_/4vui26y6.jpg"> -->
       <router-view></router-view>
+      <!-- </v-parallax> -->
     </v-main>
     <ScrollToTop />
   </v-app>
@@ -79,7 +80,9 @@ moviesStore.getCountriesAndGenres();
 }
 
 .main {
-  background-color: rgb(var(--v-theme-on-surface-variant));
+  background-attachment: fixed;
+  background-size: cover;
+  background-image: url(https://yastatic.net/s3/passport-auth-customs/customs/_/4vui26y6.jpg);
 }
 
 .filters:hover {
@@ -90,5 +93,11 @@ moviesStore.getCountriesAndGenres();
 
 .home {
   padding-left: 10px;
+}
+
+@media (max-width:1200px) {
+  .home img {
+    width: 400px;
+  }
 }
 </style>

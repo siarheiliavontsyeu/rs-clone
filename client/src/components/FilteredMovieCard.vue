@@ -38,20 +38,9 @@
         </div>
       </div>
     </div>
-    <div class="later-btn">
-      <WatchLaterButtonVue
-        v-show="authStore.user"
-        :movieId="String(movie.kinopoiskId)"
-      />
-    </div>
     <div class="more-btn">
-      <v-btn
-        :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }"
-        variant="plain"
-        append-icon="mdi-dots-horizontal-circle-outline"
-        color="#f50"
-        >Подробнее</v-btn
-      >
+      <v-btn :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }" variant="plain"
+        append-icon="mdi-dots-horizontal-circle-outline" color="#f50">Подробнее</v-btn>
     </div>
   </v-card>
 </template>
@@ -59,10 +48,7 @@
 import type { MovieSearchByFiltersI } from "@/types/movies.types";
 import { computed } from "vue";
 import { properMovieCategory } from "@/helpers/composables";
-import WatchLaterButtonVue from "@/components/WatchLaterButton.vue";
-import { useAuthStore } from "@/stores/authStore";
 
-const authStore = useAuthStore();
 const props = defineProps<{ movie: MovieSearchByFiltersI }>();
 const genres = computed(() => {
   return props.movie.genres.map((g) => g.genre).join(", ");
@@ -78,7 +64,7 @@ const countries = computed(() => {
   display: grid;
   grid-template-areas:
     "p i i"
-    "l . m";
+    "p . m";
   gap: 10px;
   grid-template-columns: 208px 1fr;
   margin-bottom: 10px;
@@ -91,10 +77,6 @@ const countries = computed(() => {
 
 .info-block {
   grid-area: i;
-}
-
-.later-btn {
-  grid-area: l;
 }
 
 .more-btn {
