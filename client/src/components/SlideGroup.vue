@@ -29,7 +29,9 @@
               backgroundRepeat: 'no-repeat',
             }"
           >
-            <div class="rating">{{ movie.rating }}</div>
+            <div class="rating">
+              {{ movie.rating ?? movie.ratingKinopoisk }}
+            </div>
           </div>
         </v-card>
       </v-slide-group-item>
