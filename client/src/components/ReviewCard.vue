@@ -8,7 +8,7 @@
       <v-expansion-panels>
         <v-expansion-panel
           :title="review.title || 'Коммент'"
-          :text="review.description"
+          :text="properText(review.description)"
         >
         </v-expansion-panel>
       </v-expansion-panels>
@@ -28,6 +28,7 @@
 <script setup lang="ts">
 import type { ReviewResponseI } from "@/types/movies.types";
 import { computed } from "vue";
+import {properText} from '@/helpers/composables'
 
 const props = defineProps<{
   review: Omit<ReviewResponseI, "kinopoiskId">;

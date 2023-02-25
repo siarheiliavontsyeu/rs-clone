@@ -40,6 +40,8 @@ export const usePersonStore = defineStore("person", {
       const professionArray = data.films.map((movie) => movie.professionKey);
       this.professionKeys = new Set(professionArray);
       this.currentProfession = [...this.professionKeys][0];
+
+      return this.person.nameRu || this.person.nameEn;
     },
     setCurrentProfession(profession: string) {
       this.currentProfession = profession;

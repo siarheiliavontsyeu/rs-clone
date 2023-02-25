@@ -227,10 +227,12 @@ export const useMovieStore = defineStore("movie", {
         console.log(error);
       }
       if (
+        userDataStore.watchHistory &&
         !userDataStore.watchHistory
           .map((m) => m.kinopoiskId)
           .includes(String(id))
       ) {
+        console.log(userDataStore.watchHistory, id);
         this.addToWatchHistory(String(id));
       }
     },
@@ -296,7 +298,7 @@ export const useMovieStore = defineStore("movie", {
         });
       }
     },
-    addToWatchHistory(id: string) {
+    async addToWatchHistory(id: string) {
       const userStore = useAuthStore();
       if (userStore.user && userStore.token) {
         useBackend({
@@ -361,6 +363,7 @@ export const useMovieStore = defineStore("movie", {
       // await this.getVideos(id);
       await this.getSeasons(id);
       searchStore.unsetIsLoading();
+      return this.movie.nameRu || this.movie.nameOriginal;
     },
   },
 });
