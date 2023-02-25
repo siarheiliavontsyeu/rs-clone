@@ -75,7 +75,7 @@
 
           <watch-later-button
             v-if="authStore.user"
-            :movieId="movieCard.body.kinopoiskId"
+            :movieId="String(movieCard.body.kinopoiskId)"
           ></watch-later-button>
           <watch-later-button
             v-else

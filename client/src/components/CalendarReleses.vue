@@ -49,7 +49,7 @@
             <div class="container-btn-save">
               <watch-later-button
                 v-if="authStore.user"
-                :movieId="movie.kinopoiskId"
+                :movieId="String(movie.kinopoiskId)"
               ></watch-later-button>
               <watch-later-button
                 v-else
