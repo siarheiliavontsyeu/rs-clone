@@ -13,112 +13,44 @@
     <v-card class="options">
       <h5 class="mb-5">Фильтры</h5>
       <div>
-        <v-autocomplete
-          label="Страна"
-          :hide-no-data="true"
-          variant="solo"
-          clearable
-          aria-autocomplete="false"
-          v-model="chosenCountry"
-          :items="moviesStore.sortedCountries"
-          item-title="country"
-          item-value="id"
-        >
+        <v-autocomplete label="Страна" :hide-no-data="true" variant="solo" clearable aria-autocomplete="false"
+          v-model="chosenCountry" :items="moviesStore.sortedCountries" item-title="country" item-value="id">
           <template v-slot:item="{ props, item }">
-            <v-list-item
-              v-bind="props"
-              :title="item?.raw?.country"
-            ></v-list-item> </template
-        ></v-autocomplete>
+            <v-list-item v-bind="props" :title="item?.raw?.country"></v-list-item> </template></v-autocomplete>
       </div>
       <div>
-        <v-autocomplete
-          label="Жанр"
-          :hide-no-data="true"
-          variant="solo"
-          clearable
-          v-model="chosenGenre"
-          :items="moviesStore.sortedGenres"
-          item-title="genre"
-          item-value="id"
-        >
+        <v-autocomplete label="Жанр" :hide-no-data="true" variant="solo" clearable v-model="chosenGenre"
+          :items="moviesStore.sortedGenres" item-title="genre" item-value="id">
           <template v-slot:item="{ props, item }">
-            <v-list-item
-              v-bind="props"
-              :title="item?.raw?.genre"
-            ></v-list-item></template
-        ></v-autocomplete>
+            <v-list-item v-bind="props" :title="item?.raw?.genre"></v-list-item></template></v-autocomplete>
       </div>
       <div>
-        <v-select
-          label="Категория"
-          :hide-no-data="true"
-          variant="solo"
-          v-model="chosenCategory"
-          :items="categories"
-          item-title="title"
-          item-value="value"
-        >
+        <v-select label="Категория" :hide-no-data="true" variant="solo" v-model="chosenCategory" :items="categories"
+          item-title="title" item-value="value">
           <template v-slot:item="{ props, item }">
-            <v-list-item
-              v-bind="props"
-              :title="item?.raw?.title"
-            ></v-list-item></template
-        ></v-select>
+            <v-list-item v-bind="props" :title="item?.raw?.title"></v-list-item></template></v-select>
       </div>
       <div class="mb-10">
         <h6 class="mb-2">Год</h6>
-        <DualSlider
-          ref="yearSlider"
-          :min-period="1886"
-          :max-period="new Date().getFullYear() + 1"
-          @slider-change="onYearChange"
-        >
+        <DualSlider ref="yearSlider" :min-period="1886" :max-period="new Date().getFullYear() + 1"
+          @slider-change="onYearChange">
         </DualSlider>
       </div>
       <div class="mb-10">
         <h6 class="mb-2">Рейтинг</h6>
-        <DualSlider
-          ref="ratingSlider"
-          :min-period="0"
-          :max-period="10"
-          @slider-change="onRatingChange"
-        >
+        <DualSlider ref="ratingSlider" :min-period="0" :max-period="10" @slider-change="onRatingChange">
         </DualSlider>
       </div>
       <div>
         <h6 class="mb-2">Сортировка</h6>
         <v-radio-group inline v-model="sortBy">
-          <v-radio
-            label="По рейтингу"
-            density="compact"
-            color="#f50"
-            value="RATING"
-          ></v-radio>
-          <v-radio
-            label="По годам"
-            density="compact"
-            color="#f50"
-            value="YEAR"
-          ></v-radio>
+          <v-radio label="По рейтингу" density="compact" color="#f50" value="RATING"></v-radio>
+          <v-radio label="По годам" density="compact" color="#f50" value="YEAR"></v-radio>
         </v-radio-group>
       </div>
       <div class="buttons">
-        <v-btn
-          width="100%"
-          color="info"
-          append-icon="mdi-magnify"
-          @click="onRequestMovies"
-          class="mb-2"
-          >Найти</v-btn
-        >
-        <v-btn
-          width="100%"
-          color="error"
-          append-icon="mdi-backspace"
-          @click="onFilterChange"
-          >Очистить</v-btn
-        >
+        <v-btn width="100%" color="info" append-icon="mdi-magnify" @click="onRequestMovies" class="mb-2">Найти</v-btn>
+        <v-btn width="100%" color="error" append-icon="mdi-backspace" @click="onFilterChange">Очистить</v-btn>
       </div>
     </v-card>
     <v-card class="movies">
@@ -131,11 +63,7 @@
           <h3 class="text-h3 empty">Что будем искать?</h3>
         </div>
         <div v-else>
-          <FilteredMovieCardVue
-            :movie="movie"
-            v-for="movie in properMovies"
-            :key="movie.kinopoiskId"
-          />
+          <FilteredMovieCardVue :movie="movie" v-for="movie in properMovies" :key="movie.kinopoiskId" />
         </div>
       </div>
     </v-card>
@@ -290,5 +218,11 @@ window.onscroll = debounce(() => {
 .loader {
   left: 50%;
   transform: translateX(-50%);
+}
+
+@media(min-width:960px) {
+  .container {
+    max-width: 1280px;
+  }
 }
 </style>
