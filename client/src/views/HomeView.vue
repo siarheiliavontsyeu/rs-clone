@@ -1,90 +1,50 @@
 <template>
-  <main>
-    <v-container class="bg-surface">
-      <v-row no-gutters>
-        <v-list>
-          <v-list-item
-            @click="
-              $router.push(
-                item.link.length === 1
-                  ? {
-                      name: item.link[0],
-                    }
-                  : {
-                      name: item.link[0],
-                      params: { nameList: item.link[1] },
-                    }
-              )
-            "
-            v-for="(item, i) in items"
-            :key="i"
-            :value="item"
-            :class="item.status"
-            active-color="primary"
-            variant="plain"
-          >
-            <template v-slot:prepend>
-              <v-icon
-                :icon="item.icon"
-                style="margin: 0px 10px 0px 0px"
-              ></v-icon>
-            </template>
-            <v-list-item-title> {{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
+  <my-loader v-if="isLoading" />
+  <v-container v-else class="bg-surface">
+    <v-row no-gutters>
+      <v-list>
+        <v-list-item :to="{
+          name: item.link
+        }" v-for="(item, i) in items" :key="i" :value="item" :class="item.status" active-color="primary"
+          variant="plain">
+          <template v-slot:prepend>
+            <v-icon :icon="item.icon" style="margin: 0px 10px 0px 0px"></v-icon>
+          </template>
+          <v-list-item-title> {{ item.text }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
 
-        <div
-          class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
-          style="padding: 10px; gap: 20px"
-        >
-          <card-home class="w-100" :movieProps="movieCard1"></card-home>
+      <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
+        style="padding: 10px; gap: 20px">
+        <card-home class="w-100" :movieProps="movieCard1"></card-home>
 
-          <slide-group
-            class="w-100"
-            :moviesProps="
-              collectionMoviesArr.find((item) => item.name === 'top100')
-            "
-          >
-            Топ 100 >
-          </slide-group>
+        <slide-group class="w-100" :moviesProps="
+          collectionMoviesArr.find((item) => item.name === 'top100')
+        ">
+          Топ 100 >
+        </slide-group>
 
-          <slide-group
-            color="grey-darken-3"
-            v-if="authStore.user"
-            class="w-100"
-            :moviesProps="moviesWatchLater"
-          >
-            Посмотреть позже >
-          </slide-group>
+        <slide-group color="grey-darken-3" v-if="authStore.user" class="w-100" :moviesProps="moviesWatchLater">
+          Посмотреть позже >
+        </slide-group>
 
-          <slide-group
-            class="w-100"
-            :moviesProps="
-              collectionMoviesArr.find((item) => item.name === 'top250')
-            "
-          >
-            Топ 250 >
-          </slide-group>
+        <slide-group class="w-100" :moviesProps="
+          collectionMoviesArr.find((item) => item.name === 'top250')
+        ">
+          Топ 250 >
+        </slide-group>
 
-          <slide-group
-            class="w-100"
-            :moviesProps="
-              collectionMoviesArr.find((item) => item.name === 'topAwait')
-            "
-          >
-            Топ Ожидания >
-          </slide-group>
+        <slide-group class="w-100" :moviesProps="
+          collectionMoviesArr.find((item) => item.name === 'topAwait')
+        ">
+          Топ Ожидания >
+        </slide-group>
 
-          <calendar-releses
-            class="w-100"
-            :moviesProps="premiereMovies"
-            @updateMonth="this.addNewMonthFilms(true)"
-          >
-          </calendar-releses>
-        </div>
-      </v-row>
-    </v-container>
-  </main>
+        <calendar-releses class="w-100" :moviesProps="premiereMovies" @updateMonth="this.addNewMonthFilms(true)">
+        </calendar-releses>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts">
@@ -94,8 +54,8 @@ import {
   getMovieById,
   getPremiereMovies,
   getMoviesByCollection,
-} from "@/api/index.ts";
-import {
+} from "@/api/index";
+import type {
   GenreI,
   DigitalReleaseMovieI,
   MovieI,
@@ -107,37 +67,39 @@ import SlideGroup from "@/components/SlideGroup.vue";
 import CalendarReleses from "@/components/CalendarReleses.vue";
 import CardHome from "@/components/CardHome.vue";
 import { useAuthStore } from "@/stores/authStore";
+import MyLoader from "@/components/MyLoader.vue";
 export default {
   components: {
     SlideGroup,
     CalendarReleses,
     CardHome,
+    MyLoader
   },
   data: () => ({
     items: [
-      { text: "Главная", icon: "mdi-home", link: ["home"], status: "active" },
+      { text: "Главная", icon: "mdi-home", link: "home", status: "active" },
       {
         text: "Онлайн-кинотеатр",
         icon: "mdi-television",
-        link: ["login"],
+        link: "login",
         status: "inactive",
       },
       {
         text: "Фильмы",
         icon: "mdi-filmstrip",
-        link: ["lists", "films"],
+        link: "films",
         status: "none",
       },
       {
         text: "Сериалы",
         icon: "mdi-filmstrip-box-multiple",
-        link: ["lists", "serials"],
+        link: "serials",
         status: "none",
       },
       {
         text: "О проекте",
         icon: "mdi-account-group",
-        link: ["about"],
+        link: "about",
         status: "none",
       },
     ],
@@ -155,6 +117,7 @@ export default {
       "NOVEMBER",
       "DECEMBER",
     ],
+    isLoading: false,
     releasesMovies: {
       isItemsReady: false,
       array: [],
@@ -192,7 +155,7 @@ export default {
           this.movieCard1.images = images.items;
           this.movieCard1.isItemsReady = true;
         })
-        .catch((err) => {});
+        .catch((err) => { });
     },
     getReleases(year: number, month: string) {
       getReleases(year, month)
@@ -200,7 +163,7 @@ export default {
           this.releasesMovies.array = this.checkErrorFilm(movies.releases);
           this.releasesMovies.isItemsReady = true;
         })
-        .catch((err) => {});
+        .catch((err) => { });
     },
     getPremiereMovies(year: number, month: string) {
       getPremiereMovies(year, month)
@@ -208,17 +171,17 @@ export default {
           this.premiereMovies.array = this.checkErrorFilm(movies.items);
           this.premiereMovies.isItemsReady = true;
         })
-        .catch((err) => {});
+        .catch((err) => { });
     },
     getMoviesByCollectionArr(type: string, page = 1) {
       const typeRes =
         type === "top250"
           ? "TOP_250_BEST_FILMS"
           : type === "top100"
-          ? "TOP_100_POPULAR_FILMS"
-          : type === "topAwait"
-          ? "TOP_AWAIT_FILMS"
-          : "TOP_100_POPULAR_FILMS";
+            ? "TOP_100_POPULAR_FILMS"
+            : type === "topAwait"
+              ? "TOP_AWAIT_FILMS"
+              : "TOP_100_POPULAR_FILMS";
       return getMoviesByCollection(typeRes, page)
         .then((movies: PremiereResponseI) => {
           this.collectionMoviesArr.push({
@@ -227,7 +190,7 @@ export default {
             name: type,
           });
         })
-        .catch((err) => {});
+        .catch((err) => { });
     },
     getMoviesWatchLater() {
       if (this.authStore.user) {
@@ -245,7 +208,7 @@ export default {
             this.moviesWatchLater.isItemsReady = true;
             console.log(this.moviesWatchLater.array);
           })
-          .catch((err) => {});
+          .catch((err) => { });
       }
     },
     addNewMonthFilms(trigger = false) {
@@ -272,15 +235,15 @@ export default {
       return ArrayFilms.filter((item) => item.nameRu.length !== 0);
     },
   },
-  computed() {},
   mounted() {
+    this.isLoading = true;
     this.addNewMonthFilms();
     this.getMovieById(685246);
-    // this.getMovieById(361);
     this.getMoviesByCollectionArr("top100");
     this.getMoviesByCollectionArr("top250");
-    this.getMoviesByCollectionArr("topAwait");
     this.getMoviesWatchLater();
+    this.getMoviesByCollectionArr("topAwait");
+    this.isLoading = false;
   },
 };
 </script>
@@ -293,35 +256,35 @@ export default {
   left: 0;
   width: 100%;
   z-index: 0;
-  background: linear-gradient(
-    90deg,
-    #000 6.25%,
-    #000 6.26%,
-    rgba(0, 0, 0, 0.99) 14.15%,
-    rgba(0, 0, 0, 0.961) 20.77%,
-    rgba(0, 0, 0, 0.915) 26.27%,
-    rgba(0, 0, 0, 0.856) 30.8%,
-    rgba(0, 0, 0, 0.785) 34.5%,
-    rgba(0, 0, 0, 0.705) 37.54%,
-    rgba(0, 0, 0, 0.619) 40.06%,
-    rgba(0, 0, 0, 0.529) 42.21%,
-    rgba(0, 0, 0, 0.437) 44.15%,
-    rgba(0, 0, 0, 0.347) 46.03%,
-    rgba(0, 0, 0, 0.261) 47.99%,
-    rgba(0, 0, 0, 0.18) 50.2%,
-    rgba(0, 0, 0, 0.108) 52.79%,
-    rgba(0, 0, 0, 0.047) 55.94%,
-    transparent 59.77%
-  );
+  background: linear-gradient(90deg,
+      #000 6.25%,
+      #000 6.26%,
+      rgba(0, 0, 0, 0.99) 14.15%,
+      rgba(0, 0, 0, 0.961) 20.77%,
+      rgba(0, 0, 0, 0.915) 26.27%,
+      rgba(0, 0, 0, 0.856) 30.8%,
+      rgba(0, 0, 0, 0.785) 34.5%,
+      rgba(0, 0, 0, 0.705) 37.54%,
+      rgba(0, 0, 0, 0.619) 40.06%,
+      rgba(0, 0, 0, 0.529) 42.21%,
+      rgba(0, 0, 0, 0.437) 44.15%,
+      rgba(0, 0, 0, 0.347) 46.03%,
+      rgba(0, 0, 0, 0.261) 47.99%,
+      rgba(0, 0, 0, 0.18) 50.2%,
+      rgba(0, 0, 0, 0.108) 52.79%,
+      rgba(0, 0, 0, 0.047) 55.94%,
+      transparent 59.77%);
   background-size: 150%;
   background-repeat: no-repeat;
 }
+
 .card {
   box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
     0px 8px 10px 1px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)),
     0px 3px 14px 2px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
   border-radius: 1rem;
 }
+
 .card-body {
   position: relative;
   padding: 0px 0px 30px 30px;
@@ -334,17 +297,20 @@ export default {
   color: white;
   z-index: 10;
 }
+
 .card-logo {
   cursor: pointer;
 }
+
 .inactive {
   opacity: 0.3;
   pointer-events: none;
 }
+
 .active {
   opacity: 1.5;
   pointer-events: all;
 }
-.active:hover {
-}
+
+.active:hover {}
 </style>

@@ -56,6 +56,10 @@ type movieStoreStateTypes = {
   currentMovieCritique: CritiqueModel[] | null;
   currentMovieReview: ReviewModel | null;
   currentMovieRating: number;
+  highlightedMovie: {
+    body: MovieI;
+    image: ImageI;
+  };
 };
 
 export const useMovieStore = defineStore("movie", {
@@ -77,6 +81,10 @@ export const useMovieStore = defineStore("movie", {
     currentMovieCritique: [],
     currentMovieReview: {} as ReviewModel,
     currentMovieRating: 0,
+    highlightedMovie: {} as {
+      body: MovieI;
+      image: ImageI;
+    },
   }),
   getters: {
     movieMainActors: (state) => {
@@ -344,7 +352,11 @@ export const useMovieStore = defineStore("movie", {
         });
       }
     },
-
+    async getHighLightMovie(id: number) {
+      const body = await getMovieById(id);
+      const { items } = await getMovieImages(id);
+      this.highlightedMovie = { body, image: items[0] };
+    },
     async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();

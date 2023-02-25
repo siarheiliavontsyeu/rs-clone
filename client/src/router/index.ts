@@ -79,6 +79,16 @@ const router = createRouter({
           name: "filters",
           component: () => import("../views/FiltersView.vue"),
         },
+        {
+          path: "/films",
+          name: "films",
+          component: () => import("../views/MoviesList.vue"),
+        },
+        {
+          path: "/serials",
+          name: "serials",
+          component: () => import("../views/SerialsList.vue"),
+        },
       ],
     },
     {
