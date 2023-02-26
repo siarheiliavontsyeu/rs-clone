@@ -35,11 +35,11 @@ export const useSearchStore = defineStore("search", {
     },
   },
   actions: {
-    async getDataBySearch(keyword: string) {
-      getMovieBySearch(keyword).then((response) => {
+    async getDataBySearch(keyword: string, keyIndex: number) {
+      getMovieBySearch(keyword, keyIndex).then((response) => {
         this.moviesList = response.films;
       });
-      getPersonBySearch(keyword).then((response) => {
+      getPersonBySearch(keyword, keyIndex).then((response) => {
         this.personsList = response.items;
       });
     },

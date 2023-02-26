@@ -1,13 +1,15 @@
 <template>
-<div class="container-btn-save"
-  :disabled="isButtonDisabled"
-    @click="onWatchLater">
-                  <v-btn
-                    class="btn-save"
-                    icon="mdi-bookmark-plus-outline"
-                    color="white"
-                  ></v-btn>
-                  <!-- <v-btn
+  <div
+    class="container-btn-save"
+    :disabled="isButtonDisabled"
+    @click="onWatchLater"
+  >
+    <v-btn
+      class="btn-save"
+      icon="mdi-bookmark-plus-outline"
+      color="white"
+    ></v-btn>
+    <!-- <v-btn
                     class="btn-save"
                     icon="mdi-bookmark-check-outline"
                     color="white"
@@ -19,7 +21,7 @@
                     color="white"
                     v-else
                   ></v-btn> -->
-                </div>
+  </div>
 </template>
 <script setup lang="ts">
 import { useMovieStore } from "@/stores/movieStore";

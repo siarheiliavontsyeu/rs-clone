@@ -39,8 +39,13 @@
       </div>
     </div>
     <div class="more-btn">
-      <v-btn :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }" variant="plain"
-        append-icon="mdi-dots-horizontal-circle-outline" color="#f50">Подробнее</v-btn>
+      <v-btn
+        :to="{ name: 'movie', params: { movieId: movie.kinopoiskId } }"
+        variant="plain"
+        append-icon="mdi-dots-horizontal-circle-outline"
+        color="#f50"
+        >Подробнее</v-btn
+      >
     </div>
   </v-card>
 </template>

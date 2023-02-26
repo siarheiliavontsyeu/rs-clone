@@ -98,7 +98,7 @@ const isEmpty = ref(true);
 const isLoading = ref(false);
 
 const properMovies = computed(() => {
-  return moviesStore.foundMovies.filter((m) => m.year !== null);
+  return moviesStore.foundMovies.filter((m) => m.kinopoiskId !== 1252447 && m.year !== null);
 });
 
 const yearSlider = ref<InstanceType<typeof DualSlider>>();
@@ -130,21 +130,7 @@ const onRequestMovies = () => {
   isEmpty.value = false;
   isLoading.value = true;
   currentPage.value = 1;
-  moviesStore
-    .getMovieFilters({
-      country: chosenCountry.value,
-      genre: chosenGenre.value,
-      order: sortBy.value,
-      type: chosenCategory.value,
-      ratingFrom: chosenMinRating.value,
-      ratingTo: chosenMaxRating.value,
-      yearFrom: chosenMinYear.value,
-      yearTo: chosenMaxYear.value,
-      page: 1,
-    })
-    .then(() => {
-      isLoading.value = false;
-    });
+  onFilter();
 };
 function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
   let timer: any;
@@ -157,27 +143,38 @@ function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
     }, wait);
   };
 }
+const onFilter = () => {
+  moviesStore
+    .getMovieFilters({
+      country: chosenCountry.value,
+      genre: chosenGenre.value,
+      order: sortBy.value,
+      type: chosenCategory.value,
+      ratingFrom: chosenMinRating.value,
+      ratingTo: chosenMaxRating.value,
+      yearFrom: chosenMinYear.value,
+      yearTo: chosenMaxYear.value,
+      page: currentPage.value,
+    }, moviesStore.keyIndex).catch(() => {
+      let newIndex = moviesStore.keyIndex + 1;
+      moviesStore.$patch({ keyIndex: newIndex });
+      onFilter();
+    }).finally(() => {
+      isLoading.value = false;
+    })
+}
+
 window.onscroll = debounce(() => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight >=
-    document.documentElement.offsetHeight - 1;
+    document.documentElement.offsetHeight - 200;
   if (properMovies.value.length && properMovies.value.length >= 20) {
     if (
       bottomOfWindow &&
       moviesStore.filtersRespone.totalPages > currentPage.value
     ) {
       currentPage.value += 1;
-      moviesStore.getMovieFilters({
-        country: chosenCountry.value,
-        genre: chosenGenre.value,
-        order: sortBy.value,
-        type: chosenCategory.value,
-        ratingFrom: chosenMinRating.value,
-        ratingTo: chosenMaxRating.value,
-        yearFrom: chosenMinYear.value,
-        yearTo: chosenMaxYear.value,
-        page: currentPage.value,
-      });
+      onFilter();
     }
   }
 }, 300);
@@ -220,7 +217,7 @@ window.onscroll = debounce(() => {
   transform: translateX(-50%);
 }
 
-@media(min-width:960px) {
+@media (min-width: 960px) {
   .container {
     max-width: 1280px;
   }
