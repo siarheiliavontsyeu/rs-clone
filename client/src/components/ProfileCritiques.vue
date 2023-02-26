@@ -14,8 +14,8 @@
         :key="index"
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
+        md="6"
+        lg="6"
       >
         <v-card
           v-if="movie.critique"

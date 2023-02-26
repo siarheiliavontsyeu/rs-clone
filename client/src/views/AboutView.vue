@@ -1,6 +1,6 @@
 <template>
   <FullPageBg></FullPageBg>
-  <v-container>
+  <v-container class="container">
     <v-card>
       <v-tabs v-model="tab" bg-color="primary">
         <v-tab value="one"
@@ -139,4 +139,9 @@ import data from "@/constants/team.json";
 const { developers } = data;
 const tab = ref("one");
 </script>
-<style></style>
+<style scoped>
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+</style>
