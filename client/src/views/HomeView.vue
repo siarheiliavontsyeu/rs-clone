@@ -1,12 +1,19 @@
 <template>
   <my-loader v-if="isLoading" />
-  <v-container v-else class="bg-surface">
+  <v-container v-else class="bg-surface container">
     <v-row no-gutters>
       <v-list class="sticky">
-        <v-list-item :to="{
-          name: item.link
-        }" v-for="(item, i) in items" :key="i" :value="item" :class="item.status" active-color="#f50"
-          variant="plain">
+        <v-list-item
+          :to="{
+            name: item.link,
+          }"
+          v-for="(item, i) in items"
+          :key="i"
+          :value="item"
+          :class="item.status"
+          active-color="#f50"
+          variant="plain"
+        >
           <template v-slot:prepend>
             <v-icon :icon="item.icon" style="margin: 0px 10px 0px 0px"></v-icon>
           </template>
@@ -14,33 +21,53 @@
         </v-list-item>
       </v-list>
 
-      <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
-        style="padding: 10px; gap: 20px">
+      <div
+        class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
+        style="padding: 10px; gap: 20px"
+      >
         <card-home class="w-100" :movieProps="movieCard1"></card-home>
 
-        <slide-group class="w-100" :moviesProps="
-          collectionMoviesArr.find((item) => item.name === 'top100')
-        ">
+        <slide-group
+          class="w-100"
+          :moviesProps="
+            collectionMoviesArr.find((item) => item.name === 'top100')
+          "
+        >
           Топ 100 >
         </slide-group>
 
-        <slide-group color="grey-darken-3" v-if="authStore.user" class="w-100" :moviesProps="moviesWatchLater">
+        <slide-group
+          color="grey-darken-3"
+          v-if="authStore.user && moviesWatchLater.array.length !== 0"
+          class="w-100"
+          :moviesProps="moviesWatchLater"
+        >
           Посмотреть позже >
         </slide-group>
 
-        <slide-group class="w-100" :moviesProps="
-          collectionMoviesArr.find((item) => item.name === 'top250')
-        ">
+        <slide-group
+          class="w-100"
+          :moviesProps="
+            collectionMoviesArr.find((item) => item.name === 'top250')
+          "
+        >
           Топ 250 >
         </slide-group>
 
-        <slide-group class="w-100" :moviesProps="
-          collectionMoviesArr.find((item) => item.name === 'topAwait')
-        ">
+        <slide-group
+          class="w-100"
+          :moviesProps="
+            collectionMoviesArr.find((item) => item.name === 'topAwait')
+          "
+        >
           Топ Ожидания >
         </slide-group>
 
-        <calendar-releses class="w-100" :moviesProps="premiereMovies" @updateMonth="this.addNewMonthFilms(true)">
+        <calendar-releses
+          class="w-100"
+          :moviesProps="premiereMovies"
+          @updateMonth="this.addNewMonthFilms(true)"
+        >
         </calendar-releses>
       </div>
     </v-row>
@@ -73,7 +100,7 @@ export default {
     SlideGroup,
     CalendarReleses,
     CardHome,
-    MyLoader
+    MyLoader,
   },
   data: () => ({
     items: [
@@ -155,7 +182,7 @@ export default {
           this.movieCard1.images = images.items;
           this.movieCard1.isItemsReady = true;
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
     getReleases(year: number, month: string) {
       getReleases(year, month)
@@ -163,7 +190,7 @@ export default {
           this.releasesMovies.array = this.checkErrorFilm(movies.releases);
           this.releasesMovies.isItemsReady = true;
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
     getPremiereMovies(year: number, month: string) {
       getPremiereMovies(year, month)
@@ -171,17 +198,17 @@ export default {
           this.premiereMovies.array = this.checkErrorFilm(movies.items);
           this.premiereMovies.isItemsReady = true;
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
     getMoviesByCollectionArr(type: string, page = 1) {
       const typeRes =
         type === "top250"
           ? "TOP_250_BEST_FILMS"
           : type === "top100"
-            ? "TOP_100_POPULAR_FILMS"
-            : type === "topAwait"
-              ? "TOP_AWAIT_FILMS"
-              : "TOP_100_POPULAR_FILMS";
+          ? "TOP_100_POPULAR_FILMS"
+          : type === "topAwait"
+          ? "TOP_AWAIT_FILMS"
+          : "TOP_100_POPULAR_FILMS";
       return getMoviesByCollection(typeRes, page)
         .then((movies: PremiereResponseI) => {
           this.collectionMoviesArr.push({
@@ -190,7 +217,7 @@ export default {
             name: type,
           });
         })
-        .catch((err) => { });
+        .catch((err) => {});
     },
     getMoviesWatchLater() {
       if (this.authStore.user) {
@@ -208,7 +235,7 @@ export default {
             this.moviesWatchLater.isItemsReady = true;
             console.log(this.moviesWatchLater.array);
           })
-          .catch((err) => { });
+          .catch((err) => {});
       }
     },
     addNewMonthFilms(trigger = false) {
@@ -256,24 +283,26 @@ export default {
   left: 0;
   width: 100%;
   z-index: 0;
-  background: linear-gradient(90deg,
-      #000 6.25%,
-      #000 6.26%,
-      rgba(0, 0, 0, 0.99) 14.15%,
-      rgba(0, 0, 0, 0.961) 20.77%,
-      rgba(0, 0, 0, 0.915) 26.27%,
-      rgba(0, 0, 0, 0.856) 30.8%,
-      rgba(0, 0, 0, 0.785) 34.5%,
-      rgba(0, 0, 0, 0.705) 37.54%,
-      rgba(0, 0, 0, 0.619) 40.06%,
-      rgba(0, 0, 0, 0.529) 42.21%,
-      rgba(0, 0, 0, 0.437) 44.15%,
-      rgba(0, 0, 0, 0.347) 46.03%,
-      rgba(0, 0, 0, 0.261) 47.99%,
-      rgba(0, 0, 0, 0.18) 50.2%,
-      rgba(0, 0, 0, 0.108) 52.79%,
-      rgba(0, 0, 0, 0.047) 55.94%,
-      transparent 59.77%);
+  background: linear-gradient(
+    90deg,
+    #000 6.25%,
+    #000 6.26%,
+    rgba(0, 0, 0, 0.99) 14.15%,
+    rgba(0, 0, 0, 0.961) 20.77%,
+    rgba(0, 0, 0, 0.915) 26.27%,
+    rgba(0, 0, 0, 0.856) 30.8%,
+    rgba(0, 0, 0, 0.785) 34.5%,
+    rgba(0, 0, 0, 0.705) 37.54%,
+    rgba(0, 0, 0, 0.619) 40.06%,
+    rgba(0, 0, 0, 0.529) 42.21%,
+    rgba(0, 0, 0, 0.437) 44.15%,
+    rgba(0, 0, 0, 0.347) 46.03%,
+    rgba(0, 0, 0, 0.261) 47.99%,
+    rgba(0, 0, 0, 0.18) 50.2%,
+    rgba(0, 0, 0, 0.108) 52.79%,
+    rgba(0, 0, 0, 0.047) 55.94%,
+    transparent 59.77%
+  );
   background-size: 150%;
   background-repeat: no-repeat;
 }
@@ -301,7 +330,8 @@ export default {
 .card-logo {
   cursor: pointer;
 }
-.sticky{
+
+.sticky {
   position: sticky;
   top: 50px;
   height: 500px;
@@ -316,6 +346,9 @@ export default {
   opacity: 1.5;
   pointer-events: all;
 }
-
-.active:hover {}
+@media (min-width: 960px) {
+  .container {
+    max-width: 1280px;
+  }
+}
 </style>
