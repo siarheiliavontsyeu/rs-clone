@@ -31,10 +31,10 @@ export const usePersonStore = defineStore("person", {
     },
   },
   actions: {
-    async getStaffPerson(id: number) {
+    async getStaffPerson(id: number, keyIndex: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
-      const data = await getStaffPerson(id);
+      const data = await getStaffPerson(id, keyIndex);
       this.person = data;
       searchStore.unsetIsLoading();
       const professionArray = data.films.map((movie) => movie.professionKey);

@@ -26,6 +26,7 @@ type moviesStoreStateTypes = {
   filtersRespone: MovieSearchByFiltersResponseI;
   premiereMovies: PremiereMovieI[];
   releaseSoonMovies: DigitalReleaseMovieI[];
+  keyIndex: number;
 };
 
 export const useMoviesStore = defineStore("movies", {
@@ -37,6 +38,7 @@ export const useMoviesStore = defineStore("movies", {
     premiereMovies: [],
     releaseSoonMovies: [],
     filtersRespone: {} as MovieSearchByFiltersResponseI,
+    keyIndex: 0,
   }),
   getters: {
     sortedCountries: (state) =>
@@ -47,18 +49,18 @@ export const useMoviesStore = defineStore("movies", {
       state.genres.filter((g) => g.id !== 25 && g.id !== 28),
   },
   actions: {
-    async getMovies(type: MoviesTopTypesEnum, page: number) {
-      this.moviesFromCollection = await getMoviesByCollection(type, page).then(
+    async getMovies(type: MoviesTopTypesEnum, keyIndex: number, page = 1) {
+      return await getMoviesByCollection(type, page, keyIndex).then(
         (resp) => resp.films
       );
     },
-    async getCountriesAndGenres() {
-      const { genres, countries } = await getAllCountriesAndGenres();
+    async getCountriesAndGenres(keyIndex: number) {
+      const { genres, countries } = await getAllCountriesAndGenres(keyIndex);
       this.genres = genres;
       this.countries = countries;
     },
-    async getMovieFilters(options: FilterOptionsI) {
-      const data = await getMovieFilters(options);
+    async getMovieFilters(options: FilterOptionsI, keyIndex: number) {
+      const data = await getMovieFilters(options, keyIndex);
       this.filtersRespone = data;
       if (options.page > 1) {
         this.foundMovies.push(...data.items);
@@ -66,12 +68,12 @@ export const useMoviesStore = defineStore("movies", {
         this.foundMovies = data.items;
       }
     },
-    async getPremiereMovies(year: number, month: string) {
-      const data = await getPremiereMovies(year, month);
+    async getPremiereMovies(year: number, month: string, keyIndex: number) {
+      const data = await getPremiereMovies(year, month, keyIndex);
       this.premiereMovies = data.items;
     },
-    async getReleases(year: number, month: string) {
-      const data = await getReleases(year, month);
+    async getReleases(year: number, month: string, keyIndex: number) {
+      const data = await getReleases(year, month, keyIndex);
       this.releaseSoonMovies = data.releases;
     },
   },

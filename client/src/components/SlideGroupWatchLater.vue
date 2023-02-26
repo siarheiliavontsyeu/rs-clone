@@ -4,12 +4,12 @@
       <slot></slot>
     </h2>
     <v-slide-group class="pa-1" selected-class="bg-success" show-arrows>
-      <v-slide-group-item v-for="movie in moviesProps" :key="movie.filmId">
+      <v-slide-group-item v-for="movie in moviesProps" :key="movie.kinopoiskId">
         <v-card
           @click="
             $router.push({
               name: 'movie',
-              params: { movieId: movie.filmId },
+              params: { movieId: movie.kinopoiskId },
             })
           "
           color="grey-lighten-1"
@@ -20,14 +20,14 @@
           <div
             class="card-film"
             :style="{
-              background: `url(${movie.posterUrlPreview})`,
+              background: `url(${movie.movie.posterUrlPreview})`,
               backgroundSize: 'cover',
               backgroundPosition: 'center center',
               backgroundRepeat: 'no-repeat',
             }"
           >
             <div class="rating">
-              {{ movie.rating }}
+              {{ movie.movie.kinopoiskId }}
             </div>
           </div>
         </v-card>
@@ -37,9 +37,9 @@
 </template>
 
 <script lang="ts" setup>
-import type { MovieFromCollectionI } from "@/types/movies.types";
+import type { WatchLaterModel } from "@/types/user.types";
 
-defineProps<{ moviesProps: MovieFromCollectionI[] }>();
+defineProps<{ moviesProps: WatchLaterModel[] }>();
 </script>
 
 <style lang="css" scoped>

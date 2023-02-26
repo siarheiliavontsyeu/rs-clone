@@ -451,7 +451,6 @@ export interface MovieModel {
   watchedAt?: string;
 }
 
-
 export interface ProfileCritiqueModel {
   kinopoiskId: string;
   imdbId: string;
@@ -468,5 +467,4 @@ export interface ReviewModel {
   rating: number;
   text: string;
   at: string;
-
 }

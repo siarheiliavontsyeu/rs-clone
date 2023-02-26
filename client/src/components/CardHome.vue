@@ -1,160 +1,86 @@
 <template>
-  <div>
-    <v-card
-      v-if="movieCard.isItemsReady"
-      class="card w-100"
-      @mousemove="someMethod"
-    >
-      <div
-        class="mouse-parallax-bg"
-        :style="{
-          position: 'absolute',
-          background: `url(${movieCard.images[0].imageUrl})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          backgroundRepeat: 'no-repeat',
-          width: '110%',
-          height: '600px',
-        }"
-      ></div>
-      <div class="wrapper-card"></div>
-      <div class="card-body">
+  <v-card
+    class="card w-100"
+    v-if="movieStore.highlightedMovie.body"
+    @mousemove="someMethod"
+  >
+    <div
+      class="mouse-parallax-bg"
+      :style="{
+        position: 'absolute',
+        background: `url(${movieStore.highlightedMovie.image.imageUrl})`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center center',
+        backgroundRepeat: 'no-repeat',
+        width: '110%',
+        height: '600px',
+      }"
+    ></div>
+    <div class="wrapper-card"></div>
+    <div class="card-body">
+      <div class="container-logo d-flex justify-center align-center">
         <div
-          class="container-logo d-flex justify-center align-center"
+          @click="
+            $router.push({
+              name: 'movie',
+              params: { movieId: movieStore.highlightedMovie.body.kinopoiskId },
+            })
+          "
+          class="card-logo"
           :style="{
+            background: `url(${movieStore.highlightedMovie.body.logoUrl})`,
+            backgroundSize: '100%',
+            backgroundPosition: 'center center',
+            backgroundRepeat: 'no-repeat',
             height: '100%',
-            width: '100%',
-            maxHeight: '100px',
+            width: '50%',
           }"
-        >
-          <div
-            @click="
-              $router.push({
-                name: 'movie',
-                params: { movieId: movieCard.body.kinopoiskId },
-              })
-            "
-            class="card-logo"
-            :style="{
-              background: `url(${movieCard.body.logoUrl})`,
-              backgroundSize: '100%',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat',
-              height: '100%',
-              width: '50%',
-            }"
-          ></div>
-        </div>
-        <v-card-text color="white">{{
-          movieCard.body.shortDescription
-        }}</v-card-text>
-        <v-card-text color="white">
-          <b>Жанры: </b> {{ movieCard.body.genresList }}
-        </v-card-text>
-        <v-card-actions>
-          <v-btn
-            @click="
-              $router.push({
-                name: 'movie',
-                params: { movieId: movieCard.body.kinopoiskId },
-              })
-            "
-            rounded="pill"
-            color="white"
-            size="large"
-            prepend-icon="mdi-play"
-            :style="{
-              background: 'linear-gradient(135deg, #f50 69.93%, #d6bb00)',
-              fontSize: '16px',
-              padding: '0px 15px',
-              height: '52px',
-            }"
-          >
-            Смотреть
-          </v-btn>
-
-          <watch-later-button
-            v-if="authStore.user"
-            :movieId="String(movieCard.body.kinopoiskId)"
-          ></watch-later-button>
-          <watch-later-button
-            v-else
-            @click="$router.push({ name: 'login' })"
-          ></watch-later-button>
-        </v-card-actions>
+        ></div>
       </div>
-    </v-card>
-    <v-card v-else class="card w-100">
-      <div
-        :style="{
-          position: 'absolute',
-          width: '110%',
-          height: '600px',
-          background: '#bdbdbd',
-        }"
-      ></div>
-      <div
-        class="card-body"
-        :style="{
-          justifyContent: 'flex-end',
-        }"
-      >
-        <v-card-actions>
-          <v-btn
-            rounded="pill"
-            color="white"
-            size="large"
-            prepend-icon="mdi-play"
-            :style="{
-              background: 'linear-gradient(135deg, #f50 69.93%, #d6bb00)',
-              fontSize: '16px',
-              padding: '0px 15px',
-              height: '52px',
-            }"
-          >
+      <v-card-text color="white">{{
+        movieStore.highlightedMovie.body.shortDescription
+      }}</v-card-text>
+      <v-card-text color="white"> <b>Жанры: </b> {{ genres }} </v-card-text>
+      <v-card-actions>
+        <!-- <v-btn @click="
+            $router.push({
+              name: 'movie',
+              params: { movieId: movieStore.highlightedMovie.body.kinopoiskId },
+            })
+          " rounded="pill" color="white" size="large" prepend-icon="mdi-play" :style="{
+  background: 'linear-gradient(135deg, #f50 69.93%, #d6bb00)',
+  fontSize: '16px',
+  padding: '0px 15px',
+  height: '52px',
+}">
             Смотреть
-          </v-btn>
-
-          <watch-later-button></watch-later-button>
-        </v-card-actions>
-      </div>
-    </v-card>
-  </div>
+          </v-btn> -->
+        <!-- <watch-later-button v-if="authStore.user" :movieId="String(movieCard.body.kinopoiskId)"></watch-later-button> -->
+        <!-- <watch-later-button v-else @click="$router.push({ name: 'login' })"></watch-later-button>  -->
+      </v-card-actions>
+    </div>
+  </v-card>
 </template>
 
-<script lang="ts">
-import WatchLaterButton from "@/components/WatchLaterButtonMini.vue";
+<script lang="ts" setup>
 import { useAuthStore } from "@/stores/authStore";
-export default {
-  components: {
-    WatchLaterButton,
-  },
-  data: () => ({
-    movieCard: { isItemsReady: false, body: [], images: [] },
-    authStore: useAuthStore(),
-  }),
-  props: {
-    movieProps: {
-      type: Object,
-      required: true,
-    },
-  },
-  methods: {
-    someMethod(event: { clientX: number; clientY: number }) {
-      let bg = document.querySelector(".mouse-parallax-bg") as HTMLElement;
-      let x = event.clientX / window.innerWidth;
-      let y = event.clientY / window.innerHeight;
-      bg.style.transform = "translate(-" + x * 50 + "px, -" + y * 50 + "px)";
-    },
-  },
-  watch: {
-    movieProps: {
-      handler() {
-        this.movieCard = this.movieProps;
-      },
-      deep: true,
-    },
-  },
+import { useMovieStore } from "@/stores/movieStore";
+import { computed } from "vue";
+
+const authStore = useAuthStore();
+const movieStore = useMovieStore();
+const movieCard = { isItemsReady: false, body: [], images: [] };
+const genres = computed(() => {
+  return movieStore.highlightedMovie.body.genres
+    .map((item) => item.genre)
+    .join(", ");
+});
+
+const someMethod = (event: { clientX: number; clientY: number }) => {
+  let bg = document.querySelector(".mouse-parallax-bg") as HTMLElement;
+  let x = event.clientX / window.innerWidth;
+  let y = event.clientY / window.innerHeight;
+  bg.style.transform = "translate(-" + x * 50 + "px, -" + y * 50 + "px)";
 };
 </script>
 
@@ -189,6 +115,31 @@ export default {
   background-size: 150%;
   background-repeat: no-repeat;
 }
+
+/* .mouse-parallax-bg {
+  position: 'absolute'
+  background: `url(${movieStore.highlightedMovie.image.imageUrl})`
+  backgroundSize: 'cover'
+    backgroundPosition: 'center center'
+    backgroundRepeat: 'no-repeat'
+    width: '110%'
+    height: '600px'
+
+} */
+/* .card-logo{:style="{
+  // background: `url(${movieStore.highlightedMovie.body.logoUrl})`,
+  backgroundSize: '100%',
+  backgroundPosition: 'center center',
+  backgroundRepeat: 'no-repeat',
+  height: '100%',
+  width: '50%',
+}"} */
+.container-logo {
+  height: 100%;
+  width: 100%;
+  max-height: 100px;
+}
+
 .card {
   height: 500px;
   box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
@@ -196,6 +147,7 @@ export default {
     0px 3px 14px 2px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
   border-radius: 1rem;
 }
+
 .card-body {
   position: relative;
   padding: 30px 0px 30px 30px;
@@ -208,9 +160,11 @@ export default {
   color: white;
   z-index: 10;
 }
+
 .card-logo {
   cursor: pointer;
 }
+
 .v-card-text {
   font-size: 1.3rem;
   line-height: 100%;
