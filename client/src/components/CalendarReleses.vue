@@ -197,11 +197,6 @@ h3 {
 .container-btn-save {
   margin: 5px;
 }
-@media (min-width: 1920px) {
-  .v-list-item {
-    max-width: 765px;
-  }
-}
 @media (max-width: 1279px) {
   .wrapper-list {
     gap: 10px;
