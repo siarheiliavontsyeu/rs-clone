@@ -105,7 +105,9 @@
             $router.push({ name: 'movie', params: { movieId: movie.filmId } })
           ">
             <div class="movie-name">
-              <div class="text-h6" :class="{ top: index < 10 }">{{ movie.nameRu }}</div>
+              <div class="text-h6" :class="{ top: index < 10 }">
+                {{ movie.nameRu }}
+              </div>
               <div class="text-subtitle-2 text-medium-emphasis">
                 {{ movie.nameEn }}
               </div>
@@ -117,7 +119,9 @@
               </div>
             </div>
             <div class="movie-rating">
-              <div class="text-h4" :class="ratingColor(movie.rating)">{{ movie.rating }}</div>
+              <div class="text-h4" :class="ratingColor(movie.rating)">
+                {{ movie.rating }}
+              </div>
             </div>
           </li>
         </ul>
@@ -134,10 +138,12 @@ import MyLoaderVue from "@/components/MyLoader.vue";
 import { personDate } from "@/helpers/date";
 import { professionInRu, ratingColor } from "@/helpers/composables";
 import { GenderTypeEnum } from "@/types/movies.types";
+import { useMoviesStore } from "@/stores/moviesStore";
 
 const route = useRoute();
 const searchStore = useSearchStore();
 const personStore = usePersonStore();
+const moviesStore = useMoviesStore();
 const personId = route.params.nameId;
 
 const gender = computed(() => {
@@ -164,13 +170,24 @@ watch(
   () => route.params.nameId,
   (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
-      personStore.getStaffPerson(Number(newValue));
+      getPerson(Number(newValue), moviesStore.keyIndex);
     }
   },
   { deep: true }
 );
-personStore.getStaffPerson(Number(personId)).then(data =>
-  document.title = data);
+
+function getPerson(id: number, keyIndex: number) {
+  return [personStore
+    .getStaffPerson(id, keyIndex)
+    .then((data) => (document.title = data))];
+}
+Promise.all(
+  getPerson(Number(route.params.nameId), moviesStore.keyIndex)
+).catch(() => {
+  let newIndex = moviesStore.keyIndex + 1;
+  moviesStore.$patch({ keyIndex: newIndex });
+  getPerson(Number(route.params.nameId), newIndex);
+})
 </script>
 <style scoped>
 .container {
@@ -334,22 +351,21 @@ personStore.getStaffPerson(Number(personId)).then(data =>
   color: var(--color-text);
 }
 
-@media(min-width:960px) {
+@media (min-width: 960px) {
   .container {
     max-width: 1280px;
   }
 }
 
-@media(max-width:1200px) {
+@media (max-width: 1200px) {
   .movie-main-actors {
     display: none;
   }
 }
 
-@media(max-width:970px) {
+@media (max-width: 970px) {
   .professions-list {
     width: 850px;
-
   }
 }
 </style>

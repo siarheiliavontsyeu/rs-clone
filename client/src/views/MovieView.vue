@@ -322,8 +322,10 @@ import { personDate } from "@/helpers/date";
 import ReviewCard from "@/components/ReviewCard.vue";
 import CustomReviewCard from "@/components/CustomReviewCard.vue";
 import WatchLaterButtonVue from "@/components/WatchLaterButton.vue";
+import { useMoviesStore } from "@/stores/moviesStore";
 
 const movieStore = useMovieStore();
+const moviesStore = useMoviesStore();
 const searchStore = useSearchStore();
 const authStore = useAuthStore();
 const route = useRoute();
@@ -349,16 +351,24 @@ watch(
   () => route.params.movieId,
   (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
-      movieStore.getAllInfo(Number(newValue));
+      getMovie(Number(newValue), moviesStore.keyIndex);
     }
   },
   { deep: true }
 );
+function getMovie(id: number, keyIndex: number) {
+  return [movieStore.getAllInfo(id, keyIndex).then(data => {
+    document.title = data;
+  })];
+}
+Promise.all(
+  getMovie(Number(route.params.movieId), moviesStore.keyIndex)
+).catch(() => {
+  let newIndex = moviesStore.keyIndex + 1;
+  moviesStore.$patch({ keyIndex: newIndex });
+  getMovie(Number(route.params.movieId), newIndex);
+})
 
-movieStore.getAllInfo(Number(route.params.movieId)).then(data => {
-
-  document.title = data;
-});
 </script>
 
 <style scoped>
@@ -632,6 +642,51 @@ movieStore.getAllInfo(Number(route.params.movieId)).then(data => {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #eee;
+}
+
+.episode:last-of-type {
+  border: none;
+}
+
+.episode:hover {
+  color: #f50;
+  transition: all 0.3s;
+}
+
+.slide-fade-enter-active {
+  transition: all 0.3s ease-out;
+}
+
+.slide-fade-leave-active {
+  transition: all 0.5s cubic-bezier(1, 0.5, 0.8, 1);
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+@media(min-width:960px) {
+  .movie-basic {
+    max-width: 1200px;
+  }
+}
+
+@media(max-width:1200px) {
+  .movie-main-actors {
+    display: none;
+  }
+}
+
+@media(max-width:970px) {
+  .preq-container {
+    width: 850px;
+
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
 }
 
 .episode:last-of-type {

@@ -1,10 +1,13 @@
 <template>
   <v-list-item @click="onPick">
-    <router-link :to="
-      item.isMovie
-        ? { name: 'movie', params: { movieId: item.id } }
-        : { name: 'name', params: { nameId: item.id } }
-    " class="d-flex link">
+    <router-link
+      :to="
+        item.isMovie
+          ? { name: 'movie', params: { movieId: item.id } }
+          : { name: 'name', params: { nameId: item.id } }
+      "
+      class="d-flex link"
+    >
       <div>
         <img :src="item.img" class="card-img" alt="" />
       </div>

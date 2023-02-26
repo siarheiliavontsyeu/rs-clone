@@ -33,12 +33,10 @@
 import { ref } from "vue";
 import SearchField from "@/components/SearchField.vue";
 import ProfileBar from "@/components/ProfileBar.vue";
-import { useMoviesStore } from "@/stores/moviesStore";
 import { useUserDataStore } from "@/stores/userDataStore";
 import ScrollToTop from "@/components/ScrollToTop.vue";
 import { useAuthStore } from "@/stores/authStore";
 
-const moviesStore = useMoviesStore();
 const userDataStore = useUserDataStore();
 const authStore = useAuthStore();
 
@@ -50,7 +48,7 @@ if (authStore.user && authStore.token) {
 function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
-moviesStore.getCountriesAndGenres();
+
 </script>
 
 <style>

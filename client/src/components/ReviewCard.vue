@@ -28,7 +28,7 @@
 <script setup lang="ts">
 import type { ReviewResponseI } from "@/types/movies.types";
 import { computed } from "vue";
-import {properText} from '@/helpers/composables'
+import { properText } from "@/helpers/composables";
 
 const props = defineProps<{
   review: Omit<ReviewResponseI, "kinopoiskId">;
