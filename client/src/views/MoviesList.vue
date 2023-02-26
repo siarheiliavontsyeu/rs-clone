@@ -31,6 +31,12 @@ const currentPage = ref(1);
 const items = [
     { text: "Главная", icon: "mdi-home", link: "home", status: "none" },
     {
+        text: "Онлайн-кинотеатр",
+        icon: "mdi-television",
+        link: "login",
+        status: "inactive",
+    },
+    {
         text: "Фильмы",
         icon: "mdi-filmstrip",
         link: "films",
@@ -125,7 +131,10 @@ onBeforeUnmount(() => {
     pointer-events: all;
 }
 
-.active:hover {}
+.inactive {
+    opacity: 0.3;
+    pointer-events: none;
+}
 
 @media(min-width:960px) {
     .container {
