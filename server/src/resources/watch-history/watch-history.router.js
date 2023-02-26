@@ -23,11 +23,21 @@ router.route('/:id').get(validator(id, 'params'), async (req, res) => {
   const moviesRequests = resHistory.map(movie => {
     return movieService.get(movie.kinopoiskId);
   });
-  const movies = await Promise.all(moviesRequests);
-  const resMovies = movies.map(toResponseMovie);
-  const response = resHistory.map(toResponse).map((hist, idx) => {
-    return { ...hist, movie: resMovies[idx] };
-  });
+  const moviesPromises = moviesRequests.map(movieRequest =>
+    Promise.resolve(movieRequest).then(toResponseMovie)
+  );
+  const movies = await Promise.allSettled(moviesPromises);
+  const resMovies = movies
+    .filter(movie => movie.status === 'fulfilled')
+    .map(movie => movie.value);
+  const response = resHistory
+    .map(toResponse)
+    .map((hist, idx) => {
+      if (resMovies[idx]) {
+        return { ...hist, movie: resMovies[idx] };
+      }
+    })
+    .filter(Boolean);
   res.status(OK).json(response);
 });
 
