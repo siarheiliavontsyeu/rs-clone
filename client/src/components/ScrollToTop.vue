@@ -35,9 +35,10 @@ onUnmounted(() => {
 <style scoped>
 .scroll-top-btn {
   position: fixed;
-  bottom: 24px;
-  right: 24px;
+  bottom: 80px;
+  right: 30px;
   z-index: 1000;
+  background-color: #9e9e9e;
   color: #f50;
 }
 </style>
