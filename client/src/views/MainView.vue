@@ -65,7 +65,12 @@
     <v-main class="main">
       <router-view></router-view>
     </v-main>
-    <v-footer color="blue-grey-lighten-5 limit">
+    <v-footer
+      color="limit"
+      :style="{
+        padding: '0px',
+      }"
+    >
       <div class="footer">
         <div class="text">
           Online Cinema <br />
@@ -177,12 +182,16 @@ function onClick() {
 .limit {
   max-height: 70px;
 }
+
 .footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
-  /* background-color: rgb(var(--v-theme-on-surface-variant)); */
+  padding: 0 10px;
+  box-shadow: 0px 2px 4px -1px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),
+    0px 4px 5px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.14)),
+    0px 1px 10px 0px var(--v-shadow-key-penumbra-opacity, rgba(0, 0, 0, 0.12));
 }
 
 .school-logo {
