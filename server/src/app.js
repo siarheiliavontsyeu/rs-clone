@@ -8,14 +8,28 @@ const morgan = require('morgan');
 const winston = require('./common/logging');
 const errorHandler = require('./errors/errorHandler');
 const checkToken = require('./common/check-token');
+const cors = require('cors');
 require('express-async-errors');
 
 const loginRouter = require('./resources/login/login.router');
+const registrationRouter = require('./resources/registration/registration.router');
 const userRouter = require('./resources/users/user.router');
+const userReviewsRouter = require('./resources/users/user-reviews/user-reviews.router');
+const useCritiquesRouter = require('./resources/users/user-critiques/user-critiques.router');
 const watchHistoryRouter = require('./resources/watch-history/watch-history.router');
 const watchLaterRouter = require('./resources/watch-later/watch-later.router');
+const movieRouter = require('./resources/movie/movie.router');
+const reviewRouter = require('./resources/movie/review/review.router');
+const critiqueRouter = require('./resources/movie/critique/critique.router');
+const ratingRouter = require('./resources/movie/rating/rating.router');
+
+const corsOptions = {
+  origin: '*',
+  optionsSuccessStatus: 200
+};
 
 const app = express();
+app.use(cors(corsOptions));
 app.disable('x-powered-by');
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
@@ -41,9 +55,16 @@ app.use('/', (req, res, next) => {
 });
 
 app.use('/login', loginRouter);
+app.use('/registration', registrationRouter);
 app.use('/users', userRouter);
+userRouter.use('/:userId/user-reviews', userReviewsRouter);
+userRouter.use('/:userId/user-critiques', useCritiquesRouter);
 app.use('/watch-history', watchHistoryRouter);
 app.use('/watch-later', watchLaterRouter);
+app.use('/movie', movieRouter);
+movieRouter.use('/:kinopoiskId/review', reviewRouter);
+movieRouter.use('/:kinopoiskId/critique', critiqueRouter);
+movieRouter.use('/:kinopoiskId/rating', ratingRouter);
 
 app.use((req, res, next) => next(createError(NOT_FOUND)));
 

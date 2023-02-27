@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { OK, NO_CONTENT } = require('http-status-codes');
+const { OK } = require('http-status-codes');
 const { toResponse } = require('./user.model');
 const usersService = require('./user.service');
 const { id, user } = require('../../utils/validation/schemas');
@@ -26,10 +26,10 @@ router
     const { id: reqID } = req.params;
     const resUser = await usersService.update({ ...req.body, id: reqID });
     res.status(OK).json(toResponse(resUser));
-  })
-  .delete(validator(id, 'params'), async (req, res) => {
-    await usersService.remove(req.params.id);
-    res.sendStatus(NO_CONTENT);
   });
+// .delete(validator(id, 'params'), async (req, res) => {
+//   await usersService.remove(req.params.id);
+//   res.sendStatus(NO_CONTENT);
+// });
 
 module.exports = router;

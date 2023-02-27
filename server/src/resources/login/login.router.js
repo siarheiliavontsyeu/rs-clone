@@ -4,8 +4,8 @@ const loginService = require('./login.service');
 
 router.route('/').post(async (req, res) => {
   const user = req.body;
-  const token = await loginService.connect(user);
-  res.status(OK).json({ token });
+  const data = await loginService.connect(user);
+  res.status(OK).json(data);
 });
 
 module.exports = router;
