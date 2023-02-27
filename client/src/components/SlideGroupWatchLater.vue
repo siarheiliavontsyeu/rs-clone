@@ -27,7 +27,7 @@
             }"
           >
             <div class="rating">
-              {{ movie.movie.kinopoiskId }}
+              {{ movie.movie.ratingKinopoisk }}
             </div>
           </div>
         </v-card>

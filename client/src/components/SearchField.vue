@@ -2,8 +2,8 @@
   <div class="container">
     <v-menu :value="4">
       <template v-slot:activator="{ props }">
-        <div class="d-flex flex-column">
-          <input class="search_field" v-bind="props" v-model="search" />
+        <div class="d-flex flex-column field">
+          <input class="search_field" v-bind="props" v-model="search" autocomplete="false" />
           <v-progress-linear v-show="search" indeterminate color="#f50" rounded></v-progress-linear>
         </div>
       </template>
@@ -16,7 +16,7 @@
           @clear="onFieldClear" />
       </v-list>
       <v-list class="no_options" v-else>
-        <v-list-item value="nodata">No data</v-list-item>
+        <v-list-item value="nodata">Нет данных</v-list-item>
       </v-list>
     </v-menu>
   </div>
@@ -26,7 +26,6 @@ import { useSearchStore } from "@/stores/searchStore";
 import { ref, watch } from "vue";
 import SearchFieldOptionCard from "@/components/SearchFieldOptionCard.vue";
 import { debounce } from "@/helpers/debounce";
-import { useMoviesStore } from "@/stores/moviesStore";
 export type itemType = {
   id: number;
   nameRu: string;
@@ -36,19 +35,13 @@ export type itemType = {
 };
 
 const searchStore = useSearchStore();
-const moviesStore = useMoviesStore();
 let search = ref("");
 
 watch(search, (newValue) => {
   debouncedFetch(newValue);
 });
 const debouncedFetch = debounce((value) => {
-  searchStore.getDataBySearch(value, moviesStore.keyIndex).catch(err => {
-    console.log(err);
-    let newIndex = moviesStore.keyIndex + 1;
-    moviesStore.$patch({ keyIndex: newIndex });
-    searchStore.getDataBySearch(value, newIndex);
-  });
+  searchStore.getDataBySearch(value);
 }, 500);
 const onFieldClear = () => {
   search.value = "";
@@ -59,6 +52,11 @@ const onFieldClear = () => {
   display: flex;
   justify-content: space-around;
   width: 20vw;
+  margin-right: 20px;
+}
+
+.field {
+  width: 100%;
 }
 
 .search_field {

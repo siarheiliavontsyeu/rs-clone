@@ -1,4 +1,4 @@
-import { MovieTypeEnum } from "@/types/movies.types";
+import { MovieTypeEnum, RelationTypeEnum } from "@/types/movies.types";
 
 export const professionInRu = (profession: string) => {
   switch (profession) {
@@ -47,6 +47,21 @@ export const properMovieCategory = (category: string): string => {
       return "Шоу";
     case MovieTypeEnum.miniSeries:
       return "Короткометражный";
+    default:
+      return "Неизвестно";
+  }
+};
+
+export const properMovieRelationType = (type: string): string => {
+  switch (type) {
+    case RelationTypeEnum.prequel:
+      return "Приквел";
+    case RelationTypeEnum.sequel:
+      return "Сиквел";
+    case RelationTypeEnum.remaker:
+      return "Ремейк";
+    case "SIMILAR":
+      return "Схожие";
     default:
       return "Неизвестно";
   }

@@ -63,7 +63,6 @@ type movieStoreStateTypes = {
   currentMovieReview: ReviewModel | null;
   currentMovieRating: number;
   highlightedMovie: HighlightedMovie;
-
 };
 
 export const useMovieStore = defineStore("movie", {
@@ -86,7 +85,6 @@ export const useMovieStore = defineStore("movie", {
     currentMovieReview: {} as ReviewModel,
     currentMovieRating: 0,
     highlightedMovie: {} as HighlightedMovie,
-
   }),
   getters: {
     movieMainActors: (state) => {
@@ -193,11 +191,11 @@ export const useMovieStore = defineStore("movie", {
     marketing: (state) => {},
   },
   actions: {
-    async getMovieById(id: number, keyIndex: number) {
+    async getMovieById(id: number) {
       const userDataStore = useUserDataStore();
       const userStore = useAuthStore();
       const movieUrl = BASE_URL + "movie";
-      this.movie = await getMovieById(id, keyIndex);
+      this.movie = await getMovieById(id);
       try {
         const { error, response } = await useBackend<MovieModel, null>({
           url: movieUrl,
@@ -214,7 +212,7 @@ export const useMovieStore = defineStore("movie", {
               nameRu: this.movie.nameRu,
               nameOriginal: this.movie.nameOriginal || this.movie.nameRu,
               posterUrlPreview: this.movie.posterUrlPreview,
-              ratingKinopoisk: this.movie.ratingKinopoisk,
+              ratingKinopoisk: this.movie.ratingKinopoisk || 7,
               reviews: [],
               critiques: [],
             },
@@ -242,58 +240,67 @@ export const useMovieStore = defineStore("movie", {
           .map((m) => m.kinopoiskId)
           .includes(String(id))
       ) {
-        console.log(userDataStore.watchHistory, id);
+        console.log(
+          userDataStore.watchHistory.map((m) => m.kinopoiskId),
+          id
+        );
         this.addToWatchHistory(String(id));
       }
     },
-    async getSeasons(id: number, keyIndex: number) {
-      const data = await getTvShowSeasons(id, keyIndex);
+    async getSeasons(id: number) {
+      const data = await getTvShowSeasons(id);
       this.seasons = data.items;
     },
-    async getBoxOffice(id: number, keyIndex: number) {
-      const data = await getMovieBoxOffice(id, keyIndex);
+    async getBoxOffice(id: number) {
+      const data = await getMovieBoxOffice(id);
       this.boxOffice = data.items;
     },
-    async getFacts(id: number, keyIndex: number) {
-      const data = await getMovieFacts(id, keyIndex);
+    async getFacts(id: number) {
+      const data = await getMovieFacts(id);
       this.facts = data.items;
     },
-    async getDistribution(id: number, keyIndex: number) {
-      const data = await getMovieDistribution(id, keyIndex);
+    async getDistribution(id: number) {
+      const data = await getMovieDistribution(id);
       this.distribution = data.items;
     },
-    async getAwards(id: number, keyIndex: number) {
-      const data = await getMovieAwards(id, keyIndex);
+    async getAwards(id: number) {
+      const data = await getMovieAwards(id);
       this.awards = data.items;
     },
-    async getVideos(id: number, keyIndex: number) {
-      const data = await getMovieVideos(id, keyIndex);
+    async getVideos(id: number) {
+      const data = await getMovieVideos(id);
       this.videos = data.items;
     },
-    async getSimilars(id: number, keyIndex: number) {
-      const data = await getMovieSimilars(id, keyIndex);
+    async getSimilars(id: number) {
+      const data = await getMovieSimilars(id);
       this.similars = data.items;
     },
-    async getImages(id: number, keyIndex: number) {
-      const data = await getMovieImages(id, keyIndex);
+    async getImages(id: number) {
+      const data = await getMovieImages(id);
       this.images = data.items;
     },
-    async getReviews(id: number, keyIndex: number) {
-      const data = await getMovieReviews(id, keyIndex);
+    async getReviews(id: number) {
+      const data = await getMovieReviews(id);
       this.reviewObj = data;
     },
-    async getSequelsAndPrequels(id: number, keyIndex: number) {
-      const data = await getMovieSequelsAndPrequels(id, keyIndex);
-      this.sequelsAndPrequels = data;
+    async getSequelsAndPrequels(id: number) {
+      const data = await getMovieSequelsAndPrequels(id)
+        .then((data) => {
+          this.sequelsAndPrequels = data;
+        })
+        .catch(() => {
+          this.sequelsAndPrequels = [];
+        });
     },
-    async getStaff(id: number, keyIndex: number) {
-      const data = await getMovieStaff(id, keyIndex);
+    async getStaff(id: number) {
+      const data = await getMovieStaff(id);
       this.staff = data;
     },
     setCurrentSeason(season: number) {
       this.currentSeason = season;
     },
     setWatchLater(id: string) {
+      console.log(id);
       const userStore = useAuthStore();
       if (userStore.user && userStore.token) {
         useBackend({
@@ -357,28 +364,29 @@ export const useMovieStore = defineStore("movie", {
       }
     },
 
-    async getHighlightedMovie(keyIndex: number) {
-      const body = await getMovieById(685246, keyIndex);
-      const images = await getMovieImages(685246, keyIndex);
+    async getHighlightedMovie() {
+      const body = await getMovieById(685246);
+      const images = await getMovieImages(685246);
       this.highlightedMovie = { body, image: images.items[0] };
     },
 
-    async getAllInfo(id: number, keyIndex: number) {
-
+    async getAllInfo(id: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
-      await this.getMovieById(id, keyIndex);
-      await this.getStaff(id, keyIndex);
-      await this.getBoxOffice(id, keyIndex);
-      await this.getDistribution(id, keyIndex);
-      await this.getReviews(id, keyIndex);
-      await this.getSequelsAndPrequels(id, keyIndex);
-      await this.getSimilars(id, keyIndex);
-      await this.getFacts(id, keyIndex);
-      await this.getAwards(id, keyIndex);
-      await this.getImages(id, keyIndex);
+      await this.getMovieById(id);
+      await this.getStaff(id);
+      await this.getBoxOffice(id);
+      await this.getDistribution(id);
+      await this.getReviews(id);
+      if (id < 5000000) {
+        await this.getSequelsAndPrequels(id);
+      }
+      await this.getSimilars(id);
+      await this.getFacts(id);
+      await this.getAwards(id);
+      await this.getImages(id);
       // await this.getVideos(id);
-      await this.getSeasons(id, keyIndex);
+      await this.getSeasons(id);
       searchStore.unsetIsLoading();
       return this.movie.nameRu || this.movie.nameOriginal;
     },

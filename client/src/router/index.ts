@@ -87,18 +87,19 @@ const router = createRouter({
         {
           path: "/films",
           name: "films",
+          meta: { title: "Фильмы" },
           component: () => import("../views/MoviesList.vue"),
         },
         {
           path: "/serials",
           name: "serials",
+          meta: { title: "Сериалы" },
           component: () => import("../views/SerialsList.vue"),
         },
       ],
     },
     {
       path: "/:catchAll(.*)",
-
       meta: { title: "Страницы нет" },
       component: () => import("../views/NotFound.vue"),
     },

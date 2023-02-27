@@ -1,42 +1,40 @@
 <template>
   <MyLoaderVue v-if="isLoading" />
-  <main v-else>
-    <v-container class="bg-surface">
-      <v-row no-gutters>
-        <v-list> <v-list-item @click="$router.push({ name: item.link })" v-for="(item, i) in items" :key="i" :value="item"
-            :class="item.status" active-color="primary" variant="plain">
-            <template v-slot:prepend>
-              <v-icon :icon="item.icon" style="margin: 0px 10px 0px 0px"></v-icon>
-            </template>
-            <v-list-item-title> {{ item.text }}</v-list-item-title>
-          </v-list-item>
-        </v-list>
+  <v-container class="bg-surface container" v-else>
+    <v-row no-gutters>
+      <v-list> <v-list-item @click="$router.push({ name: item.link })" v-for="(item, i) in items" :key="i" :value="item"
+          :class="item.status" active-color="primary" variant="plain">
+          <template v-slot:prepend>
+            <v-icon :icon="item.icon" style="margin: 0px 10px 0px 0px"></v-icon>
+          </template>
+          <v-list-item-title> {{ item.text }}</v-list-item-title>
+        </v-list-item>
+      </v-list>
 
-        <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
-          style="padding: 10px; gap: 20px">
-          <card-home class="w-100" :movieProps="movieStore.highlightedMovie"></card-home>
+      <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
+        style="padding: 10px; gap: 20px">
+        <card-home class="w-100" :movieProps="movieStore.highlightedMovie"></card-home>
 
-          <SlideGroup class="w-100" :moviesProps="filteredTop100">
-            Топ 100 >
-          </SlideGroup>
+        <SlideGroup class="w-100" :moviesProps="filteredTop100">
+          Топ 100 >
+        </SlideGroup>
 
-          <SlideGroupWatchLater color="grey-darken-3" v-if="authStore.user && userDataStore.watchLater.length"
-            class="w-100" :moviesProps="userDataStore.watchLater">
-            Посмотреть позже >
-          </SlideGroupWatchLater>
+        <SlideGroupWatchLater color="grey-darken-3" v-if="authStore.user && userDataStore.watchLater.length" class="w-100"
+          :moviesProps="userDataStore.watchLater">
+          Посмотреть позже >
+        </SlideGroupWatchLater>
 
-          <SlideGroup class="w-100" :moviesProps="filteredTop250">
-            Топ 250 >
-          </SlideGroup>
+        <SlideGroup class="w-100" :moviesProps="filteredTop250">
+          Топ 250 >
+        </SlideGroup>
 
-          <SlideGroup class="w-100" :moviesProps="filteredTopAwait">
-            Топ Ожидания >
-          </SlideGroup>
-          <CalendarReleses class="w-100"> </CalendarReleses>
-        </div>
-      </v-row>
-    </v-container>
-  </main>
+        <SlideGroup class="w-100" :moviesProps="filteredTopAwait">
+          Топ Ожидания >
+        </SlideGroup>
+        <CalendarReleses class="w-100"> </CalendarReleses>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script lang="ts" setup>
@@ -78,12 +76,6 @@ const filteredTopAwait = computed(() => {
 const items = [
   { text: "Главная", icon: "mdi-home", link: "home", status: "active" },
   {
-    text: "Онлайн-кинотеатр",
-    icon: "mdi-television",
-    link: "login",
-    status: "inactive",
-  },
-  {
     text: "Фильмы",
     icon: "mdi-filmstrip",
     link: "films",
@@ -121,59 +113,40 @@ const month = [
 
 const date = new Date();
 const authStore = useAuthStore();
-const addNewMonthFilms = (trigger = false, keyIndex: number) => {
+const addNewMonthFilms = (trigger = false) => {
   if (trigger) {
     if (month[date.getMonth() + 1] === undefined) {
-      moviesStore.getPremiereMovies(date.getFullYear() + 1, month[0], keyIndex);
+      moviesStore.getPremiereMovies(date.getFullYear() + 1, month[0]);
     } else {
       moviesStore.getPremiereMovies(
         date.getFullYear(),
         month[date.getMonth() + 1],
-        keyIndex
       );
     }
   } else {
     moviesStore.getPremiereMovies(
       date.getFullYear(),
       month[date.getMonth()],
-      keyIndex
     );
   }
 };
-function getAll(keyIndex: number) {
-  return [
-    moviesStore.getCountriesAndGenres(moviesStore.keyIndex),
-    movieStore.getHighlightedMovie(keyIndex),
-    moviesStore.getMovies(MoviesTopTypesEnum.top100, keyIndex).then((res) => {
+function getAll() {
+
+  moviesStore.getCountriesAndGenres(),
+    movieStore.getHighlightedMovie(),
+    moviesStore.getMovies(MoviesTopTypesEnum.top100).then((res) => {
       top100.value = res;
     }),
-    moviesStore.getMovies(MoviesTopTypesEnum.top250, keyIndex).then((res) => {
+    moviesStore.getMovies(MoviesTopTypesEnum.top250).then((res) => {
       top250.value = res;
     }),
-    moviesStore.getMovies(MoviesTopTypesEnum.topAwait, keyIndex).then((res) => {
+    moviesStore.getMovies(MoviesTopTypesEnum.topAwait).then((res) => {
       topAwait.value = res;
+      isLoading.value = false
     }),
-    addNewMonthFilms(true, keyIndex),
-  ];
+    addNewMonthFilms(true);
 }
-Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
-  console.log(err);
-  let newIndex = moviesStore.keyIndex + 1;
-  moviesStore.$patch({ keyIndex: newIndex });
-  Promise.all(getAll(newIndex)).catch((err) => {
-    console.log(err);
-    let newIndex = moviesStore.keyIndex + 1;
-    moviesStore.$patch({ keyIndex: newIndex });
-    Promise.all(getAll(newIndex)).catch((err) => {
-      let newIndex = moviesStore.keyIndex + 1;
-      moviesStore.$patch({ keyIndex: newIndex });
-      getAll(newIndex);
-    });
-  });
-}).finally(() => {
-  isLoading.value = false
-});
-
+getAll(); 
 </script>
 
 <style lang="css" scoped>
@@ -246,11 +219,13 @@ Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
   opacity: 1.5;
   pointer-events: all;
 }
+
 @media (min-width: 960px) {
   .container {
     max-width: 1280px;
   }
 }
+
 .card-logo {
   cursor: pointer;
 }
@@ -266,4 +241,10 @@ Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
 }
 
 .active:hover {}
+
+@media (min-width:960px) {
+  .container {
+    max-width: 1280px;
+  }
+}
 </style>
