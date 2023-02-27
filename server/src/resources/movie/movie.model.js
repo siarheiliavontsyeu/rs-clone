@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const Movie = Schema({
   kinopoiskId: { type: String, required: true, unique: true },
-  imdbId: { type: String, required: true, unique: true },
+  imdbId: { type: String, required: true },
   nameRu: { type: String, required: true },
   nameOriginal: { type: String, required: true },
   posterUrlPreview: { type: String },
