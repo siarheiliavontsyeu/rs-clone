@@ -170,24 +170,19 @@ watch(
   () => route.params.nameId,
   (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
-      getPerson(Number(newValue), moviesStore.keyIndex);
+      getPerson(Number(newValue));
     }
   },
   { deep: true }
 );
 
-function getPerson(id: number, keyIndex: number) {
-  return [personStore
-    .getStaffPerson(id, keyIndex)
-    .then((data) => (document.title = data))];
+function getPerson(id: number) {
+  personStore
+    .getStaffPerson(id)
+    .then((data) => (document.title = data));
 }
-Promise.all(
-  getPerson(Number(route.params.nameId), moviesStore.keyIndex)
-).catch(() => {
-  let newIndex = moviesStore.keyIndex + 1;
-  moviesStore.$patch({ keyIndex: newIndex });
-  getPerson(Number(route.params.nameId), newIndex);
-})
+getPerson(Number(route.params.nameId))
+
 </script>
 <style scoped>
 .container {
@@ -354,12 +349,6 @@ Promise.all(
 @media (min-width: 960px) {
   .container {
     max-width: 1280px;
-  }
-}
-
-@media (max-width: 1200px) {
-  .movie-main-actors {
-    display: none;
   }
 }
 

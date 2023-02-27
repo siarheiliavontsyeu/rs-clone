@@ -1,10 +1,10 @@
 <template>
-  <MyLoaderVue v-if="searchStore.isLoading" />
+  <MyLoaderVue v-if="isLoading" />
   <v-container v-else class="container">
     <v-container class="movie-basic">
       <div class="movie-poster">
         <img :src="movieStore.movie.posterUrlPreview" :alt="movieStore.movie.nameEn" class="poster" />
-        <WatchLaterButtonVue v-show="authStore.user" :movieId="$route.params.movieId" />
+        <WatchLaterButtonVue v-show="authStore.user" :movieId="String($route.params.movieId)" />
       </div>
       <div class="movie-info">
         <div class="info-header">
@@ -194,6 +194,7 @@
           </div>
           <div class="font-weight-bold">{{ movie.nameRu }}</div>
           <div class="text-medium-emphasis">{{ movie.nameOriginal }}</div>
+          <div class="text-medium-emphasis text-caption">{{ properMovieRelationType(movie.relationType) }}</div>
         </div>
       </div>
     </v-container>
@@ -211,6 +212,7 @@
           </div>
           <div class="font-weight-bold">{{ movie.nameRu }}</div>
           <div class="text-medium-emphasis">{{ movie.nameOriginal }}</div>
+          <div class="text-medium-emphasis text-caption">{{ properMovieRelationType(movie.relationType) }}</div>
         </div>
       </div>
       <div v-else>Схожих фильмов нет</div>
@@ -306,7 +308,7 @@
   </v-container>
 </template>
 <script setup lang="ts">
-import { watch, computed } from "vue";
+import { watch, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
 import { useSearchStore } from "@/stores/searchStore";
@@ -317,18 +319,19 @@ import {
   properRatingMpaa,
   properMoney,
   properText,
+  properMovieRelationType,
 } from "@/helpers/composables";
 import { personDate } from "@/helpers/date";
 import ReviewCard from "@/components/ReviewCard.vue";
 import CustomReviewCard from "@/components/CustomReviewCard.vue";
 import WatchLaterButtonVue from "@/components/WatchLaterButton.vue";
-import { useMoviesStore } from "@/stores/moviesStore";
 
 const movieStore = useMovieStore();
-const moviesStore = useMoviesStore();
 const searchStore = useSearchStore();
 const authStore = useAuthStore();
 const route = useRoute();
+
+const isLoading = ref(false);
 
 const genres = computed(() => {
   return movieStore.movie.genres.map((g) => g.genre).join(", ");
@@ -351,23 +354,20 @@ watch(
   () => route.params.movieId,
   (newValue, oldValue) => {
     if (newValue !== oldValue && newValue) {
-      getMovie(Number(newValue), moviesStore.keyIndex);
+      getMovie(Number(newValue));
     }
   },
   { deep: true }
 );
-function getMovie(id: number, keyIndex: number) {
-  return [movieStore.getAllInfo(id, keyIndex).then(data => {
+function getMovie(id: number) {
+  isLoading.value = true
+  movieStore.getAllInfo(id).then(data => {
     document.title = data;
-  })];
+    isLoading.value = false;
+  });
 }
-Promise.all(
-  getMovie(Number(route.params.movieId), moviesStore.keyIndex)
-).catch(() => {
-  let newIndex = moviesStore.keyIndex + 1;
-  moviesStore.$patch({ keyIndex: newIndex });
-  getMovie(Number(route.params.movieId), newIndex);
-})
+getMovie(Number(route.params.movieId))
+
 
 </script>
 
@@ -714,7 +714,7 @@ Promise.all(
 
 @media(min-width:960px) {
   .movie-basic {
-    max-width: 1200px;
+    max-width: 1280px;
   }
 }
 

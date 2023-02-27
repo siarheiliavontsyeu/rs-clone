@@ -80,20 +80,6 @@ const filteredMovies = computed(() => {
     }
   });
 });
-
-// watch: {
-//   moviesProps: {
-//     handler() {
-//       this.movies.isItemsReady = this.moviesProps.isItemsReady;
-//       this.movies.array = this.
-//         if(this.movies.array.length === 0) {
-//         this.$emit("updateMonth", true);
-//       }
-//     },
-//     deep: true,
-//     },
-// },
-
 </script>
 
 <style lang="css" scoped>

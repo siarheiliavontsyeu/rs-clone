@@ -144,6 +144,8 @@ function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
   };
 }
 const onFilter = () => {
+  console.log(currentPage.value);
+
   moviesStore
     .getMovieFilters({
       country: chosenCountry.value,
@@ -155,10 +157,6 @@ const onFilter = () => {
       yearFrom: chosenMinYear.value,
       yearTo: chosenMaxYear.value,
       page: currentPage.value,
-    }, moviesStore.keyIndex).catch(() => {
-      let newIndex = moviesStore.keyIndex + 1;
-      moviesStore.$patch({ keyIndex: newIndex });
-      onFilter();
     }).finally(() => {
       isLoading.value = false;
     })
@@ -168,7 +166,7 @@ window.onscroll = debounce(() => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight >=
     document.documentElement.offsetHeight - 200;
-  if (properMovies.value.length && properMovies.value.length >= 20) {
+  if (properMovies.value.length && properMovies.value.length >= 5) {
     if (
       bottomOfWindow &&
       moviesStore.filtersRespone.totalPages > currentPage.value
