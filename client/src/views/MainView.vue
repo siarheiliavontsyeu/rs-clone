@@ -68,7 +68,9 @@
       <ProfileBar></ProfileBar>
     </v-app-bar>
     <v-main class="main">
+      <!-- <v-parallax src="https://yastatic.net/s3/passport-auth-customs/customs/_/4vui26y6.jpg"> -->
       <router-view></router-view>
+      <!-- </v-parallax> -->
     </v-main>
     <ScrollToTop />
   </v-app>
@@ -78,12 +80,10 @@
 import { ref } from "vue";
 import SearchField from "@/components/SearchField.vue";
 import ProfileBar from "@/components/ProfileBar.vue";
-import { useMoviesStore } from "@/stores/moviesStore";
 import { useUserDataStore } from "@/stores/userDataStore";
 import ScrollToTop from "@/components/ScrollToTop.vue";
 import { useAuthStore } from "@/stores/authStore";
 
-const moviesStore = useMoviesStore();
 const userDataStore = useUserDataStore();
 const authStore = useAuthStore();
 
@@ -95,7 +95,7 @@ if (authStore.user && authStore.token) {
 function onClick() {
   theme.value = theme.value === "light" ? "dark" : "light";
 }
-moviesStore.getCountriesAndGenres();
+
 </script>
 
 <style>
@@ -125,7 +125,9 @@ moviesStore.getCountriesAndGenres();
 }
 
 .main {
-  background-color: rgb(var(--v-theme-on-surface-variant));
+  background-attachment: fixed;
+  background-size: cover;
+  background-image: url(https://yastatic.net/s3/passport-auth-customs/customs/_/4vui26y6.jpg);
 }
 
 .filters:hover {
@@ -143,5 +145,11 @@ moviesStore.getCountriesAndGenres();
 }
 .logo-svg {
   height: 100%;
+}
+
+@media (max-width:1200px) {
+  .home img {
+    width: 400px;
+  }
 }
 </style>

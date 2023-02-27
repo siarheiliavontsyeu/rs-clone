@@ -108,7 +108,8 @@ export const properRates = (rate: number): string => {
   else return `${number.format(rate)} оценок`;
 };
 
-export const ratingColor = (rating: number): string => {
+export const ratingColor = (rate: number | string): string => {
+  const rating = Number(rate);
   if (rating < 5) return "red";
   if (rating >= 5 && rating < 7) return "gray";
   else return "green";

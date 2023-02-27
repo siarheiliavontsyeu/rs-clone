@@ -31,15 +31,17 @@ export const usePersonStore = defineStore("person", {
     },
   },
   actions: {
-    async getStaffPerson(id: number) {
+    async getStaffPerson(id: number, keyIndex: number) {
       const searchStore = useSearchStore();
       searchStore.setIsLoading();
-      const data = await getStaffPerson(id);
+      const data = await getStaffPerson(id, keyIndex);
       this.person = data;
       searchStore.unsetIsLoading();
       const professionArray = data.films.map((movie) => movie.professionKey);
       this.professionKeys = new Set(professionArray);
       this.currentProfession = [...this.professionKeys][0];
+
+      return this.person.nameRu || this.person.nameEn;
     },
     setCurrentProfession(profession: string) {
       this.currentProfession = profession;
