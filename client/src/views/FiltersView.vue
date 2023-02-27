@@ -75,7 +75,7 @@ import FilteredMovieCardVue from "@/components/FilteredMovieCard.vue";
 import { useMoviesStore } from "@/stores/moviesStore";
 import { MovieTypeEnum } from "@/types/movies.types";
 import MyLoaderVue from "@/components/MyLoader.vue";
-import { computed, ref } from "vue";
+import { computed, onBeforeUnmount, ref } from "vue";
 
 const moviesStore = useMoviesStore();
 const chosenCountry = ref();
@@ -178,6 +178,9 @@ window.onscroll = debounce(() => {
     }
   }
 }, 300);
+onBeforeUnmount(() => {
+  moviesStore.$patch({ foundMovies: [] })
+})
 </script>
 <style scoped>
 .container {
@@ -200,6 +203,8 @@ window.onscroll = debounce(() => {
   grid-area: o;
   padding: 20px;
   position: sticky;
+  height: 1000px;
+  top: 20px;
 }
 
 .movies {

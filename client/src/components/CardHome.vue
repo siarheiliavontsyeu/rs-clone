@@ -9,6 +9,7 @@
       :style="{
         position: 'absolute',
         background: `url(${movieStore.highlightedMovie.image.imageUrl})`,
+
         backgroundSize: 'cover',
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
@@ -92,26 +93,24 @@ const someMethod = (event: { clientX: number; clientY: number }) => {
   left: 0;
   width: 100%;
   z-index: 0;
-  background: linear-gradient(
-    90deg,
-    #000 6.25%,
-    #000 6.26%,
-    rgba(0, 0, 0, 0.99) 14.15%,
-    rgba(0, 0, 0, 0.961) 20.77%,
-    rgba(0, 0, 0, 0.915) 26.27%,
-    rgba(0, 0, 0, 0.856) 30.8%,
-    rgba(0, 0, 0, 0.785) 34.5%,
-    rgba(0, 0, 0, 0.705) 37.54%,
-    rgba(0, 0, 0, 0.619) 40.06%,
-    rgba(0, 0, 0, 0.529) 42.21%,
-    rgba(0, 0, 0, 0.437) 44.15%,
-    rgba(0, 0, 0, 0.347) 46.03%,
-    rgba(0, 0, 0, 0.261) 47.99%,
-    rgba(0, 0, 0, 0.18) 50.2%,
-    rgba(0, 0, 0, 0.108) 52.79%,
-    rgba(0, 0, 0, 0.047) 55.94%,
-    transparent 59.77%
-  );
+  background: linear-gradient(90deg,
+      #000 6.25%,
+      #000 6.26%,
+      rgba(0, 0, 0, 0.99) 14.15%,
+      rgba(0, 0, 0, 0.961) 20.77%,
+      rgba(0, 0, 0, 0.915) 26.27%,
+      rgba(0, 0, 0, 0.856) 30.8%,
+      rgba(0, 0, 0, 0.785) 34.5%,
+      rgba(0, 0, 0, 0.705) 37.54%,
+      rgba(0, 0, 0, 0.619) 40.06%,
+      rgba(0, 0, 0, 0.529) 42.21%,
+      rgba(0, 0, 0, 0.437) 44.15%,
+      rgba(0, 0, 0, 0.347) 46.03%,
+      rgba(0, 0, 0, 0.261) 47.99%,
+      rgba(0, 0, 0, 0.18) 50.2%,
+      rgba(0, 0, 0, 0.108) 52.79%,
+      rgba(0, 0, 0, 0.047) 55.94%,
+      transparent 59.77%);
   background-size: 150%;
   background-repeat: no-repeat;
 }
@@ -139,7 +138,6 @@ const someMethod = (event: { clientX: number; clientY: number }) => {
   width: 100%;
   max-height: 100px;
 }
-
 .card {
   height: 500px;
   box-shadow: 0px 5px 5px -3px var(--v-shadow-key-umbra-opacity, rgba(0, 0, 0, 0.2)),

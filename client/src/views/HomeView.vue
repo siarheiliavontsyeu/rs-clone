@@ -43,6 +43,7 @@
 import {
   MoviesTopTypesEnum,
   type MovieFromCollectionI,
+
 } from "@/types/movies.types";
 import SlideGroup from "@/components/SlideGroup.vue";
 import SlideGroupWatchLater from "@/components/SlideGroupWatchLater.vue";
@@ -93,6 +94,7 @@ const items = [
     icon: "mdi-filmstrip-box-multiple",
     link: "serials",
     status: "none",
+
   },
   {
     text: "О проекте",
@@ -228,21 +230,11 @@ Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
   cursor: pointer;
 }
 
-.inactive {
-  opacity: 0.3;
-  pointer-events: none;
-}
 
-.active {
-  opacity: 1.5;
-  pointer-events: all;
-}
-
-.active:hover {}
-
-
-.card-logo {
-  cursor: pointer;
+.sticky {
+  position: sticky;
+  top: 50px;
+  height: 500px;
 }
 
 .inactive {
@@ -254,9 +246,11 @@ Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
   opacity: 1.5;
   pointer-events: all;
 }
-
-
-
+@media (min-width: 960px) {
+  .container {
+    max-width: 1280px;
+  }
+}
 .card-logo {
   cursor: pointer;
 }
