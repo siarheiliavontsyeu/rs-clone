@@ -250,10 +250,7 @@ Promise.all(getAll(moviesStore.keyIndex)).catch((err) => {
   .container {
     max-width: 1280px;
   }
-
-
-
-
+}
 .card-logo {
   cursor: pointer;
 }
