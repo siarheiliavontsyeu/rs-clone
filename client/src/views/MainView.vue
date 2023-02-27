@@ -69,6 +69,7 @@
       color="limit"
       :style="{
         padding: '0px',
+        maxHeight: '58px',
       }"
     >
       <div class="footer">

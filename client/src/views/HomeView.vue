@@ -12,7 +12,8 @@
       </v-list>
 
       <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
-        style="padding: 10px; gap: 20px">
+        style="padding: 10px; gap: 40px">
+
         <card-home class="w-100" :movieProps="movieStore.highlightedMovie"></card-home>
 
         <SlideGroup class="w-100" :moviesProps="filteredTop100">
