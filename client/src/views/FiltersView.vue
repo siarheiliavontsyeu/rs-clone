@@ -64,6 +64,8 @@
         </div>
         <div v-else>
           <FilteredMovieCardVue :movie="movie" v-for="movie in properMovies" :key="movie.kinopoiskId" />
+          <v-progress-circular v-if="isExtraLoading" indeterminate color="#f50" :size="50"
+            class="loader"></v-progress-circular>
         </div>
       </div>
     </v-card>
@@ -75,7 +77,7 @@ import FilteredMovieCardVue from "@/components/FilteredMovieCard.vue";
 import { useMoviesStore } from "@/stores/moviesStore";
 import { MovieTypeEnum } from "@/types/movies.types";
 import MyLoaderVue from "@/components/MyLoader.vue";
-import { computed, onBeforeUnmount, ref } from "vue";
+import { computed, onBeforeUnmount, ref, type Ref } from "vue";
 
 const moviesStore = useMoviesStore();
 const chosenCountry = ref();
@@ -96,6 +98,7 @@ const sortBy = ref("RATING");
 const currentPage = ref(1);
 const isEmpty = ref(true);
 const isLoading = ref(false);
+const isExtraLoading = ref(false);
 
 const properMovies = computed(() => {
   return moviesStore.foundMovies.filter((m) => m.kinopoiskId !== 1252447 && m.year !== null);
@@ -128,9 +131,8 @@ const onFilterChange = () => {
 
 const onRequestMovies = () => {
   isEmpty.value = false;
-  isLoading.value = true;
   currentPage.value = 1;
-  onFilter();
+  onFilter(isLoading);
 };
 function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
   let timer: any;
@@ -143,9 +145,8 @@ function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
     }, wait);
   };
 }
-const onFilter = () => {
-  console.log(currentPage.value);
-
+const onFilter = (loader: Ref<boolean>) => {
+  loader.value = true
   moviesStore
     .getMovieFilters({
       country: chosenCountry.value,
@@ -158,21 +159,21 @@ const onFilter = () => {
       yearTo: chosenMaxYear.value,
       page: currentPage.value,
     }).finally(() => {
-      isLoading.value = false;
+      loader.value = false;
     })
 }
 
 window.onscroll = debounce(() => {
   let bottomOfWindow =
     document.documentElement.scrollTop + window.innerHeight >=
-    document.documentElement.offsetHeight - 200;
+    document.documentElement.offsetHeight - 400;
   if (properMovies.value.length && properMovies.value.length >= 5) {
     if (
       bottomOfWindow &&
       moviesStore.filtersRespone.totalPages > currentPage.value
     ) {
       currentPage.value += 1;
-      onFilter();
+      onFilter(isExtraLoading);
     }
   }
 }, 300);
@@ -201,7 +202,7 @@ onBeforeUnmount(() => {
   grid-area: o;
   padding: 20px;
   position: sticky;
-  height: 1000px;
+  height: 800px;
   top: 20px;
 }
 
