@@ -47,6 +47,21 @@
     <v-main class="main">
       <router-view></router-view>
     </v-main>
+    <v-footer color="blue-grey-lighten-5 limit">
+      <div class="footer">
+        <div>
+          <a href="https://rs.school/js/">
+            <img src="https://rs.school/images/rs_school_js.svg" alt="лого школы" class="school-logo"></a>
+        </div>
+        <div class="links">
+          <a href="https://github.com/siarheiliavontsyeu" class="link">Сергей</a>
+          <a href="https://github.com/sansrona" class="link">Жанмухамед</a>
+          <a href="https://github.com/hell-llex" class="link">Александр</a>
+        </div>
+        <div>{{ new Date().getFullYear() }}</div>
+        <div></div>
+      </div>
+    </v-footer>
     <ScrollToTop />
   </v-app>
 </template>
@@ -111,6 +126,7 @@ function onClick() {
   transform: scale(1.25);
 }
 
+
 .home {
   margin: 3px 10px 3px 100px;
   height: 58px;
@@ -122,6 +138,36 @@ function onClick() {
 
 .logo-svg {
   height: 100%;
+}
+.limit{
+  max-height: 70px;
+}
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  /* background-color: rgb(var(--v-theme-on-surface-variant)); */
+}
+
+.school-logo {
+  width: 100px;
+  transition: transform 1s;
+}
+
+.school-logo:hover {
+  transform: rotate(360deg);
+}
+
+.links {
+  display: flex;
+  gap: 10px;
+}
+
+.links .link:hover {
+  color: #f50;
+  transform: scale(1.1);
+  transition: all 0.3s;
 }
 
 @media (max-width:1200px) {

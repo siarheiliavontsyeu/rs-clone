@@ -15,6 +15,8 @@
             </v-list>
             <div class="v-col rounded-lg body" style="padding: 10px; gap: 20px">
                 <FilteredMovieCardVue :movie="movie" v-for="movie in properMovies" :key="movie.kinopoiskId" />
+                <v-progress-circular v-if="isExtraLoading" indeterminate color="#f50" :size="50"
+                    class="loader"></v-progress-circular>
             </div>
         </v-row>
     </v-container>
@@ -27,15 +29,10 @@ import { computed, onBeforeUnmount, ref } from 'vue';
 
 const moviesStore = useMoviesStore();
 const isLoading = ref(true);
+const isExtraLoading = ref(false);
 const currentPage = ref(1);
 const items = [
     { text: "Главная", icon: "mdi-home", link: "home", status: "none" },
-    {
-        text: "Онлайн-кинотеатр",
-        icon: "mdi-television",
-        link: "login",
-        status: "inactive",
-    },
     {
         text: "Фильмы",
         icon: "mdi-filmstrip",
@@ -82,13 +79,14 @@ function debounce(fn: (this: Window, ev: Event) => any, wait: number) {
 window.onscroll = debounce(() => {
     let bottomOfWindow =
         document.documentElement.scrollTop + window.innerHeight >=
-        document.documentElement.offsetHeight - 200;
+        document.documentElement.offsetHeight - 400;
     if (properMovies.value.length && properMovies.value.length >= 5) {
         if (
             bottomOfWindow &&
             moviesStore.filtersRespone.totalPages > currentPage.value
         ) {
             currentPage.value += 1;
+            isExtraLoading.value = true;
             moviesStore.getMovieFilters({
                 type: 'TV_SERIES',
                 page: currentPage.value,
@@ -97,7 +95,7 @@ window.onscroll = debounce(() => {
                 yearFrom: 2015,
                 yearTo: 2022,
                 ratingTo: 10,
-            });
+            }).then(() => { isExtraLoading.value = false });
         }
     }
 }, 300);
@@ -129,6 +127,11 @@ onBeforeUnmount(() => {
 .active {
     opacity: 1.5;
     pointer-events: all;
+}
+
+.loader {
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .inactive {
