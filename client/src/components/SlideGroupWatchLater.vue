@@ -17,6 +17,16 @@
           height="250"
           width="190"
         >
+          <v-tooltip
+            activator="parent"
+            location="bottom center"
+            origin="auto"
+            :style="{
+              zIndex: '100',
+            }"
+          >
+            {{ movie.movie.nameRu }}
+          </v-tooltip>
           <div
             class="card-film"
             :style="{
