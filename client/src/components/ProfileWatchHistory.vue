@@ -8,7 +8,7 @@
     <v-row> </v-row>
   </v-container>
   <v-container>
-    <v-row>
+    <v-row class="movies">
       <v-col
         v-for="(hist, index) in history"
         :key="index"
@@ -30,4 +30,9 @@ const props = defineProps<{
   history: WatchHistoryModel[];
 }>();
 </script>
-<style scoped></style>
+<style scoped>
+.movies {
+  max-height: 500px;
+  overflow: scroll;
+}
+</style>

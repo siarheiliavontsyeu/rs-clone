@@ -10,21 +10,21 @@
       "name": "Сергей",
       "github": "https://github.com/siarheiliavontsyeu",
       "title": "Team-lead, Full-stack developer",
-      "desc": "Разработка и разворачивание backend server. Разработка страниц Login, Profile, About. Работа с API kinopisk. Общение с командой, помощь в решении проблем.",
+      "desc": "Разработка и разворачивание backend server. Разработка страниц Login, Profile, About. Работа с API kinopoisk. Общение с командой, помощь в решении проблем.",
       "avatar": "https://avatars.githubusercontent.com/u/7601942?v=4"
     },
     {
       "name": "Жанмухамед,",
       "github": "https://github.com/sansrona",
       "title": "Front-end developer",
-      "desc": "Организация структуры client application. Развертывание frontend приложения. Разработка страниц Name, Movie. Работа с API kinopisk. Общение с командой, помощь в решении проблем.",
+      "desc": "Организация структуры client application. Развертывание frontend приложения. Разработка страниц Name, Movie, Filter. Работа с API kinopoisk. Общение с командой, помощь в решении проблем.",
       "avatar": "https://avatars.githubusercontent.com/u/64542044?v=4"
     },
     {
       "name": "Александр",
       "github": "https://github.com/hell-llex",
       "title": "Front-end developer",
-      "desc": "Разработка страниц Home. Поиск API. Работа с API kinopisk. Общение с командой, помощь в решении проблем.",
+      "desc": "Разработка страниц Home, 404. Поиск API. Работа с API kinopoisk. Общение с командой, помощь в решении проблем.",
       "avatar": "https://avatars.githubusercontent.com/u/77049096?v=4"
     }
   ]

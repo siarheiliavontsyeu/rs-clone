@@ -74,5 +74,7 @@ if (user.value && token.value) {
   height: 100%;
   display: flex;
   flex-direction: column;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 </style>

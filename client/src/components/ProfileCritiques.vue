@@ -8,14 +8,14 @@
     <v-row> </v-row>
   </v-container>
   <v-container>
-    <v-row>
+    <v-row class="movies">
       <v-col
         v-for="(movie, index) in reviews"
         :key="index"
         cols="12"
         sm="6"
-        md="4"
-        lg="3"
+        md="6"
+        lg="6"
       >
         <v-card
           v-if="movie.critique"
@@ -79,6 +79,10 @@ const reviews = computed<ProfileCritiqueModel[]>(() => {
 });
 </script>
 <style scoped>
+.movies {
+  max-height: 500px;
+  overflow: scroll;
+}
 .review {
   padding: 16px 24px;
   margin-bottom: 10px;
