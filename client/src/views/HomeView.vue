@@ -132,9 +132,7 @@ const addNewMonthFilms = (trigger = false) => {
   }
 };
 function getAll() {
-
-  moviesStore.getCountriesAndGenres(),
-    movieStore.getHighlightedMovie(),
+  movieStore.getHighlightedMovie(),
     moviesStore.getMovies(MoviesTopTypesEnum.top100).then((res) => {
       top100.value = res;
     }),
