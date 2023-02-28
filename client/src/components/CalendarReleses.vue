@@ -111,10 +111,6 @@ h3 {
   overflow-x: hidden;
 }
 
-.v-list-item {
-  max-width: 465px;
-}
-
 .card {
   margin: 0px;
   width: 100%;
@@ -123,6 +119,8 @@ h3 {
 
 .number {
   min-width: 13px;
+  font-size: 1.5rem;
+  padding: 0 10px;
 }
 
 .name {
@@ -153,7 +151,7 @@ h3 {
 }
 
 .date {
-  margin: 0 5px;
+  margin: 0 15px;
   font-style: italic;
 }
 
@@ -211,7 +209,7 @@ h3 {
   }
 
   .date {
-    margin: 0 5px;
+    margin: 0 15px;
   }
 }
 </style>

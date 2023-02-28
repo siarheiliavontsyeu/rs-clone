@@ -43,21 +43,26 @@
       }}</v-card-text>
       <v-card-text color="white"> <b>Жанры: </b> {{ genres }} </v-card-text>
       <v-card-actions>
-        <!-- <v-btn @click="
+        <v-btn
+          @click="
             $router.push({
               name: 'movie',
               params: { movieId: movieStore.highlightedMovie.body.kinopoiskId },
             })
-          " rounded="pill" color="white" size="large" prepend-icon="mdi-play" :style="{
-  background: 'linear-gradient(135deg, #f50 69.93%, #d6bb00)',
-  fontSize: '16px',
-  padding: '0px 15px',
-  height: '52px',
-}">
-            Смотреть
-          </v-btn> -->
-        <!-- <watch-later-button v-if="authStore.user" :movieId="String(movieCard.body.kinopoiskId)"></watch-later-button> -->
-        <!-- <watch-later-button v-else @click="$router.push({ name: 'login' })"></watch-later-button>  -->
+          "
+          rounded="pill"
+          color="white"
+          size="large"
+          prepend-icon="mdi-information-outline"
+          :style="{
+            background: 'linear-gradient(135deg, #f50 69.93%, #d6bb00)',
+            fontSize: '16px',
+            padding: '0px 20px',
+            height: '52px',
+          }"
+        >
+          Подробнее
+        </v-btn>
       </v-card-actions>
     </div>
   </v-card>
@@ -93,24 +98,26 @@ const someMethod = (event: { clientX: number; clientY: number }) => {
   left: 0;
   width: 100%;
   z-index: 0;
-  background: linear-gradient(90deg,
-      #000 6.25%,
-      #000 6.26%,
-      rgba(0, 0, 0, 0.99) 14.15%,
-      rgba(0, 0, 0, 0.961) 20.77%,
-      rgba(0, 0, 0, 0.915) 26.27%,
-      rgba(0, 0, 0, 0.856) 30.8%,
-      rgba(0, 0, 0, 0.785) 34.5%,
-      rgba(0, 0, 0, 0.705) 37.54%,
-      rgba(0, 0, 0, 0.619) 40.06%,
-      rgba(0, 0, 0, 0.529) 42.21%,
-      rgba(0, 0, 0, 0.437) 44.15%,
-      rgba(0, 0, 0, 0.347) 46.03%,
-      rgba(0, 0, 0, 0.261) 47.99%,
-      rgba(0, 0, 0, 0.18) 50.2%,
-      rgba(0, 0, 0, 0.108) 52.79%,
-      rgba(0, 0, 0, 0.047) 55.94%,
-      transparent 59.77%);
+  background: linear-gradient(
+    90deg,
+    #000 6.25%,
+    #000 6.26%,
+    rgba(0, 0, 0, 0.99) 14.15%,
+    rgba(0, 0, 0, 0.961) 20.77%,
+    rgba(0, 0, 0, 0.915) 26.27%,
+    rgba(0, 0, 0, 0.856) 30.8%,
+    rgba(0, 0, 0, 0.785) 34.5%,
+    rgba(0, 0, 0, 0.705) 37.54%,
+    rgba(0, 0, 0, 0.619) 40.06%,
+    rgba(0, 0, 0, 0.529) 42.21%,
+    rgba(0, 0, 0, 0.437) 44.15%,
+    rgba(0, 0, 0, 0.347) 46.03%,
+    rgba(0, 0, 0, 0.261) 47.99%,
+    rgba(0, 0, 0, 0.18) 50.2%,
+    rgba(0, 0, 0, 0.108) 52.79%,
+    rgba(0, 0, 0, 0.047) 55.94%,
+    transparent 59.77%
+  );
   background-size: 150%;
   background-repeat: no-repeat;
 }
