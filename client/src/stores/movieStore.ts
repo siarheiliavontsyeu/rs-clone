@@ -240,10 +240,6 @@ export const useMovieStore = defineStore("movie", {
           .map((m) => m.kinopoiskId)
           .includes(String(id))
       ) {
-        console.log(
-          userDataStore.watchHistory.map((m) => m.kinopoiskId),
-          id
-        );
         this.addToWatchHistory(String(id));
       }
     },
@@ -300,7 +296,6 @@ export const useMovieStore = defineStore("movie", {
       this.currentSeason = season;
     },
     setWatchLater(id: string) {
-      console.log(id);
       const userStore = useAuthStore();
       if (userStore.user && userStore.token) {
         useBackend({

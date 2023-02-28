@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const { User } = require('./user.model');
 const {
   NOT_FOUND_ERROR,
-  DUPLICATE_USER_LOGIN
+  DUPLICATE: DUPLICATE_USER_LOGIN
 } = require('../../errors/appErrors');
 const ENTITY_NAME = 'user';
 

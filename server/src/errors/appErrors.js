@@ -11,6 +11,7 @@ class NotFoundError extends Error {
     super(
       message || `Couldn't find a(an) ${entity} with: ${JSON.stringify(params)}`
     );
+    this.name = 'NotFoundError';
     this.status = NOT_FOUND;
   }
 }
@@ -36,9 +37,9 @@ class IncorrectToken extends Error {
   }
 }
 
-class DuplicateUserLogin extends Error {
+class Duplicate extends Error {
   constructor(entity, body, message) {
-    super(message || `Duplicate login ${entity} with: ${JSON.stringify(body)}`);
+    super(message || `Duplicate  ${entity} with: ${JSON.stringify(body)}`);
     this.status = CONFLICT;
   }
 }
@@ -48,5 +49,5 @@ module.exports = {
   BAD_REQUEST_ERROR: BadRequestError,
   INCORRECT_LOGIN_OR_PASSWORD: IncorrectLoginPassword,
   INCORRECT_TOKEN: IncorrectToken,
-  DUPLICATE_USER_LOGIN: DuplicateUserLogin
+  DUPLICATE: Duplicate
 };

@@ -4,7 +4,13 @@ const { INCORRECT_TOKEN } = require('../errors/appErrors');
 const ENTITY_NAME = 'token';
 const AUTH_TYPE = 'Bearer';
 
-const PATH_WITHOUT_AUTH = ['/', '/login', '/login/'];
+const PATH_WITHOUT_AUTH = [
+  '/',
+  '/login',
+  '/login/',
+  '/registration',
+  '/registration/'
+];
 
 const checkToken = (req, res, next) => {
   const { url, headers } = req;
