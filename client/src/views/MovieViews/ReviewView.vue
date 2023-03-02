@@ -59,7 +59,6 @@
 import { properRates, ratingColor } from "@/helpers/composables";
 import { useAuthStore } from "@/stores/authStore";
 import { useMovieStore } from "@/stores/movieStore";
-import { useUserDataStore } from "@/stores/userDataStore";
 import { ref, watch } from "vue";
 
 const movieStore = useMovieStore();

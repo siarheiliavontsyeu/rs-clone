@@ -59,16 +59,14 @@
       color="#f50"
       timeout="4000"
       location="bottom left"
-      variant="tonal"
     >
-      Необходимо выбрать тип рецензии. Текст рецензии отсутствует
+      Необходимо выбрать тип рецензии
     </v-snackbar>
     <v-snackbar
       v-model="noTitle"
       color="#f50"
       timeout="4000"
       location="bottom left"
-      variant="tonal"
     >
       Отсутствует заголовок рецензии
     </v-snackbar>
@@ -77,7 +75,6 @@
       color="#f50"
       timeout="4000"
       location="bottom left"
-      variant="tonal"
     >
       Текст рецензии отсутствует
     </v-snackbar>
@@ -86,7 +83,6 @@
       color="#f50"
       timeout="4000"
       location="bottom left"
-      variant="tonal"
     >
       Слишком короткая рецензия... Попробуйте еще раз и у вас всё получится!
     </v-snackbar>

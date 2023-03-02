@@ -2,8 +2,16 @@
   <MyLoaderVue v-if="isLoading" />
   <v-container class="bg-surface container" v-else>
     <v-row no-gutters>
-      <v-list> <v-list-item @click="$router.push({ name: item.link })" v-for="(item, i) in items" :key="i" :value="item"
-          :class="item.status" active-color="primary" variant="plain">
+      <v-list>
+        <v-list-item
+          @click="$router.push({ name: item.link })"
+          v-for="(item, i) in items"
+          :key="i"
+          :value="item"
+          :class="item.status"
+          active-color="primary"
+          variant="plain"
+        >
           <template v-slot:prepend>
             <v-icon :icon="item.icon" style="margin: 0px 10px 0px 0px"></v-icon>
           </template>
@@ -11,17 +19,25 @@
         </v-list-item>
       </v-list>
 
-      <div class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
-        style="padding: 10px; gap: 40px">
-
-        <card-home class="w-100" :movieProps="movieStore.highlightedMovie"></card-home>
+      <div
+        class="v-col rounded-lg h-screen w-75 h-100 d-flex flex-column justify-center align-center"
+        style="padding: 10px; gap: 40px"
+      >
+        <card-home
+          class="w-100"
+          :movieProps="movieStore.highlightedMovie"
+        ></card-home>
 
         <SlideGroup class="w-100" :moviesProps="filteredTop100">
           Топ 100 >
         </SlideGroup>
 
-        <SlideGroupWatchLater color="grey-darken-3" v-if="authStore.user && userDataStore.watchLater.length" class="w-100"
-          :moviesProps="userDataStore.watchLater">
+        <SlideGroupWatchLater
+          color="grey-darken-3"
+          v-if="authStore.user && userDataStore.watchLater.length"
+          class="w-100"
+          :moviesProps="userDataStore.watchLater"
+        >
           Посмотреть позже >
         </SlideGroupWatchLater>
 
@@ -42,7 +58,6 @@
 import {
   MoviesTopTypesEnum,
   type MovieFromCollectionI,
-
 } from "@/types/movies.types";
 import SlideGroup from "@/components/SlideGroup.vue";
 import SlideGroupWatchLater from "@/components/SlideGroupWatchLater.vue";
@@ -87,7 +102,6 @@ const items = [
     icon: "mdi-filmstrip-box-multiple",
     link: "serials",
     status: "none",
-
   },
   {
     text: "О проекте",
@@ -121,14 +135,11 @@ const addNewMonthFilms = (trigger = false) => {
     } else {
       moviesStore.getPremiereMovies(
         date.getFullYear(),
-        month[date.getMonth() + 1],
+        month[date.getMonth() + 1]
       );
     }
   } else {
-    moviesStore.getPremiereMovies(
-      date.getFullYear(),
-      month[date.getMonth()],
-    );
+    moviesStore.getPremiereMovies(date.getFullYear(), month[date.getMonth()]);
   }
 };
 function getAll() {
@@ -141,11 +152,11 @@ function getAll() {
     }),
     moviesStore.getMovies(MoviesTopTypesEnum.topAwait).then((res) => {
       topAwait.value = res;
-      isLoading.value = false
+      isLoading.value = false;
     }),
     addNewMonthFilms(true);
 }
-getAll(); 
+getAll();
 </script>
 
 <style lang="css" scoped>
@@ -156,24 +167,26 @@ getAll();
   left: 0;
   width: 100%;
   z-index: 0;
-  background: linear-gradient(90deg,
-      #000 6.25%,
-      #000 6.26%,
-      rgba(0, 0, 0, 0.99) 14.15%,
-      rgba(0, 0, 0, 0.961) 20.77%,
-      rgba(0, 0, 0, 0.915) 26.27%,
-      rgba(0, 0, 0, 0.856) 30.8%,
-      rgba(0, 0, 0, 0.785) 34.5%,
-      rgba(0, 0, 0, 0.705) 37.54%,
-      rgba(0, 0, 0, 0.619) 40.06%,
-      rgba(0, 0, 0, 0.529) 42.21%,
-      rgba(0, 0, 0, 0.437) 44.15%,
-      rgba(0, 0, 0, 0.347) 46.03%,
-      rgba(0, 0, 0, 0.261) 47.99%,
-      rgba(0, 0, 0, 0.18) 50.2%,
-      rgba(0, 0, 0, 0.108) 52.79%,
-      rgba(0, 0, 0, 0.047) 55.94%,
-      transparent 59.77%);
+  background: linear-gradient(
+    90deg,
+    #000 6.25%,
+    #000 6.26%,
+    rgba(0, 0, 0, 0.99) 14.15%,
+    rgba(0, 0, 0, 0.961) 20.77%,
+    rgba(0, 0, 0, 0.915) 26.27%,
+    rgba(0, 0, 0, 0.856) 30.8%,
+    rgba(0, 0, 0, 0.785) 34.5%,
+    rgba(0, 0, 0, 0.705) 37.54%,
+    rgba(0, 0, 0, 0.619) 40.06%,
+    rgba(0, 0, 0, 0.529) 42.21%,
+    rgba(0, 0, 0, 0.437) 44.15%,
+    rgba(0, 0, 0, 0.347) 46.03%,
+    rgba(0, 0, 0, 0.261) 47.99%,
+    rgba(0, 0, 0, 0.18) 50.2%,
+    rgba(0, 0, 0, 0.108) 52.79%,
+    rgba(0, 0, 0, 0.047) 55.94%,
+    transparent 59.77%
+  );
   background-size: 150%;
   background-repeat: no-repeat;
 }
@@ -201,7 +214,6 @@ getAll();
 .card-logo {
   cursor: pointer;
 }
-
 
 .sticky {
   position: sticky;
@@ -239,9 +251,10 @@ getAll();
   pointer-events: all;
 }
 
-.active:hover {}
+.active:hover {
+}
 
-@media (min-width:960px) {
+@media (min-width: 960px) {
   .container {
     max-width: 1280px;
   }

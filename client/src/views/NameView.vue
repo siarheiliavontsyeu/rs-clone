@@ -3,7 +3,11 @@
   <v-container v-else class="container">
     <v-container class="body">
       <div class="avatar">
-        <img class="avatar-img" :src="personStore.person.posterUrl" :alt="personStore.person.nameRu" />
+        <img
+          class="avatar-img"
+          :src="personStore.person.posterUrl"
+          :alt="personStore.person.nameRu"
+        />
       </div>
       <div>
         <div class="meta-header">
@@ -32,7 +36,9 @@
               <p>
                 <span>{{ birthdate[0] }}</span>
                 <span> • </span>
-                <span class="text-medium-emphasis font-weight-light">{{ birthdate[1] }} от роду</span>
+                <span class="text-medium-emphasis font-weight-light"
+                  >{{ birthdate[1] }} от роду</span
+                >
               </p>
             </div>
             <div class="table-row">
@@ -58,12 +64,21 @@
             <div class="table-row">
               <p class="table-row-title text-medium-emphasis">Супруг/супруга</p>
               <div class="spouses">
-                <div class="d-flex" v-for="spouse in personStore.person.spouses" :key="spouse.personId">
+                <div
+                  class="d-flex"
+                  v-for="spouse in personStore.person.spouses"
+                  :key="spouse.personId"
+                >
                   <p class="mr-1">{{ spouse.name }}</p>
-                  <span class="text-medium-emphasis font-weight-light" v-if="spouse.divorced">({{ spouse.divorcedReason
-                  }})</span>
-                  <span class="text-medium-emphasis font-weight-light" v-else>{{ spouse.children }}
-                    {{ spouse.children === 1 ? "ребенок" : "детей" }}</span>
+                  <span
+                    class="text-medium-emphasis font-weight-light"
+                    v-if="spouse.divorced"
+                    >({{ spouse.divorcedReason }})</span
+                  >
+                  <span class="text-medium-emphasis font-weight-light" v-else
+                    >{{ spouse.children }}
+                    {{ spouse.children === 1 ? "ребенок" : "детей" }}</span
+                  >
                 </div>
               </div>
             </div>
@@ -79,7 +94,11 @@
       <div>
         <h4 class="text-h2 font-weight-bold mb-2">Знаете ли вы, что...</h4>
         <ul class="facts-list">
-          <li class="fact text-subtitle-2" v-for="(fact, index) in personStore.person.facts" :key="index">
+          <li
+            class="fact text-subtitle-2"
+            v-for="(fact, index) in personStore.person.facts"
+            :key="index"
+          >
             {{ fact }}
           </li>
         </ul>
@@ -88,8 +107,13 @@
     <v-container class="movies">
       <div class="professions">
         <ul class="professions-list">
-          <li v-for="profession in personStore.professionKeys" :key="profession" class="profession"
-            :class="{ active: personStore.currentProfession === profession }" @click="onProfessionChange(profession)">
+          <li
+            v-for="profession in personStore.professionKeys"
+            :key="profession"
+            class="profession"
+            :class="{ active: personStore.currentProfession === profession }"
+            @click="onProfessionChange(profession)"
+          >
             <div class="profession-title">
               {{ professionInRu(profession) }}
             </div>
@@ -101,9 +125,14 @@
       </div>
       <div class="movies-container">
         <ul class="movies-list">
-          <li v-for="(movie, index) in personStore.moviesByProfession" :key="movie.filmId" class="movie" @click="
-            $router.push({ name: 'movie', params: { movieId: movie.filmId } })
-          ">
+          <li
+            v-for="(movie, index) in personStore.moviesByProfession"
+            :key="movie.filmId"
+            class="movie"
+            @click="
+              $router.push({ name: 'movie', params: { movieId: movie.filmId } })
+            "
+          >
             <div class="movie-name">
               <div class="text-h6" :class="{ top: index < 10 }">
                 {{ movie.nameRu }}
@@ -138,13 +167,10 @@ import MyLoaderVue from "@/components/MyLoader.vue";
 import { personDate } from "@/helpers/date";
 import { professionInRu, ratingColor } from "@/helpers/composables";
 import { GenderTypeEnum } from "@/types/movies.types";
-import { useMoviesStore } from "@/stores/moviesStore";
 
 const route = useRoute();
 const searchStore = useSearchStore();
 const personStore = usePersonStore();
-const moviesStore = useMoviesStore();
-const personId = route.params.nameId;
 
 const gender = computed(() => {
   return personStore.person.sex === GenderTypeEnum.male ? "мужской" : "женский";
@@ -177,12 +203,9 @@ watch(
 );
 
 function getPerson(id: number) {
-  personStore
-    .getStaffPerson(id)
-    .then((data) => (document.title = data));
+  personStore.getStaffPerson(id).then((data) => (document.title = data));
 }
-getPerson(Number(route.params.nameId))
-
+getPerson(Number(route.params.nameId));
 </script>
 <style scoped>
 .container {
@@ -255,7 +278,8 @@ getPerson(Number(route.params.nameId))
   width: 100%;
 }
 
-.movies-list {}
+.movies-list {
+}
 
 .movie {
   display: grid;

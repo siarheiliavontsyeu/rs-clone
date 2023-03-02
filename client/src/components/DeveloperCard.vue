@@ -34,7 +34,7 @@
 </template>
 <script setup lang="ts">
 import type { DeveloperModel } from "@/types/team.types";
-const props = defineProps<{
+defineProps<{
   developer: DeveloperModel;
   idx: number;
 }>();

@@ -50,7 +50,7 @@
 <script setup lang="ts">
 import { formatDate } from "@/helpers/date";
 import type { MovieModel } from "../types/movies.types";
-const props = defineProps<{
+defineProps<{
   movie: MovieModel;
 }>();
 </script>

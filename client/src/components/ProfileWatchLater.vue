@@ -26,7 +26,7 @@
 import MovieCard from "@/components/MovieCard.vue";
 import type { WatchLaterModel } from "@/types/user.types";
 
-const props = defineProps<{
+defineProps<{
   later: WatchLaterModel[];
 }>();
 </script>

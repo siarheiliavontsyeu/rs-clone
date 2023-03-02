@@ -3,8 +3,15 @@
   <v-container v-else class="container">
     <v-container class="movie-basic">
       <div class="movie-poster">
-        <img :src="movieStore.movie.posterUrlPreview" :alt="movieStore.movie.nameEn" class="poster" />
-        <WatchLaterButtonVue v-show="authStore.user" :movieId="String($route.params.movieId)" />
+        <img
+          :src="movieStore.movie.posterUrlPreview"
+          :alt="movieStore.movie.nameEn"
+          class="poster"
+        />
+        <WatchLaterButtonVue
+          v-show="authStore.user"
+          :movieId="String($route.params.movieId)"
+        />
       </div>
       <div class="movie-info">
         <div class="info-header">
@@ -13,7 +20,9 @@
           </h1>
           <h4 class="text-medium-emphasis">
             {{ movieStore.movie.nameOriginal }}
-            <span v-show="movieStore.allowedAge">{{ movieStore.allowedAge }}+</span>
+            <span v-show="movieStore.allowedAge"
+              >{{ movieStore.allowedAge }}+</span
+            >
           </h4>
         </div>
         <div>
@@ -40,67 +49,86 @@
             <div class="table-row">
               <p class="table-row-title text-medium-emphasis">Режиссер</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: director.staffId } }" class="link"
-                  v-for="director in movieStore.movieDirector" :key="director.staffId">{{ director.nameRu ||
-                    director.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: director.staffId } }"
+                  class="link"
+                  v-for="director in movieStore.movieDirector"
+                  :key="director.staffId"
+                  >{{ director.nameRu || director.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieWriter.length">
               <p class="table-row-title text-medium-emphasis">Сценарий</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: writer.staffId } }" class="link"
-                  v-for="writer in movieStore.movieWriter" :key="writer.staffId">{{ writer.nameRu || writer.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: writer.staffId } }"
+                  class="link"
+                  v-for="writer in movieStore.movieWriter"
+                  :key="writer.staffId"
+                  >{{ writer.nameRu || writer.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieProducers.length">
               <p class="table-row-title text-medium-emphasis">Продюсер</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: producer.staffId } }" class="link"
-                  v-for="producer in movieStore.movieProducers" :key="producer.staffId">{{ producer.nameRu ||
-                    producer.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: producer.staffId } }"
+                  class="link"
+                  v-for="producer in movieStore.movieProducers"
+                  :key="producer.staffId"
+                  >{{ producer.nameRu || producer.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieOperator.length">
               <p class="table-row-title text-medium-emphasis">Оператор</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: operator.staffId } }" class="link"
-                  v-for="operator in movieStore.movieOperator" :key="operator.staffId">{{ operator.nameRu ||
-                    operator.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: operator.staffId } }"
+                  class="link"
+                  v-for="operator in movieStore.movieOperator"
+                  :key="operator.staffId"
+                  >{{ operator.nameRu || operator.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieComposer.length">
               <p class="table-row-title text-medium-emphasis">Композитор</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: composer.staffId } }" class="link"
-                  v-for="composer in movieStore.movieComposer" :key="composer.staffId">{{ composer.nameRu ||
-                    composer.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: composer.staffId } }"
+                  class="link"
+                  v-for="composer in movieStore.movieComposer"
+                  :key="composer.staffId"
+                  >{{ composer.nameRu || composer.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieDesigner.length">
               <p class="table-row-title text-medium-emphasis">Художник</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: designer.staffId } }" class="link"
-                  v-for="designer in movieStore.movieDesigner" :key="designer.staffId">{{ designer.nameRu ||
-                    designer.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: designer.staffId } }"
+                  class="link"
+                  v-for="designer in movieStore.movieDesigner"
+                  :key="designer.staffId"
+                  >{{ designer.nameRu || designer.nameEn }},
                 </router-link>
               </p>
             </div>
             <div class="table-row" v-show="movieStore.movieEditor.length">
               <p class="table-row-title text-medium-emphasis">Монтаж</p>
               <p class="large-text">
-                <router-link :to="{ name: 'name', params: { nameId: editor.staffId } }" class="link"
-                  v-for="editor in movieStore.movieEditor" :key="editor.staffId">{{ editor.nameRu || editor.nameEn }},
+                <router-link
+                  :to="{ name: 'name', params: { nameId: editor.staffId } }"
+                  class="link"
+                  v-for="editor in movieStore.movieEditor"
+                  :key="editor.staffId"
+                  >{{ editor.nameRu || editor.nameEn }},
                 </router-link>
               </p>
-            </div>
-            <div class="table-row" v-show="movieStore.marketing">
-              <p class="table-row-title text-medium-emphasis">Маркетинг</p>
-              <p>Маркетинг</p>
             </div>
             <div class="table-row" v-show="movieStore.budgetSpent">
               <p class="table-row-title text-medium-emphasis">Бюджет</p>
@@ -137,7 +165,8 @@
               <p class="table-row-title text-medium-emphasis">Рейтинг MPAA</p>
               <p class="ratingMpaa">
                 <span class="mpaa">
-                  {{ properRatingMpaa(movieStore.movie.ratingMpaa)[0] }}</span>
+                  {{ properRatingMpaa(movieStore.movie.ratingMpaa)[0] }}</span
+                >
                 <span class="mpaa-text">{{
                   properRatingMpaa(movieStore.movie.ratingMpaa)[1]
                 }}</span>
@@ -157,22 +186,41 @@
       <div class="movie-main-actors">
         <div class="d-flex flex-column">
           <h6 class="main-actors-title">В главных ролях</h6>
-          <router-link :to="{ name: 'name', params: { nameId: person.staffId } }" class="link main-actor-name"
-            v-for="person in movieStore.movieMainActors" :key="person.staffId">
-            {{ person.nameRu }}</router-link>
+          <router-link
+            :to="{ name: 'name', params: { nameId: person.staffId } }"
+            class="link main-actor-name"
+            v-for="person in movieStore.movieMainActors"
+            :key="person.staffId"
+          >
+            {{ person.nameRu }}</router-link
+          >
         </div>
       </div>
     </v-container>
     <v-container class="seasons" v-show="movieStore.seasons.length">
       <h4 class="text-h5 font-weight-bold tac">Сезоны</h4>
       <ul class="d-flex preq-container seasons-list">
-        <li v-for="season in movieStore.seasons" :key="season.number" class="season"
-          :class="{ active: movieStore.currentSeason === season.number }" @click="onSeasonChange(season.number)">
+        <li
+          v-for="season in movieStore.seasons"
+          :key="season.number"
+          class="season"
+          :class="{ active: movieStore.currentSeason === season.number }"
+          @click="onSeasonChange(season.number)"
+        >
           {{ season.number }} Сезон
         </li>
       </ul>
-      <TransitionGroup :duration="{ enter: 500, leave: 800 }" name="slide-fade" tag="ul" class="episodes">
-        <li v-for="episode in movieStore.episodes" :key="episode.episodeNumber" class="episode">
+      <TransitionGroup
+        :duration="{ enter: 500, leave: 800 }"
+        name="slide-fade"
+        tag="ul"
+        class="episodes"
+      >
+        <li
+          v-for="episode in movieStore.episodes"
+          :key="episode.episodeNumber"
+          class="episode"
+        >
           <div class="text-h6">{{ episode.episodeNumber }} серия</div>
           <div>
             <p>{{ episode.nameRu }}</p>
@@ -186,15 +234,26 @@
     <v-container class="prequels" v-show="movieStore.sequelsAndPrequels.length">
       <h4 class="text-h5 font-weight-bold">Сиквелы и приквелы</h4>
       <div class="d-flex preq-container">
-        <div class="preq-movie" @click="
-          $router.push({ name: 'movie', params: { movieId: movie.filmId } })
-        " v-for="movie in movieStore.sequelsAndPrequels" :key="movie.filmId">
+        <div
+          class="preq-movie"
+          @click="
+            $router.push({ name: 'movie', params: { movieId: movie.filmId } })
+          "
+          v-for="movie in movieStore.sequelsAndPrequels"
+          :key="movie.filmId"
+        >
           <div>
-            <img class="prequel-img" :src="movie.posterUrlPreview" :alt="movie.nameOriginal" />
+            <img
+              class="prequel-img"
+              :src="movie.posterUrlPreview"
+              :alt="movie.nameOriginal"
+            />
           </div>
           <div class="font-weight-bold">{{ movie.nameRu }}</div>
           <div class="text-medium-emphasis">{{ movie.nameOriginal }}</div>
-          <div class="text-medium-emphasis text-caption">{{ properMovieRelationType(movie.relationType) }}</div>
+          <div class="text-medium-emphasis text-caption">
+            {{ properMovieRelationType(movie.relationType) }}
+          </div>
         </div>
       </div>
     </v-container>
@@ -204,15 +263,26 @@
       </h4>
       <h4 class="text-h5 font-weight-bold" v-else>Похожие фильмы</h4>
       <div class="d-flex preq-container" v-if="movieStore.similars.length">
-        <div class="preq-movie" @click="
-          $router.push({ name: 'movie', params: { movieId: movie.filmId } })
-        " v-for="movie in movieStore.similars" :key="movie.filmId">
+        <div
+          class="preq-movie"
+          @click="
+            $router.push({ name: 'movie', params: { movieId: movie.filmId } })
+          "
+          v-for="movie in movieStore.similars"
+          :key="movie.filmId"
+        >
           <div>
-            <img class="prequel-img" :src="movie.posterUrlPreview" :alt="movie.nameOriginal" />
+            <img
+              class="prequel-img"
+              :src="movie.posterUrlPreview"
+              :alt="movie.nameOriginal"
+            />
           </div>
           <div class="font-weight-bold">{{ movie.nameRu }}</div>
           <div class="text-medium-emphasis">{{ movie.nameOriginal }}</div>
-          <div class="text-medium-emphasis text-caption">{{ properMovieRelationType(movie.relationType) }}</div>
+          <div class="text-medium-emphasis text-caption">
+            {{ properMovieRelationType(movie.relationType) }}
+          </div>
         </div>
       </div>
       <div v-else>Схожих фильмов нет</div>
@@ -220,16 +290,36 @@
     <v-container class="router">
       <ul class="router-links">
         <li class="router-link">
-          <RouterLink activeClass="active-link" class="link" :to="{ name: 'review' }">Обзор</RouterLink>
+          <RouterLink
+            activeClass="active-link"
+            class="link"
+            :to="{ name: 'review' }"
+            >Обзор</RouterLink
+          >
         </li>
         <li class="router-link">
-          <RouterLink activeClass="active-link" class="link" :to="{ name: 'award' }">Награды</RouterLink>
+          <RouterLink
+            activeClass="active-link"
+            class="link"
+            :to="{ name: 'award' }"
+            >Награды</RouterLink
+          >
         </li>
         <li class="router-link">
-          <RouterLink activeClass="active-link" class="link" :to="{ name: 'premiere' }">Премьеры</RouterLink>
+          <RouterLink
+            activeClass="active-link"
+            class="link"
+            :to="{ name: 'premiere' }"
+            >Премьеры</RouterLink
+          >
         </li>
         <li class="router-link">
-          <RouterLink activeClass="active-link" class="link" :to="{ name: 'image' }">Изображения</RouterLink>
+          <RouterLink
+            activeClass="active-link"
+            class="link"
+            :to="{ name: 'image' }"
+            >Изображения</RouterLink
+          >
         </li>
       </ul>
       <router-view v-slot="{ Component }">
@@ -241,9 +331,18 @@
     <v-container class="videos" v-show="movieStore.videos.length">
       <h4 class="mb-10 text-h5 font-weight-bold">Видео и трейлеры</h4>
       <div class="videos-container">
-        <div v-for="(video, index) in movieStore.videos" :key="index" v-show="video.url.includes('youtube')">
-          <iframe width="386" height="250" :src="video.url.replace('watch?v=', 'embed/')" frameborder="0"
-            allowfullscreen></iframe>
+        <div
+          v-for="(video, index) in movieStore.videos"
+          :key="index"
+          v-show="video.url.includes('youtube')"
+        >
+          <iframe
+            width="386"
+            height="250"
+            :src="video.url.replace('watch?v=', 'embed/')"
+            frameborder="0"
+            allowfullscreen
+          ></iframe>
           <p>{{ video.name }}</p>
         </div>
       </div>
@@ -252,7 +351,11 @@
       <div>
         <h4 class="text-h2 font-weight-bold mb-2">Знаете ли вы, что...</h4>
         <ul class="facts-list" v-if="movieStore.facts.length">
-          <li class="fact text-subtitle-2" v-for="(fact, index) in movieStore.facts" :key="index">
+          <li
+            class="fact text-subtitle-2"
+            v-for="(fact, index) in movieStore.facts"
+            :key="index"
+          >
             {{ properText(fact.text) }}
           </li>
         </ul>
@@ -265,8 +368,16 @@
       <h5>Рецензии зрителей</h5>
       <div class="reviews-body">
         <div class="reviews-container">
-          <CustomReviewCard v-for="review in movieStore.currentMovieCritique" :review="review" :key="review._id" />
-          <ReviewCard v-for="review in movieStore.reviewObj.items" :review="review" :key="review.kinopoiskId" />
+          <CustomReviewCard
+            v-for="review in movieStore.currentMovieCritique"
+            :review="review"
+            :key="review._id"
+          />
+          <ReviewCard
+            v-for="review in movieStore.reviewObj.items"
+            :review="review"
+            :key="review.kinopoiskId"
+          />
         </div>
         <div class="reviews-count">
           <div class="reviews-overall all-reviews">
@@ -279,7 +390,8 @@
                 movieStore.totalPositiveReviewCount
               }}</span>
               <span class="text-medium-emphasis">
-                {{ movieStore.positiveReviewPercentage }}%</span>
+                {{ movieStore.positiveReviewPercentage }}%</span
+              >
             </p>
             <p class="reviews-overall-text">Положительные</p>
           </div>
@@ -288,7 +400,9 @@
               <span class="reviewsCountTitle negative">{{
                 movieStore.negativeReviewCount
               }}</span>
-              <span class="text-medium-emphasis">{{ movieStore.negativeReviewPercentage }}%</span>
+              <span class="text-medium-emphasis"
+                >{{ movieStore.negativeReviewPercentage }}%</span
+              >
             </p>
             <p class="reviews-overall-text">Отрицательные</p>
           </div>
@@ -297,7 +411,9 @@
               <span class="reviewsCountTitle neutral">{{
                 movieStore.neutralReviewCount
               }}</span>
-              <span class="text-medium-emphasis">{{ movieStore.neutralReviewPercentage }}%</span>
+              <span class="text-medium-emphasis"
+                >{{ movieStore.neutralReviewPercentage }}%</span
+              >
             </p>
             <p class="reviews-overall-text">Нейтральные</p>
           </div>
@@ -311,7 +427,6 @@
 import { watch, computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useMovieStore } from "@/stores/movieStore";
-import { useSearchStore } from "@/stores/searchStore";
 import { useAuthStore } from "@/stores/authStore";
 import MyLoaderVue from "@/components/MyLoader.vue";
 import SubmitReview from "@/components/SubmitReview.vue";
@@ -327,7 +442,6 @@ import CustomReviewCard from "@/components/CustomReviewCard.vue";
 import WatchLaterButtonVue from "@/components/WatchLaterButton.vue";
 
 const movieStore = useMovieStore();
-const searchStore = useSearchStore();
 const authStore = useAuthStore();
 const route = useRoute();
 
@@ -360,15 +474,13 @@ watch(
   { deep: true }
 );
 function getMovie(id: number) {
-  isLoading.value = true
-  movieStore.getAllInfo(id).then(data => {
+  isLoading.value = true;
+  movieStore.getAllInfo(id).then((data) => {
     document.title = data;
     isLoading.value = false;
   });
 }
-getMovie(Number(route.params.movieId))
-
-
+getMovie(Number(route.params.movieId));
 </script>
 
 <style scoped>
@@ -667,19 +779,19 @@ getMovie(Number(route.params.movieId))
   opacity: 0;
 }
 
-@media(min-width:960px) {
+@media (min-width: 960px) {
   .movie-basic {
     max-width: 1200px;
   }
 }
 
-@media(max-width:1200px) {
+@media (max-width: 1200px) {
   .movie-main-actors {
     display: none;
   }
 }
 
-@media(max-width:970px) {
+@media (max-width: 970px) {
   .preq-container {
     width: 850px;
 
@@ -712,22 +824,21 @@ getMovie(Number(route.params.movieId))
   opacity: 0;
 }
 
-@media(min-width:960px) {
+@media (min-width: 960px) {
   .movie-basic {
     max-width: 1280px;
   }
 }
 
-@media(max-width:1200px) {
+@media (max-width: 1200px) {
   .movie-main-actors {
     display: none;
   }
 }
 
-@media(max-width:970px) {
+@media (max-width: 970px) {
   .preq-container {
     width: 850px;
-
   }
 }
 </style>

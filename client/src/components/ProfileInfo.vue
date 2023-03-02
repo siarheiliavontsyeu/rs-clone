@@ -29,11 +29,11 @@
 </template>
 <script setup lang="ts">
 import type { UserModel } from "../types/user.types";
-const props = defineProps<{
+defineProps<{
   user: UserModel;
 }>();
 
-const emit = defineEmits<{
+defineEmits<{
   (e: "open-dialog"): void;
 }>();
 </script>
