@@ -69,13 +69,10 @@
 </template>
 
 <script lang="ts" setup>
-import { useAuthStore } from "@/stores/authStore";
 import { useMovieStore } from "@/stores/movieStore";
 import { computed } from "vue";
 
-const authStore = useAuthStore();
 const movieStore = useMovieStore();
-const movieCard = { isItemsReady: false, body: [], images: [] };
 const genres = computed(() => {
   return movieStore.highlightedMovie.body.genres
     .map((item) => item.genre)
@@ -122,24 +119,6 @@ const someMethod = (event: { clientX: number; clientY: number }) => {
   background-repeat: no-repeat;
 }
 
-/* .mouse-parallax-bg {
-  position: 'absolute'
-  background: `url(${movieStore.highlightedMovie.image.imageUrl})`
-  backgroundSize: 'cover'
-    backgroundPosition: 'center center'
-    backgroundRepeat: 'no-repeat'
-    width: '110%'
-    height: '600px'
-
-} */
-/* .card-logo{:style="{
-  // background: `url(${movieStore.highlightedMovie.body.logoUrl})`,
-  backgroundSize: '100%',
-  backgroundPosition: 'center center',
-  backgroundRepeat: 'no-repeat',
-  height: '100%',
-  width: '50%',
-}"} */
 .container-logo {
   height: 100%;
   width: 100%;

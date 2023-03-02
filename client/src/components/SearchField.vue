@@ -3,17 +3,40 @@
     <v-menu :value="4">
       <template v-slot:activator="{ props }">
         <div class="d-flex flex-column field">
-          <input class="search_field" v-bind="props" v-model="search" autocomplete="false" />
-          <v-progress-linear v-show="search" indeterminate color="#f50" rounded></v-progress-linear>
+          <input
+            class="search_field"
+            v-bind="props"
+            v-model="search"
+            autocomplete="false"
+          />
+          <v-progress-linear
+            v-show="search"
+            indeterminate
+            color="#f50"
+            rounded
+          ></v-progress-linear>
         </div>
       </template>
-      <v-list class="options" v-if="searchStore.movies.length && searchStore.persons">
+      <v-list
+        class="options"
+        v-if="searchStore.movies.length && searchStore.persons"
+      >
         <v-list-item value="movies-options">Фильмы</v-list-item>
-        <SearchFieldOptionCard v-for="item in searchStore.movies" :key="item.id" :item="item" :value="item.id"
-          @clear="onFieldClear" />
+        <SearchFieldOptionCard
+          v-for="item in searchStore.movies"
+          :key="item.id"
+          :item="item"
+          :value="item.id"
+          @clear="onFieldClear"
+        />
         <v-list-item value="persons-options">Персоны</v-list-item>
-        <SearchFieldOptionCard v-for="item in searchStore.persons" :key="item.id" :item="item" :value="item.id"
-          @clear="onFieldClear" />
+        <SearchFieldOptionCard
+          v-for="item in searchStore.persons"
+          :key="item.id"
+          :item="item"
+          :value="item.id"
+          @clear="onFieldClear"
+        />
       </v-list>
       <v-list class="no_options" v-else>
         <v-list-item value="nodata">Нет данных</v-list-item>

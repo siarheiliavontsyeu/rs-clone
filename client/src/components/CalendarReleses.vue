@@ -4,27 +4,36 @@
     <v-divider></v-divider>
     <h3>Скоро в кино ></h3>
     <v-list lines="two">
-      <div class="wrapper-list d-flex flex-column" :style="{
-        height: `${135 * Math.ceil(filteredMovies.length / 2)}px`,
-      }">
+      <div
+        class="wrapper-list d-flex flex-column"
+        :style="{
+          height: `${135 * Math.ceil(filteredMovies.length / 2)}px`,
+        }"
+      >
         <v-list-item v-for="(movie, i) in filteredMovies" :key="i">
           <div class="card d-flex flex-row justify-space-between align-center">
             <div class="number">{{ `${i + 1}.` }}</div>
-            <div class="poster" :style="{
-              minWidth: '80px',
-              height: '100px',
-              background: `url(${movie.posterUrlPreview})`,
-              backgroundSize: 'contain',
-              backgroundPosition: 'center center',
-              backgroundRepeat: 'no-repeat',
-            }"></div>
+            <div
+              class="poster"
+              :style="{
+                minWidth: '80px',
+                height: '100px',
+                background: `url(${movie.posterUrlPreview})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'center center',
+                backgroundRepeat: 'no-repeat',
+              }"
+            ></div>
             <div class="name d-flex flex-column justify-center align-start">
-              <div class="nameRu" @click="
-                $router.push({
-                  name: 'movie',
-                  params: { movieId: movie.kinopoiskId },
-                })
-              ">
+              <div
+                class="nameRu"
+                @click="
+                  $router.push({
+                    name: 'movie',
+                    params: { movieId: movie.kinopoiskId },
+                  })
+                "
+              >
                 {{ movie.nameRu }}
               </div>
               <div class="nameEn">{{ movie.nameEn }}</div>

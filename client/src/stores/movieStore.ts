@@ -37,7 +37,6 @@ import { HttpMethod } from "@/types/fetch.types";
 import { useAuthStore } from "./authStore";
 import { useUserDataStore } from "./userDataStore";
 import type { WatchHistoryModel } from "@/types/user.types";
-import { useMoviesStore } from "./moviesStore";
 
 export type HighlightedMovie = {
   body: MovieI;
@@ -188,7 +187,6 @@ export const useMovieStore = defineStore("movie", {
         (season) => season.number === state.currentSeason
       )?.episodes;
     },
-    marketing: (state) => {},
   },
   actions: {
     async getMovieById(id: number) {
@@ -280,7 +278,7 @@ export const useMovieStore = defineStore("movie", {
       this.reviewObj = data;
     },
     async getSequelsAndPrequels(id: number) {
-      const data = await getMovieSequelsAndPrequels(id)
+      await getMovieSequelsAndPrequels(id)
         .then((data) => {
           this.sequelsAndPrequels = data;
         })

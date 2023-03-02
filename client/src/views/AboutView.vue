@@ -97,12 +97,23 @@
                   <v-icon color="primary">mdi-vuetify</v-icon> Vuetify -
                   фреймворк для создания красивых и респонсивных
                   веб-интерфейсов. Для управления состоянием нашего приложения
-                  мы используем Pinia. Для улучшения надежности и облегчения
-                  разработки мы также используем
+                  мы используем
+                  <img
+                    src="../assets/pinia.svg"
+                    alt="pinia icon"
+                    class="custom-icon"
+                  />
+                  Pinia. Для улучшения надежности и облегчения разработки мы
+                  также используем
                   <v-icon color="primary">mdi-language-typescript</v-icon>
                   Typescript. Для сборки и оптимизации фронтенд-кода мы также
                   используем
-                  <v-icon color="primary">mdi-webpack</v-icon> Webpack.
+                  <img
+                    src="../assets/vite.svg"
+                    alt="vite icon"
+                    class="custom-icon"
+                  />
+                  Vite.
                 </li>
               </ul>
               <br />
@@ -143,5 +154,10 @@ const tab = ref("one");
 .container {
   max-width: 1200px;
   margin: 0 auto;
+}
+
+.custom-icon {
+  width: 24px;
+  height: 24px;
 }
 </style>

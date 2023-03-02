@@ -26,7 +26,7 @@
 import MovieCard from "@/components/MovieCard.vue";
 import type { WatchHistoryModel } from "@/types/user.types";
 
-const props = defineProps<{
+defineProps<{
   history: WatchHistoryModel[];
 }>();
 </script>
